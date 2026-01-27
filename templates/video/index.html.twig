@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}All Videos{% endblock %}
+
+{% block body %}
+    <h1>All Videos</h1>
+
+    <table class="container table table-light table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for video in videos %}
+            <tr>
+                <td class="table-light">{{ video.title }}</td>
+                <td class="table-light">{{ video.createdAt ? video.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="table-light">
+                    <button class="btn btn-info">
+                        <a class="link-dark" href="{{ path('admin_video_show', {'id': video.id}) }}">
+                            <i class="bi bi-eye-fill"></i>
+                        </a>
+                    </button>
+                    <button class="btn btn-info">
+                        <a class="link-dark" href="{{ path('admin_video_edit', {'id': video.id}) }}">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                    </button>
+                    <button class="btn btn-danger">
+                        <a class="link-dark" href="{{ path('admin_video_delete', {'id': video.id}) }}">
+                           <i class="bi bi-trash3-fill"></i>
+                        </a>
+                    </button>
+                </td>
+            </tr>
+        {% else %}
+            <h2>No videos found. Maybe <a href="{{ path('admin_video_new') }}">add one ?</a></h2>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
