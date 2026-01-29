@@ -3,24 +3,46 @@
 {% block subtitle %}All Videos{% endblock %}
 
 {% block body %}
+
+    {% for message in app.flashes('video_notification') %}
+        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+           {{ message }}
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
     <h1>All Videos</h1>
+
+    <div class="d-flex align-items-center">
+        <h4>Videos per page : </h4>
+        <div class="btn-group ms-3" role="group" data-controller="video">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" {{ (limit == 5 ? 'checked' : '') }}>
+            <label class="btn btn-outline-primary" for="btnradio1">5</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" {{ (limit == 10 ? 'checked' : '') }}>
+            <label class="btn btn-outline-primary" for="btnradio2">10</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" {{ (limit == 20 ? 'checked' : '') }}>
+            <label class="btn btn-outline-primary" for="btnradio3">20</label>
+        </div>
+    </div>
 
     <table class="container table table-light table-striped table-hover">
         <thead>
             <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Date Added</th>
-                <th scope="col">Actions</th>
+                <th class="col-6" scope="col">Title</th>
+                <th class="col-3" scope="col">Date Added</th>
+                <th class="text-center" scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for video in videos %}
+        {% for video in videosByPage %}
             <tr>
                 <td class="table-light">{{ video.title }}</td>
                 <td class="table-light">{{ video.createdAt ? video.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td class="table-light">
+                <td class="table-light d-flex justify-content-center gap-3">
                     <button class="btn btn-info">
-                        <a class="link-dark" href="{{ path('admin_video_show', {'id': video.id}) }}">
+                        <a class="link-dark" href="{{ path('admin_video_show', {'slugger': video.slugger}) }}">
                             <i class="bi bi-eye-fill"></i>
                         </a>
                     </button>
@@ -29,11 +51,7 @@
                             <i class="bi bi-pencil-square"></i>
                         </a>
                     </button>
-                    <button class="btn btn-danger">
-                        <a class="link-dark" href="{{ path('admin_video_delete', {'id': video.id}) }}">
-                           <i class="bi bi-trash3-fill"></i>
-                        </a>
-                    </button>
+                    {{ include('video/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
@@ -41,4 +59,19 @@
         {% endfor %}
         </tbody>
     </table>
+
+    
+    <nav aria-label="Video navigation">
+        <ul class="pagination justify-content-center">
+            <li class="{{ (page == 1 ? "page-item disabled" : "page-item") }}">
+                <a class="page-link" href="{{ path('admin_video_index', {'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}">Previous</a>
+            </li>
+            {% for index in 1.. nb_pages %}
+                <li class="page-item"><a class="page-link" href="{{ path('admin_video_index', {'page': index, 'limit' : limit}) }}">{{ index }}</a></li>
+            {% endfor %}
+            <li class="{{ page + 1 <= nb_pages ? "page-item" : "page-item disabled" }}">
+                <a class="page-link" href="{{ path('admin_video_index', {'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}">Next</a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}

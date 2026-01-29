@@ -22,8 +22,15 @@ final class VideoAdminController extends AbstractController
     public function index(VideoRepository $videoRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
+        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
+        $videosByPage = $videoRepository->paginate($page, $limit);
         return $this->render('video/index.html.twig', [
             'videos' => $videoRepository->findAll(),
+            'videosByPage' => $videosByPage,
+            'page' => $page,
+            'limit' => $limit,
+            'nb_pages' => ceil(count($videoRepository->findAll()) / $limit)
         ]);
     }
 
@@ -57,6 +64,12 @@ final class VideoAdminController extends AbstractController
             $entityManager->persist($video);
             $entityManager->flush();
 
+            
+            $this->addFlash(
+                'video_notification',
+                'Video successfully Added!'
+            );
+
             return $this->redirectToRoute('admin_video_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -67,7 +80,7 @@ final class VideoAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_video_show', methods: ['GET'])]
+    #[Route('/watch/{slugger:video}', name: 'admin_video_show', methods: ['GET'])]
     public function show(Video $video): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -104,6 +117,12 @@ final class VideoAdminController extends AbstractController
             $entityManager->persist($video);
             $entityManager->flush();
 
+            
+            $this->addFlash(
+                'video_notification',
+                'Video successfully edited'
+            );
+
             return $this->redirectToRoute('admin_video_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -122,6 +141,12 @@ final class VideoAdminController extends AbstractController
             unlink($destination.'/'.$video->getFilename());
             $entityManager->remove($video);
             $entityManager->flush();
+
+            
+            $this->addFlash(
+                'video_notification',
+                'Video successfully deleted'
+            );
         }
 
         return $this->redirectToRoute('admin_video_index', [], Response::HTTP_SEE_OTHER);

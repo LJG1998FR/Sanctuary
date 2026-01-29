@@ -16,6 +16,20 @@ class VideoRepository extends ServiceEntityRepository
         parent::__construct($registry, Video::class);
     }
 
+    /**
+    * @return Video[] Returns an array of Video objects
+    */
+    public function paginate($page = 1, $limit = 10)
+    {
+        $query = $this->createQueryBuilder('v')
+            ->orderBy('v.title', 'ASC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     //    /**
     //     * @return Video[] Returns an array of Video objects
     //     */
