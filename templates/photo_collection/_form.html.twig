@@ -1,0 +1,9 @@
+<div id="form_container" class="w-50 mx-auto mt-5 d-flex flex-column justify-content-center">
+    <h2>{{ photo_collection.id ? 'Edit Collection' : 'Create Collection' }}</h2>
+    {{ form_start(form) }}
+        {{ form_row(form.title, {'label': 'Title : '}) }}
+        {{ form_row(form.cover) }}
+        <a class="btn btn-danger" href="{{ path('admin_photo_collection_index') }}">Cancel</a>
+        <button class="btn btn-dark">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+</div>

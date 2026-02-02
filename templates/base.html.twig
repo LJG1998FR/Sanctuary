@@ -31,11 +31,11 @@
                         <li class="nav-item">
                             <a class={{ app.request.get('_route') == "admin_video_index" or app.request.get('_route') == "admin_video_index_reverse" ? "'nav-link fw-bold'" : "nav-link" }} href="{{path('admin_video_index')}}">All Videos</a>
                         </li>
-                        {# <li class="nav-item">
-                            <a class={{ app.request.get('_route') == "app_photo_collection_index" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('app_photo_collection_index') }}">Gallery</a>
+                         <li class="nav-item">
+                            <a class={{ app.request.get('_route') == "admin_photo_collection_index" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('admin_photo_collection_index') }}">Gallery</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="randomphoto" href="{{ path('app_photo_random') }}">Random Photo</a>
+                        {#<li class="nav-item">
+                            <a class="nav-link" id="randomphoto" href="{{ path('admin_photo_random') }}">Random Photo</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="randomvideo" href="{{ path('admin_video_random') }}">Random Video</a>
@@ -43,9 +43,9 @@
                         <li class="nav-item">
                             <a class={{ app.request.get('_route') == "admin_video_new" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('admin_video_new') }}">Upload New Video</a>
                         </li>
-                        {# <li class="nav-item">
-                            <a class={{ app.request.get('_route') == "app_photo_collection_new" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('app_photo_collection_new') }}">Add A Collection</a>
-                        </li> #}
+                        <li class="nav-item">
+                            <a class={{ app.request.get('_route') == "admin_photo_collection_new" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('admin_photo_collection_new') }}">Add A Collection</a>
+                        </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0 d-flex" id="searchform">
                         <input type="search" class="form-control" placeholder="Video, Photo Or Collection" aria-label="Search" id="query" autocomplete = off>

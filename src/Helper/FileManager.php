@@ -15,9 +15,9 @@ class FileManager {
             unlink($fileDirectory.'/'.$oldFilename);
         }
         
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $safeFilename = $slugger->slug(strtolower($originalFilename));
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+        //$originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        //$safeFilename = "sensualjane"; $slugger->slug(strtolower($originalFilename));
+        $newFilename = uniqid('sensualjane_').'.'.$file->guessExtension();
 
         try {
             $file->move(

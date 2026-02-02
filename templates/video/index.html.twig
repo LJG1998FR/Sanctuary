@@ -14,7 +14,7 @@
     <h1>All Videos</h1>
 
     <div class="d-flex align-items-center">
-        <h4>Videos per page : </h4>
+        <h4>Items per page : </h4>
         <div class="btn-group ms-3" role="group" data-controller="video">
             <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" {{ (limit == 5 ? 'checked' : '') }}>
             <label class="btn btn-outline-primary" for="btnradio1">5</label>
@@ -61,17 +61,20 @@
     </table>
 
     
-    <nav aria-label="Video navigation">
-        <ul class="pagination justify-content-center">
-            <li class="{{ (page == 1 ? "page-item disabled" : "page-item") }}">
-                <a class="page-link" href="{{ path('admin_video_index', {'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}">Previous</a>
-            </li>
-            {% for index in 1.. nb_pages %}
-                <li class="page-item"><a class="page-link" href="{{ path('admin_video_index', {'page': index, 'limit' : limit}) }}">{{ index }}</a></li>
-            {% endfor %}
-            <li class="{{ page + 1 <= nb_pages ? "page-item" : "page-item disabled" }}">
-                <a class="page-link" href="{{ path('admin_video_index', {'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}">Next</a>
-            </li>
-        </ul>
-    </nav>
+    {% if nb_pages > 1 %}
+        <nav aria-label="Video navigation">
+            <ul class="pagination justify-content-center">
+                <li class="{{ (page == 1 ? "page-item disabled" : "page-item") }}">
+                    <a class="page-link" href="{{ path('admin_video_index', {'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}">Previous</a>
+                </li>
+            
+                    {% for index in 1.. nb_pages %}
+                        <li class="page-item"><a class="page-link" href="{{ path('admin_video_index', {'page': index, 'limit' : limit}) }}">{{ index }}</a></li>
+                    {% endfor %}
+                    <li class="{{ page + 1 <= nb_pages ? "page-item" : "page-item disabled" }}">
+                        <a class="page-link" href="{{ path('admin_video_index', {'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}">Next</a>
+                    </li>
+            </ul>
+        </nav>
+    {% endif %}
 {% endblock %}

@@ -26,7 +26,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                target: dashbaord
+                target: dashboard
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
