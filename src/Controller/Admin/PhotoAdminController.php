@@ -52,7 +52,7 @@ final class PhotoAdminController extends AbstractController
                 foreach ($photoFiles as $file) {
                     $photo = new Photo();
 
-                    $newFilename = $fileManager->uploadFile($this->getParameter('photos_directory'), $file, null, $slugger);
+                    $newFilename = $fileManager->uploadFile($this->getParameter('photos_directory') . '/' . $photoCollection->getSlugger(), $file, null, $slugger);
                     $photo->setFilename($newFilename);
                     $photo->setPosition(++$photoMaxPosition);
                     $photo->setPhotoCollection($photoCollection);
@@ -90,12 +90,13 @@ final class PhotoAdminController extends AbstractController
     {
         $form = $this->createForm(UpdatePhotoType::class, $photo);
         $form->handleRequest($request);
+        $photoCollection = $photo->getPhotoCollection();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var UploadedFile $photoFile */
-            $photoFile = $form->get('filename')->getData();
-            $newFilename = $fileManager->uploadFile($this->getParameter('videos_directory'), $photoFile, $photo->getFilename(), $slugger);
+            $photoFile = $form->get('photos')->getData();
+            $newFilename = $fileManager->uploadFile($this->getParameter('photos_directory') . '/' . $photoCollection->getSlugger(), $photoFile, $photo->getFilename(), $slugger);
             $photo->setFilename($newFilename);
 
             $entityManager->flush();
@@ -117,8 +118,9 @@ final class PhotoAdminController extends AbstractController
     #[Route('/{photo_collection_id}/delete/{id}', name: 'admin_photo_delete', methods: ['POST'])]
     public function delete(Request $request, Photo $photo, EntityManagerInterface $entityManager, int $photo_collection_id): Response
     {
+        $photoCollection = $photo->getPhotoCollection();
         if ($this->isCsrfTokenValid('delete'.$photo->getId(), $request->getPayload()->getString('_token'))) {
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/photos';
+            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/photos/' . $photoCollection->getSlugger();
             unlink($destination.'/'.$photo->getFilename());
             $entityManager->remove($photo);
             $entityManager->flush();

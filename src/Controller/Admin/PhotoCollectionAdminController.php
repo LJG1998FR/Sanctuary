@@ -7,6 +7,7 @@ use App\Form\PhotoCollectionType;
 use App\Form\UpdatePhotoCollectionType;
 use App\Helper\FileManager;
 use App\Repository\PhotoCollectionRepository;
+use App\Repository\PhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -108,13 +109,33 @@ final class PhotoCollectionAdminController extends AbstractController
         ]);
     }
 
+    #[Route('/update-ranks', name: 'admin_photo_collection_update_ranks', methods: ['GET', 'POST'])]
+    public function updateRanks(Request $request, EntityManagerInterface $entityManager, PhotoRepository $photoRepository): Response
+    {
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        foreach ($data["data"] as $key => $value) {
+            $photo = $photoRepository->find($value['id']);
+            if ($photo) {
+                $photo->setPosition($value['rank']);
+            }
+        }
+        $entityManager->flush();
+
+        $this->addFlash(
+            'gallery_notification',
+            'Photo Ranks Successfully Updated'
+        );
+        $photo_collection_id = $photoRepository->find($data["data"][0]['id'])->getPhotoCollection()->getId();
+        return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photo_collection_id], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}', name: 'admin_photo_collection_delete', methods: ['POST'])]
     public function delete(Request $request, PhotoCollection $photoCollection, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$photoCollection->getId(), $request->getPayload()->getString('_token'))) {
             //remove all asssociated photos files
             $photos = $photoCollection->getPhotos();
-            $photoRep = $entityManager->getRepository('App\Entity\Photo');
             foreach ($photos as $photo) {
                 $destination = $this->getParameter('kernel.project_dir').'/public/uploads/photos';
                 unlink($destination.'/'.$photo->getFilename());

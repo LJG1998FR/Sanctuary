@@ -51,6 +51,11 @@
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         </button>
+                        <button class="btn btn-dark">
+                            <a class="link-light" href="{{ path('admin_photo_new', {'photo_collection_id':photo_collection.id}) }}">
+                                <i class="bi bi-plus-square-fill"></i>
+                            </a>
+                        </button>
                         {{ include('photo_collection/_delete_form.html.twig') }}
                     </td>
                 </tr>         

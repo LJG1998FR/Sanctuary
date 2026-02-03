@@ -16,23 +16,23 @@
         <a class="btn btn-dark" href="{{ path('admin_photo_collection_edit', {'id': photo_collection.id}) }}"><i class="bi bi-pencil-square"></i></a>
         <a class="btn btn-dark" href="{{ path('admin_photo_new', {'photo_collection_id':photo_collection.id}) }}"><i class="bi bi-plus-square-fill"></i></a>
       
-        <button class="btn btn-dark" id="updateRanksButton">Update All Ranks</button>
+        <a class="btn btn-dark" id="update-ranks-btn" href="javascript:;">Update All Ranks</a>
       
         <a class="btn btn-dark" href="{{ path('admin_photo_collection_index') }}">Gallery</a>
 
         {{ include('photo_collection/_delete_form.html.twig') }}
     </section>
 
-    <main class="mt-3 ms-3 d-flex gap-3 flex-wrap" id="main-container">
+    <main class="mt-3 ms-3 d-flex gap-3 flex-wrap" id="main-container" data-controller="photo">
         {% for photo in photo_collection.photos|sort((a,b) => a.position <=> b.position) %}
             <div class="card" style="width: 18rem;">
                 <div class="d-flex justify-content-between">
                     <form method="post">
-                        <input data-photoid="{{ photo.id }}" class="rankInput" type="number" name="photo_rank_{{ photo.id }}" value="{{ photo.position }}" min=0>
+                        <input data-photoid="{{ photo.id }}" data-photorank="{{ photo.position }}" class="rankInput" type="number" name="photo_rank_{{ photo.id }}" value="{{ photo.position }}" min=1>
                     </form>
                     {{ include('photo/_delete_form.html.twig') }}
                 </div>
-                <img class="card-img-top photoItem" src="{{ asset('/uploads/photos/') }}{{photo.filename}}" alt="{{photo.filename}}">
+                <img class="card-img-top photoItem" src="{{ asset('/uploads/photos/') }}/{{ photo_collection.slugger }}/{{photo.filename}}" alt="{{photo.filename}}">
             </div>
         {% else %}
             <h2>This collection is empty. Maybe <a href="{{ path('admin_photo_new', {'photo_collection_id' : photo_collection.id}) }}">add some photos ?</a></h2>
