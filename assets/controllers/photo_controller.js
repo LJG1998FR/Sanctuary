@@ -3,11 +3,11 @@ import _ from "lodash";
 
 export default class extends Controller {
     connect() {
+        var rankInputs = this.element.querySelectorAll('.rankInput');
+        var data = [];
+        var main = document.getElementById('main-container');
+        var cards = this.element.querySelectorAll('.card');
         document.querySelector('#update-ranks-btn').addEventListener('click', async () => {
-            var rankInputs = this.element.querySelectorAll('.rankInput');
-            var data = [];
-            var main = document.getElementById('main-container');
-            var cards = this.element.querySelectorAll('.card');
             rankInputs.forEach(rank => {
                 if(rank.dataset.photorank != rank.value){
                     data.push({id: parseInt(rank.dataset.photoid), rank: parseInt(rank.value)});
@@ -53,5 +53,54 @@ export default class extends Controller {
                 console.error(`${error.message}`);
             }
         });
+
+        // reset ranks
+        document.querySelector('#reset-ranks-btn').addEventListener('click', async () => {
+            this.mapRanks(cards, this.element.dataset.photocollectionid);
+        })
+    }
+
+    //affect positions from 1 to N
+    async mapRanks(cards, id){
+        var ids = [];
+        var newcards = _.sortBy(cards, card => {return parseInt(card.querySelector('.rankInput').dataset.photorank)});
+        newcards.forEach(card => {
+            ids.push(parseInt(card.querySelector('.rankInput').dataset.photoid));
+        });
+        try {
+            const response = await fetch("http://127.0.0.1:8000/admin/gallery/map-ranks/"+id, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ ids })
+            });
+        
+            if (!response.ok) {
+                throw new Error(`Error : ${response.statusText}`);
+            } else {
+                var main = document.getElementById('main-container');
+                _.forEach(newcards, (card, index) => {
+                    var rankInput = card.querySelector('.rankInput');
+                    rankInput.value = index+1;
+                });
+                main.innerHTML = "";
+                main.append(...newcards);
+
+                console.log("ranks mapped successfully");
+
+                var msgDiv = document.createElement('div');
+                msgDiv.innerHTML = `
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                        Photo Ranks Mapped Successful
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.querySelector('#header').before(msgDiv);
+            }
+
+        } catch (error) {
+            console.error(`${error.message}`);
+        }
     }
 }

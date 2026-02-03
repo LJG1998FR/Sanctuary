@@ -130,6 +130,26 @@ final class PhotoCollectionAdminController extends AbstractController
         return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photo_collection_id], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/map-ranks/{id}', name: 'admin_photo_collection_map_ranks', methods: ['GET', 'POST'])]
+    public function mapRanks(Request $request, PhotoCollection $photoCollection, EntityManagerInterface $entityManager, PhotoRepository $photoRepository): Response
+    {
+        $data = json_decode(file_get_contents('php://input'), true)['ids'];
+
+        foreach ($data as $key => $entry) {
+            $photo = $photoRepository->find($entry);
+            if($photo){
+                $photo->setPosition($key + 1);
+            }
+        }
+        $entityManager->flush();
+
+        $this->addFlash(
+            'gallery_notification',
+            'Photo Ranks Successfully Mapped'
+        );
+        return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photoCollection->getId()], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}', name: 'admin_photo_collection_delete', methods: ['POST'])]
     public function delete(Request $request, PhotoCollection $photoCollection, EntityManagerInterface $entityManager): Response
     {
