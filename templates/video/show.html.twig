@@ -3,10 +3,12 @@
 {% block title %}{% endblock %} {% block subtitle %} Watch : {{video.title}}{% endblock %}
 
 {% block body %}
+    <main id="main" data-controller="watch">
         <h1>Watch Sensual Jane In: {{video.title}} (<span class="duration_info"></span>)</h1>
         <section style="margin: 0 10%;">
             <video id="course-video" width="100%" controls>
                 <source src="{{asset('/uploads/videos/')}}{{video.filename}}#t=0.1" type="video/mp4">
             </video>
         </section>
+    </main>
 {% endblock %}

@@ -28,9 +28,9 @@
         {% for photo in photo_collection.photos|sort((a,b) => a.position <=> b.position) %}
             <div class="card" style="width: 18rem;">
                 <div class="d-flex justify-content-between mb-2">
-                    <form method="post">
-                        <input data-photoid="{{ photo.id }}" data-photorank="{{ photo.position }}" class="rankInput" type="number" name="photo_rank_{{ photo.id }}" value="{{ photo.position }}" min=1>
-                    </form>
+                    {# <form method="post"> #}
+                        <input data-photoid="{{ photo.id }}" data-photorank="{{ photo.position }}" class="rankInput" type="hidden" name="photo_rank_{{ photo.id }}" value="{{ photo.position }}" min=1>
+                    {# </form> #}
                     {{ include('photo/_delete_form.html.twig') }}
                 </div>
                 <img class="card-img-top photoItem" src="{{ asset('/uploads/photos/') }}{{ photo_collection.slugger }}/{{photo.filename}}" alt="{{photo.filename}}">

@@ -5,6 +5,7 @@ BO:
 - Add Btn to remap photo ranks => OK
 - updated ranks feedback => OK
 - Add spinner => OK
+- Switch photos on clicks
 - Disable/Enable update-ranks btn 
 - Collection: Update/Delete cover
 - Add VideoTags Entity
