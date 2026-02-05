@@ -2,6 +2,9 @@
     <h2>{{ photo_collection.id ? 'Edit Collection' : 'Create Collection' }}</h2>
     {{ form_start(form) }}
         {{ form_row(form.title, {'label': 'Title : '}) }}
+        {% if photo_collection.cover is not null %}
+            <img class="img-thumbnail" width="200" src="{{ asset('/uploads/covers/') }}{{photo_collection.cover}}" alt="{{photo_collection.cover}}">
+        {% endif %}
         {{ form_row(form.cover) }}
         <a class="btn btn-danger" href="{{ path('admin_photo_collection_index') }}">Cancel</a>
         <button class="btn btn-dark">{{ button_label|default('Save') }}</button>

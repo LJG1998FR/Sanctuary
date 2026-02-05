@@ -46,3 +46,17 @@ if(currentURL.includes('watch') || currentURL.includes('videos/random')){
 	})
 
 }
+const spinner = document.getElementById('spinner');
+
+document.addEventListener('turbo:visit', () => {
+	spinner.classList.replace('d-none', 'd-flex');
+})
+
+document.addEventListener('turbo:submit-start', () => {
+	spinner.classList.replace('d-none', 'd-flex');
+	console.log("chat")
+})
+
+document.addEventListener('turbo:load', () => {
+	spinner.classList.replace('d-flex', 'd-none');
+})

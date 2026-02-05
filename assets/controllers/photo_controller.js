@@ -7,6 +7,7 @@ export default class extends Controller {
         var data = [];
         var main = document.getElementById('main-container');
         var cards = this.element.querySelectorAll('.card');
+        var spinner = document.getElementById('spinner');
         document.querySelector('#update-ranks-btn').addEventListener('click', async () => {
             rankInputs.forEach(rank => {
                 if(rank.dataset.photorank != rank.value){
@@ -14,17 +15,20 @@ export default class extends Controller {
                 }
             });
             if(data.length == 0){
-                console.log("No ranks to update");
                 return;
             }
             try {
+	            spinner?.classList.replace('d-none', 'd-flex');
                 const response = await fetch("http://127.0.0.1:8000/admin/gallery/update-ranks", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({ data })
-                });
+                })
+                .finally((resp) => {
+                    spinner.classList.replace('d-flex', 'd-none');
+                })
             
                 if (!response.ok) {
                     throw new Error(`Error : ${response.statusText}`);
@@ -68,13 +72,17 @@ export default class extends Controller {
             ids.push(parseInt(card.querySelector('.rankInput').dataset.photoid));
         });
         try {
+	        spinner?.classList.replace('d-none', 'd-flex');
             const response = await fetch("http://127.0.0.1:8000/admin/gallery/map-ranks/"+id, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ ids })
-            });
+            })
+            .finally((resp) => {
+	            spinner.classList.replace('d-flex', 'd-none');
+            })
         
             if (!response.ok) {
                 throw new Error(`Error : ${response.statusText}`);

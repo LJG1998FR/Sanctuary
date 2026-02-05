@@ -1,0 +1,20 @@
+SJS TODO
+
+BO:
+- Display updated-ranks msg => OK
+- Add Btn to remap photo ranks => OK
+- updated ranks feedback => OK
+- Add spinner => OK
+- Disable/Enable update-ranks btn 
+- Collection: Update/Delete cover
+- Add VideoTags Entity
+
+
+
+
+
+
+
+
+FRONT
+- Add games (Memory + Puzzle)
