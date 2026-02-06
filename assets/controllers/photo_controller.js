@@ -2,78 +2,81 @@ import { Controller } from '@hotwired/stimulus';
 import _ from "lodash";
 
 export default class extends Controller {
+    selectedCards = [];
+    cards;
+    positionBtns = [];
     connect() {
-        var rankInputs = this.element.querySelectorAll('.rankInput');
-        var data = [];
-        var main = document.getElementById('main-container');
         var cards = this.element.querySelectorAll('.card');
-        var spinner = document.getElementById('spinner');
-        document.querySelector('#update-ranks-btn').addEventListener('click', async () => {
-            rankInputs.forEach(rank => {
-                if(rank.dataset.photorank != rank.value){
-                    data.push({id: parseInt(rank.dataset.photoid), rank: parseInt(rank.value)});
-                }
-            });
-            if(data.length == 0){
-                return;
-            }
-            try {
-	            spinner?.classList.replace('d-none', 'd-flex');
-                const response = await fetch("http://127.0.0.1:8000/admin/gallery/update-ranks", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ data })
-                })
-                .finally((resp) => {
-                    spinner.classList.replace('d-flex', 'd-none');
-                })
-            
-                if (!response.ok) {
-                    throw new Error(`Error : ${response.statusText}`);
-                } else {
-                    var newcards = _.sortBy(cards, card => {return parseInt(card.querySelector('.rankInput').value)});
-                    _.forEach(newcards, card => {
-                        var rankInput = card.querySelector('.rankInput');
-                        rankInput.dataset.photorank = rankInput.value;
-                    });
-                    main.innerHTML = "";
-                    main.append(...newcards);
+        this.cards = this.element.querySelectorAll('.card');
+        this.positionBtns = this.element.querySelectorAll('.new-position');
 
-                    console.log("ranks updated successfully");
-
-                    var msgDiv = document.createElement('div');
-                    msgDiv.innerHTML = `
-                        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-                            Photo Ranks Successfully Updated
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    `;
-                    document.querySelector('#header').before(msgDiv);
-                }
-
-            } catch (error) {
-                console.error(`${error.message}`);
-            }
+        cards.forEach(card => {
+            card.addEventListener('click', () => this.onSelected(card));
         });
 
-        // reset ranks
-        document.querySelector('#reset-ranks-btn').addEventListener('click', async () => {
-            this.mapRanks(cards, this.element.dataset.photocollectionid);
-        })
+        this.positionBtns.forEach(btn => {
+            btn.addEventListener('click', () => this.changePhotoPositions(btn));
+        });
     }
 
-    //affect positions from 1 to N
-    async mapRanks(cards, id){
+    onSelected(card){
+
+        var photoIndex = _.indexOf(this.selectedCards, card);
+        if(this.selectedCards.length === 0){
+            this.element.querySelectorAll('.new-position').forEach(btn => {
+                btn.classList.remove('hidden');
+            });
+        }
+
+        if (photoIndex === -1) {
+            this.selectedCards.push(card);
+            card.classList.add('selected');
+        } else {
+            this.selectedCards.splice(photoIndex, 1);
+            card.classList.remove('selected');
+        }
+
+        //display position btns except those around the selected cards
+        if(this.selectedCards.length === 0){
+            this.element.querySelectorAll('.new-position').forEach(btn => {
+                btn.classList.add('hidden');
+            });
+        } else {
+            var cardIndex = _.indexOf(this.cards, card);
+            var isPreviousSelected = this.selectedCards.includes(this.cards[cardIndex-1]);
+            var isNextSelected = this.selectedCards.includes(this.cards[cardIndex+1]);
+            var isCurrentSelected = this.selectedCards.includes(card);
+            this.displayPositionBtns(card, isCurrentSelected, isPreviousSelected, isNextSelected);
+        }
+    }
+
+    displayPositionBtns(card, isCurrentSelected, isPreviousSelected, isNextSelected){
+        if (isCurrentSelected === true) {
+            if(card.nextElementSibling?.classList.contains('hidden') == false && !isNextSelected){card.nextElementSibling.classList.add('hidden');}
+            if(card.previousElementSibling?.classList.contains('hidden') == false && !isPreviousSelected){card.previousElementSibling.classList.add('hidden');}
+        } else {
+            if(card.nextElementSibling?.classList.contains('hidden') == true && !isNextSelected){card.nextElementSibling?.classList.remove('hidden');}
+            if(card.previousElementSibling?.classList.contains('hidden') == true && !isPreviousSelected){card.previousElementSibling?.classList.remove('hidden');}
+        }
+    }
+
+    changePhotoPositions(btn){
+        btn.before(...this.selectedCards);
+        this.cards = this.setCards();
+        this.setNewPositions(this.cards, this.element.dataset.photocollectionid);
+        this.selectedCards = [];
+    }
+
+    //set new ranks
+    async setNewPositions(cards, id){
         var ids = [];
-        var newcards = _.sortBy(cards, card => {return parseInt(card.querySelector('.rankInput').dataset.photorank)});
-        newcards.forEach(card => {
+        this.element.querySelectorAll('.card').forEach(card => {
             ids.push(parseInt(card.querySelector('.rankInput').dataset.photoid));
         });
+
         try {
 	        spinner?.classList.replace('d-none', 'd-flex');
-            const response = await fetch("http://127.0.0.1:8000/admin/gallery/map-ranks/"+id, {
+            const response = await fetch("http://127.0.0.1:8000/admin/gallery/update-ranks/"+id, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -87,28 +90,55 @@ export default class extends Controller {
             if (!response.ok) {
                 throw new Error(`Error : ${response.statusText}`);
             } else {
-                var main = document.getElementById('main-container');
-                _.forEach(newcards, (card, index) => {
-                    var rankInput = card.querySelector('.rankInput');
-                    rankInput.value = index+1;
-                });
-                main.innerHTML = "";
-                main.append(...newcards);
 
-                console.log("ranks mapped successfully");
+                var main = document.getElementById('main-container');
+                main.innerHTML = "";
+                main.append(...cards);
+
+                main.querySelectorAll('.new-position').forEach(btn => {
+                    btn.addEventListener('click', () => this.changePhotoPositions(btn));
+                })
 
                 var msgDiv = document.createElement('div');
                 msgDiv.innerHTML = `
                     <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-                        Photo Ranks Mapped Successful
+                        Photo Ranks Successfully Updated
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 `;
                 document.querySelector('#header').before(msgDiv);
+
+                this.resetProps();
             }
 
         } catch (error) {
             console.error(`${error.message}`);
         }
+    }
+
+    setCards(){
+        //sort cards
+        var firstPositionBtn = document.createElement('button');
+        firstPositionBtn.classList = 'btn btn-dark new-position hidden';
+        firstPositionBtn.innerHTML = `<i class="bi bi-plus-circle"></i>`;
+
+        //add btns after every card
+        var newcards = [];
+        newcards.push(firstPositionBtn);
+        _.forEach(this.element.querySelectorAll('.card'), (card, index) => {
+            card.classList.remove('selected');
+            card.querySelector('.rankInput').value = index+1;
+            var newPositionBtn = document.createElement('button');
+            newPositionBtn.classList = 'btn btn-dark new-position hidden';
+            newPositionBtn.innerHTML = `<i class="bi bi-plus-circle"></i>`;
+            newcards.push(card, newPositionBtn);
+            return card;
+        });
+        return newcards;
+    }
+
+    resetProps(){
+        this.cards = this.element.querySelectorAll('.card');
+        this.positionBtns = this.element.querySelectorAll('.new-position');
     }
 }

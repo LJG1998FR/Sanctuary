@@ -9,6 +9,7 @@ import './styles/app.css';
 import _ from 'lodash';
 
 const spinner = document.getElementById('spinner');
+spinner.style.height = document.documentElement.scrollHeight + 'px';
 
 document.addEventListener('turbo:visit', () => {
 	spinner.classList.replace('d-none', 'd-flex');
@@ -16,7 +17,6 @@ document.addEventListener('turbo:visit', () => {
 
 document.addEventListener('turbo:submit-start', () => {
 	spinner.classList.replace('d-none', 'd-flex');
-	console.log("chat")
 })
 
 document.addEventListener('turbo:load', () => {

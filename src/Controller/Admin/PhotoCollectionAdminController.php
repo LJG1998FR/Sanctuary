@@ -109,28 +109,7 @@ final class PhotoCollectionAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/update-ranks', name: 'admin_photo_collection_update_ranks', methods: ['GET', 'POST'])]
-    public function updateRanks(Request $request, EntityManagerInterface $entityManager, PhotoRepository $photoRepository): Response
-    {
-
-        $data = json_decode(file_get_contents('php://input'), true);
-        foreach ($data["data"] as $key => $value) {
-            $photo = $photoRepository->find($value['id']);
-            if ($photo) {
-                $photo->setPosition($value['rank']);
-            }
-        }
-        $entityManager->flush();
-
-        $this->addFlash(
-            'gallery_notification',
-            'Photo Ranks Successfully Updated'
-        );
-        $photo_collection_id = $photoRepository->find($data["data"][0]['id'])->getPhotoCollection()->getId();
-        return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photo_collection_id], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/map-ranks/{id}', name: 'admin_photo_collection_map_ranks', methods: ['GET', 'POST'])]
+    #[Route('/update-ranks/{id}', name: 'admin_photo_collection_map_ranks', methods: ['GET', 'POST'])]
     public function mapRanks(Request $request, PhotoCollection $photoCollection, EntityManagerInterface $entityManager, PhotoRepository $photoRepository): Response
     {
         $data = json_decode(file_get_contents('php://input'), true)['ids'];
