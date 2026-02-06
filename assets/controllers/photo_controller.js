@@ -5,17 +5,22 @@ export default class extends Controller {
     selectedCards = [];
     cards;
     positionBtns = [];
+    updatePhotoInputs = [];
     connect() {
         var cards = this.element.querySelectorAll('.card');
         this.cards = this.element.querySelectorAll('.card');
         this.positionBtns = this.element.querySelectorAll('.new-position');
+        this.updatePhotoInputs = this.element.querySelectorAll('.update-photo-input');
 
+        //set event listeners
         cards.forEach(card => {
             card.addEventListener('click', () => this.onSelected(card));
         });
-
         this.positionBtns.forEach(btn => {
             btn.addEventListener('click', () => this.changePhotoPositions(btn));
+        });
+        this.updatePhotoInputs.forEach((input) => {
+            input.addEventListener('change', () => this.onUpdatePhotoSubmit(input));
         });
     }
 
@@ -135,6 +140,46 @@ export default class extends Controller {
             return card;
         });
         return newcards;
+    }
+
+    async onUpdatePhotoSubmit(input){
+
+        //create valid formData
+        var formData = new FormData();
+        formData.append('photos', input.files[0]);
+        try {
+	        spinner?.classList.replace('d-none', 'd-flex');
+            const response = await fetch("http://127.0.0.1:8000/admin/photos/"+input.dataset.id+"/edit", {
+                method: "POST",
+                body: formData
+            })
+            .finally((resp) => {
+	            spinner.classList.replace('d-flex', 'd-none');
+            });
+        
+            if (!response.ok) {
+                throw new Error(`Error : ${response.statusText}`);
+            } else {
+                var res = response.json()
+                .then((output) => {
+                    var photoToUpdate = this.element.querySelector('#photo_'+input.dataset.id);
+                    photoToUpdate.src = "/uploads/photos/"+output.data.fullpath;
+                    photoToUpdate.alt = output.data.fullpath;
+                });
+
+                var msgDiv = document.createElement('div');
+                msgDiv.innerHTML = `
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                        Photo Successfully Updated
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.querySelector('#header').before(msgDiv);
+            }
+
+        } catch (error) {
+            console.error(`${error.message}`);
+        }
     }
 
     resetProps(){

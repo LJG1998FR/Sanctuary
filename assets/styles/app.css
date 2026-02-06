@@ -21,7 +21,7 @@ body {
 /** CARDS **/
 
 .card {
-    width: 15%;
+    width: 19%;
 }
 
 .card.selected {
@@ -32,4 +32,9 @@ body {
 .new-position.hidden {
     display: none;
     /*opacity: 0;*/
+}
+
+.update-photo-label{
+    font-size: 2.2rem;
+    font-weight: 400;
 }

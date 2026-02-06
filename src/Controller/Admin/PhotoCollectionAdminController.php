@@ -110,7 +110,7 @@ final class PhotoCollectionAdminController extends AbstractController
     }
 
     #[Route('/update-ranks/{id}', name: 'admin_photo_collection_map_ranks', methods: ['GET', 'POST'])]
-    public function mapRanks(Request $request, PhotoCollection $photoCollection, EntityManagerInterface $entityManager, PhotoRepository $photoRepository): Response
+    public function updateRanks(Request $request, PhotoCollection $photoCollection, EntityManagerInterface $entityManager, PhotoRepository $photoRepository): Response
     {
         $data = json_decode(file_get_contents('php://input'), true)['ids'];
 

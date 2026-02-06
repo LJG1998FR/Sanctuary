@@ -3,13 +3,17 @@ SJS TODO
 BO:
 - Display updated-ranks msg => OK
 - Add Btn to remap photo ranks => OK
-- updated ranks feedback => OK
+- Add updated ranks feedback => OK
+- Collection: Update/Delete cover => OK
 - Add spinner => OK
 - Switch photos on click => OK
-- Multiple delete photos
-- Collection: Update/Delete cover
-- Add Video / Collection relation
+- Fix Gallery item CSS => OK
+- Edit Photos btn => OK
+- Multiple delete photos/collections/videos
 - Add VideoTags Entity
+- Add Video / Collection relation
+
+
 
 
 
@@ -20,3 +24,5 @@ BO:
 
 FRONT
 - Add games (Memory + Puzzle)
+- Random video/collection/photo
+- Search bar

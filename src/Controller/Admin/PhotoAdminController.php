@@ -11,6 +11,7 @@ use App\Repository\PhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -86,33 +87,31 @@ final class PhotoAdminController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin_photo_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Photo $photo, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager): Response
+    public function edit(Request $request, Photo $photo, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager): JsonResponse
     {
         $form = $this->createForm(UpdatePhotoType::class, $photo);
         $form->handleRequest($request);
         $photoCollection = $photo->getPhotoCollection();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        /** @var UploadedFile $photoFile */
+        $photoFile = $request->files->get('photos');
+        $newFilename = $fileManager->uploadFile($this->getParameter('photos_directory') . '/' . $photoCollection->getSlugger(), $photoFile, $photo->getFilename(), $slugger);
+        $photo->setFilename($newFilename);
 
-            /** @var UploadedFile $photoFile */
-            $photoFile = $form->get('photos')->getData();
-            $newFilename = $fileManager->uploadFile($this->getParameter('photos_directory') . '/' . $photoCollection->getSlugger(), $photoFile, $photo->getFilename(), $slugger);
-            $photo->setFilename($newFilename);
+        $entityManager->flush();
 
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_photo_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        $this->addFlash(
+        /*$this->addFlash(
             'gallery_notification',
             'Photo Successfully Edited'
-        );
-
-        return $this->render('photo/edit.html.twig', [
-            'photo' => $photo,
-            'form' => $form,
-        ]);
+        );*/
+        $response = [
+            "success" => true,
+            "data" => [
+                "fullpath" => $photoCollection->getSlugger() . "/" . $photo->getFilename(),
+            ]
+        ];
+        return new JsonResponse($response, 200);
+        //return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photoCollection->getId()], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{photo_collection_id}/delete/{id}', name: 'admin_photo_delete', methods: ['POST'])]

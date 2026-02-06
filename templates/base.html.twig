@@ -52,10 +52,6 @@
                             <a class={{ app.request.get('_route') == "admin_photo_collection_new" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('admin_photo_collection_new') }}">Add A Collection</a>
                         </li>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0 d-flex" id="searchform">
-                        <input type="search" class="form-control" placeholder="Video, Photo Or Collection" aria-label="Search" id="query" autocomplete = off>
-                        <button class="btn btn-outline-success">Submit</button>
-                    </form>
                 </div>
             </nav>
         {% endblock %}
