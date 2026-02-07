@@ -100,10 +100,6 @@ final class PhotoAdminController extends AbstractController
 
         $entityManager->flush();
 
-        /*$this->addFlash(
-            'gallery_notification',
-            'Photo Successfully Edited'
-        );*/
         $response = [
             "success" => true,
             "data" => [
@@ -111,7 +107,6 @@ final class PhotoAdminController extends AbstractController
             ]
         ];
         return new JsonResponse($response, 200);
-        //return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photoCollection->getId()], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{photo_collection_id}/delete/{id}', name: 'admin_photo_delete', methods: ['POST'])]
@@ -131,5 +126,27 @@ final class PhotoAdminController extends AbstractController
         );
 
         return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photo_collection_id], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/deleteSelected', name: 'admin_photo_delete_selected', methods: ['GET', 'POST'])]
+    public function deleteSelected(Request $request, EntityManagerInterface $entityManager, PhotoRepository $photoRepository): JsonResponse
+    {
+        $idsToDelete = json_decode(file_get_contents('php://input'), true)['idsToDelete'];
+
+        $photoCollection = $photoRepository->find($idsToDelete[0])->getPhotoCollection();
+
+        foreach ($idsToDelete as $key => $id) {
+            $photoToDelete = $photoRepository->find($id);
+            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/photos/' . $photoCollection->getSlugger();
+            unlink($destination.'/'.$photoToDelete->getFilename());
+            $entityManager->remove($photoToDelete);
+            $entityManager->flush();
+        }
+
+        $response = [
+            "success" => true,
+            "data" => true
+        ];
+        return new JsonResponse($response, 200);
     }
 }

@@ -6,11 +6,13 @@ export default class extends Controller {
     cards;
     positionBtns = [];
     updatePhotoInputs = [];
+    deleteSelectedPhotosBtn;
     connect() {
         var cards = this.element.querySelectorAll('.card');
         this.cards = this.element.querySelectorAll('.card');
         this.positionBtns = this.element.querySelectorAll('.new-position');
         this.updatePhotoInputs = this.element.querySelectorAll('.update-photo-input');
+        this.deleteSelectedPhotosBtn = document.querySelector('#deleteSelected');
 
         //set event listeners
         cards.forEach(card => {
@@ -22,6 +24,8 @@ export default class extends Controller {
         this.updatePhotoInputs.forEach((input) => {
             input.addEventListener('change', () => this.onUpdatePhotoSubmit(input));
         });
+
+        this.deleteSelectedPhotosBtn.addEventListener('click', () => this.onDeleteSelectedPhotos());
     }
 
     onSelected(card){
@@ -69,7 +73,6 @@ export default class extends Controller {
         btn.before(...this.selectedCards);
         this.cards = this.setCards();
         this.setNewPositions(this.cards, this.element.dataset.photocollectionid);
-        this.selectedCards = [];
     }
 
     //set new ranks
@@ -97,8 +100,7 @@ export default class extends Controller {
             } else {
 
                 var main = document.getElementById('main-container');
-                main.innerHTML = "";
-                main.append(...cards);
+                this.resetCards(cards);
 
                 main.querySelectorAll('.new-position').forEach(btn => {
                     btn.addEventListener('click', () => this.changePhotoPositions(btn));
@@ -180,6 +182,54 @@ export default class extends Controller {
         } catch (error) {
             console.error(`${error.message}`);
         }
+    }
+
+    async onDeleteSelectedPhotos(){
+        //create valid formData
+        var idsToDelete = this.selectedCards.map((card) => {return parseInt(card.querySelector('.rankInput').dataset.photoid); })
+        try {
+	        spinner?.classList.replace('d-none', 'd-flex');
+            const response = await fetch("http://127.0.0.1:8000/admin/photos/deleteSelected", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({idsToDelete})
+            })
+            .finally((resp) => {
+	            spinner.classList.replace('d-flex', 'd-none');
+            })
+        
+            if (!response.ok) {
+                throw new Error(`Error : ${response.statusText}`);
+            } else {
+                var msgDiv = document.createElement('div');
+                msgDiv.innerHTML = `
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                        Photos Successfully Deleted
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.querySelector('#header').before(msgDiv);
+            }
+
+            this.selectedCards.forEach((card) => {
+                card.remove();
+            })
+            this.cards = this.setCards();
+            this.resetCards(this.cards);
+            this.resetProps();
+
+        } catch (error) {
+            console.error(`${error.message}`);
+        }
+    }
+
+    resetCards(cards){
+        var main = document.getElementById('main-container');
+        main.innerHTML = "";
+        main.append(...cards);
+        this.selectedCards = [];
     }
 
     resetProps(){
