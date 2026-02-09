@@ -5,25 +5,27 @@ namespace App\Controller\Admin;
 use App\Entity\Video;
 use App\Form\UpdateVideoType;
 use App\Form\VideoType;
-use App\Repository\VideoRepository;
 use App\Helper\FileManager;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('admin/videos')]
 final class VideoAdminController extends AbstractController
 {
     #[Route(name: 'admin_video_index', methods: ['GET'])]
     public function index(VideoRepository $videoRepository): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
-        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
+        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 2;
         $videosByPage = $videoRepository->paginate($page, $limit);
         return $this->render('video/index.html.twig', [
             'videos' => $videoRepository->findAll(),
@@ -37,7 +39,6 @@ final class VideoAdminController extends AbstractController
     #[Route('/new', name: 'admin_video_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $video = new Video();
         $form = $this->createForm(VideoType::class, $video);
         $form->handleRequest($request);
@@ -92,7 +93,6 @@ final class VideoAdminController extends AbstractController
     #[Route('/{id}/edit', name: 'admin_video_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Video $video, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createForm(UpdateVideoType::class, $video);
         $form->handleRequest($request);
 
@@ -132,10 +132,9 @@ final class VideoAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_video_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'admin_video_delete', methods: ['POST'])]
     public function delete(Request $request, Video $video, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$video->getId(), $request->getPayload()->getString('_token'))) {
             $destination = $this->getParameter('kernel.project_dir').'/public/uploads/videos';
             unlink($destination.'/'.$video->getFilename());
@@ -150,5 +149,50 @@ final class VideoAdminController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_video_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/deleteSelected', name: 'admin_video_delete_selected', methods: ['GET', 'POST'])]
+    public function deleteSelected(EntityManagerInterface $entityManager, VideoRepository $videoRepository): JsonResponse
+    {
+        $idsToDelete = json_decode(file_get_contents('php://input'), true)['idsToDelete'];
+
+        foreach ($idsToDelete as $key => $id) {
+            $video = $videoRepository->find($id);
+            $videoPath = $this->getParameter('kernel.project_dir').'/public/uploads/videos';
+            unlink($videoPath.'/'.$video->getFilename());
+
+            if($video->getThumbnailname() !== null){
+                $thumbnailPath = $this->getParameter('kernel.project_dir').'/public/uploads/thumbnails';
+                unlink($thumbnailPath.'/'.$video->getThumbnailname());
+            }
+            $entityManager->remove($video);
+        }
+
+        $entityManager->flush();
+
+        $this->addFlash(
+            'video_notification',
+            'Videos successfully deleted'
+        );
+
+        $response = [
+            "success" => true,
+            "data" => true
+        ];
+        return new JsonResponse($response, 200);
+    }
+
+    #[Route('/list', name: 'admin_video_list')]
+    public function list(VideoRepository $videoRepository): Response
+    {
+        $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
+        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 2;
+        $videosByPage = $videoRepository->paginate($page, $limit);
+        return $this->render('video/_list.html.twig', [
+            'videosByPage' => $videosByPage,
+            'page' => $page,
+            'limit' => $limit,
+            'nb_pages' => ceil(count($videoRepository->findAll()) / $limit)
+        ]);
     }
 }

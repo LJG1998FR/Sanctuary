@@ -25,7 +25,7 @@ export default class extends Controller {
             input.addEventListener('change', () => this.onUpdatePhotoSubmit(input));
         });
 
-        this.deleteSelectedPhotosBtn.addEventListener('click', () => this.onDeleteSelectedPhotos());
+        this.deleteSelectedPhotosBtn.addEventListener('click', () => this.onDeleteSelected());
     }
 
     onSelected(card){
@@ -50,7 +50,9 @@ export default class extends Controller {
             this.element.querySelectorAll('.new-position').forEach(btn => {
                 btn.classList.add('hidden');
             });
+            this.deleteSelectedPhotosBtn.classList.add("disabled");
         } else {
+            this.deleteSelectedPhotosBtn.classList.remove("disabled");
             var cardIndex = _.indexOf(this.cards, card);
             var isPreviousSelected = this.selectedCards.includes(this.cards[cardIndex-1]);
             var isNextSelected = this.selectedCards.includes(this.cards[cardIndex+1]);
@@ -184,7 +186,10 @@ export default class extends Controller {
         }
     }
 
-    async onDeleteSelectedPhotos(){
+    async onDeleteSelected(){
+        if(this.selectedCards.length === 0) {
+            return;
+        }
         //create valid formData
         var idsToDelete = this.selectedCards.map((card) => {return parseInt(card.querySelector('.rankInput').dataset.photoid); })
         try {
@@ -230,6 +235,7 @@ export default class extends Controller {
         main.innerHTML = "";
         main.append(...cards);
         this.selectedCards = [];
+        this.deleteSelectedPhotosBtn.classList.add("disabled");
     }
 
     resetProps(){

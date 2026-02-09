@@ -22,3 +22,9 @@ document.addEventListener('turbo:submit-start', () => {
 document.addEventListener('turbo:load', () => {
 	spinner.classList.replace('d-flex', 'd-none');
 })
+
+document.addEventListener("turbo:frame-missing", (event) => {
+	const { detail: { response, visit } } = event;
+	event.preventDefault();
+	visit(response.url);
+});

@@ -1,0 +1,51 @@
+<table class="container table table-light table-striped table-hover" data-controller="video">
+    <thead>
+        <tr>
+            <th class="col-1" scope="col">#</th>
+            <th class="col-6" scope="col">Title</th>
+            <th class="col-3" scope="col">Date Added</th>
+            <th class="text-center" scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody id="main-container">
+        {% for video in videosByPage %}
+            <tr>
+                <td><input data-videoid={{ video.id }} class="form-check-input delete-checkbox" type="checkbox" value="" id="delete_checkbox_{{video.id}}" data-turbo-frame="list"></td>
+                <td class="table-light">{{ video.title }}</td>
+                <td class="table-light">{{ video.createdAt ? video.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="table-light d-flex justify-content-center gap-3">
+                    <button class="btn btn-info">
+                        <a class="link-dark" href="{{ path('admin_video_show', {'slugger': video.slugger}) }}" turbo-visit-control="reload">
+                            <i class="bi bi-eye-fill"></i>
+                        </a>
+                    </button>
+                    <button class="btn btn-info">
+                        <a class="link-dark" href="{{ path('admin_video_edit', {'id': video.id}) }}">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                    </button>
+                    {{ include('video/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <h2>No videos found. Maybe <a href="{{ path('admin_video_new') }}">add one ?</a></h2>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if nb_pages > 1 %}
+    <nav aria-label="Video navigation">
+        <ul class="pagination justify-content-center">
+            <li class="{{ (page == 1 ? "page-item disabled" : "page-item") }}">
+                <a class="page-link" href="{{ path('admin_video_index', {'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="list">Previous</a>
+            </li>
+        
+            {% for index in 1.. nb_pages %}
+                <li class="page-item"><a class="page-link" href="{{ path('admin_video_index', {'page': index, 'limit' : limit}) }}" data-turbo-frame="list">{{ index }}</a></li>
+            {% endfor %}
+            <li class="{{ page + 1 <= nb_pages ? "page-item" : "page-item disabled" }}">
+                <a class="page-link" href="{{ path('admin_video_index', {'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="list">Next</a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}
