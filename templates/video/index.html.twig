@@ -16,14 +16,11 @@
     <div class="d-flex align-items-center">
         <h4>Items per page : </h4>
         <div class="btn-group ms-3" role="group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" {{ (limit == 5 ? 'checked' : '') }}>
-            <label class="btn btn-outline-primary" for="btnradio1">5</label>
-
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" {{ (limit == 10 ? 'checked' : '') }}>
-            <label class="btn btn-outline-primary" for="btnradio2">10</label>
-
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" {{ (limit == 20 ? 'checked' : '') }}>
-            <label class="btn btn-outline-primary" for="btnradio3">20</label>
+            {% for option in limitOptions %}
+                <a class="btn btn-dark pagination-option {{ option == limitOptions[0] ? 'disabled' : '' }}" data-limit={{ option }} href="{{ path('admin_video_index', {'limit' : option }) }}" data-turbo-frame="list">
+                    {{ option }}
+                </a>
+            {% endfor %}
         </div>
         <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_video_index') }}" id="deleteSelected" data-turbo-frame="list">Delete Selected Videos</a>
     </div>

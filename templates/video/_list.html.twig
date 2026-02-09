@@ -36,14 +36,14 @@
 {% if nb_pages > 1 %}
     <nav aria-label="Video navigation">
         <ul class="pagination justify-content-center">
-            <li class="{{ (page == 1 ? "page-item disabled" : "page-item") }}">
+            <li class="page-item {{ (page == 1 ? "disabled" : "") }}">
                 <a class="page-link" href="{{ path('admin_video_index', {'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="list">Previous</a>
             </li>
         
             {% for index in 1.. nb_pages %}
-                <li class="page-item"><a class="page-link" href="{{ path('admin_video_index', {'page': index, 'limit' : limit}) }}" data-turbo-frame="list">{{ index }}</a></li>
+                <li class="page-item {{ (page == index ? "disabled" : "") }}"><a class="page-link" href="{{ path('admin_video_index', {'page': index, 'limit' : limit}) }}" data-turbo-frame="list">{{ index }}</a></li>
             {% endfor %}
-            <li class="{{ page + 1 <= nb_pages ? "page-item" : "page-item disabled" }}">
+            <li class="page-item {{ page + 1 <= nb_pages ? "" : "disabled" }}">
                 <a class="page-link" href="{{ path('admin_video_index', {'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="list">Next</a>
             </li>
         </ul>

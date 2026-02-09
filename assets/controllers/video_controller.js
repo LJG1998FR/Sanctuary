@@ -5,15 +5,6 @@ export default class extends Controller {
     deleteSelectedBtn;
     idsToDelete = [];
     connect() {
-        /*this.element.querySelector('#btnradio1').addEventListener('change', () => {
-            this.setLimit('2');
-        });
-        this.element.querySelector('#btnradio2').addEventListener('change', () => {
-            this.setLimit('10');
-        });
-        this.element.querySelector('#btnradio3').addEventListener('change', () => {
-            this.setLimit('20');
-        });*/
 
         this.deleteSelectedBtn = document.querySelector('#deleteSelected');
         this.deleteSelectedBtn.classList.add("disabled");
@@ -22,10 +13,21 @@ export default class extends Controller {
         document.querySelectorAll('.delete-checkbox').forEach(video => {
             video.addEventListener('click', () => {this.onSelected(video)});
         });
+
+        document.querySelectorAll('.pagination-option').forEach(option => {
+            option.addEventListener('click', () => this.onOptionSelectLimit(parseInt(option.dataset.limit)));
+        })
     }
 
-    setLimit(limit){
-        window.location.href = "/admin/videos?page=1&limit="+limit;
+    onOptionSelectLimit(limit){
+
+        document.querySelectorAll('.pagination-option').forEach(option => {
+            if(parseInt(option.dataset.limit) === limit){
+                option.classList.add("disabled");
+            } else {
+                option.classList.remove("disabled");
+            }
+        })
     }
 
     onSelected(video){
@@ -52,7 +54,7 @@ export default class extends Controller {
 
         if(confirm("Are you sure you want to delete these videos?") == true){
             try {
-                spinner?.classList.replace('d-none', 'd-flex');
+                //spinner?.classList.replace('d-none', 'd-flex');
                 const response = await fetch("http://127.0.0.1:8000/admin/videos/deleteSelected", {
                     method: "POST",
                     headers: {
@@ -60,9 +62,9 @@ export default class extends Controller {
                     },
                     body: JSON.stringify({idsToDelete: this.idsToDelete})
                 })
-                .finally((resp) => {
+                /*.finally((resp) => {
                     spinner.classList.replace('d-flex', 'd-none');
-                })
+                })*/
             
                 if (!response.ok) {
                     throw new Error(`Error : ${response.statusText}`);

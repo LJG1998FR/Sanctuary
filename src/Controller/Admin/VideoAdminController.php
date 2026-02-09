@@ -22,16 +22,17 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class VideoAdminController extends AbstractController
 {
     #[Route(name: 'admin_video_index', methods: ['GET'])]
-    public function index(VideoRepository $videoRepository): Response
+    public function index(VideoRepository $videoRepository, int $page = 1, int $limit = 5): Response
     {
         $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
-        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 2;
+        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
         $videosByPage = $videoRepository->paginate($page, $limit);
         return $this->render('video/index.html.twig', [
             'videos' => $videoRepository->findAll(),
             'videosByPage' => $videosByPage,
             'page' => $page,
             'limit' => $limit,
+            'limitOptions' => [5, 10, 50],
             'nb_pages' => ceil(count($videoRepository->findAll()) / $limit)
         ]);
     }
@@ -180,19 +181,5 @@ final class VideoAdminController extends AbstractController
             "data" => true
         ];
         return new JsonResponse($response, 200);
-    }
-
-    #[Route('/list', name: 'admin_video_list')]
-    public function list(VideoRepository $videoRepository): Response
-    {
-        $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
-        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 2;
-        $videosByPage = $videoRepository->paginate($page, $limit);
-        return $this->render('video/_list.html.twig', [
-            'videosByPage' => $videosByPage,
-            'page' => $page,
-            'limit' => $limit,
-            'nb_pages' => ceil(count($videoRepository->findAll()) / $limit)
-        ]);
     }
 }
