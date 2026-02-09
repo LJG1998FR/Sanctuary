@@ -11,6 +11,7 @@ use App\Repository\PhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,7 +23,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class PhotoCollectionAdminController extends AbstractController
 {
     #[Route(name: 'admin_photo_collection_index', methods: ['GET'])]
-    public function index(PhotoCollectionRepository $photoCollectionRepository): Response
+    public function index(PhotoCollectionRepository $photoCollectionRepository, int $page = 1, int $limit = 5): Response
     {
         $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
         $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
@@ -32,6 +33,7 @@ final class PhotoCollectionAdminController extends AbstractController
             'collectionsByPage' => $collectionsByPage,
             'page' => $page,
             'limit' => $limit,
+            'limitOptions' => [5, 10, 50],
             'nb_pages' => ceil(count($photoCollectionRepository->findAll()) / $limit)
         ]);
     }
@@ -71,7 +73,7 @@ final class PhotoCollectionAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_photo_collection_show', methods: ['GET'])]
+    #[Route('/display/{id}', name: 'admin_photo_collection_show', methods: ['GET'])]
     public function show(PhotoCollection $photoCollection): Response
     {
         return $this->render('photo_collection/show.html.twig', [
@@ -129,7 +131,7 @@ final class PhotoCollectionAdminController extends AbstractController
         return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photoCollection->getId()], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}', name: 'admin_photo_collection_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'admin_photo_collection_delete', methods: ['POST'])]
     public function delete(Request $request, PhotoCollection $photoCollection, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$photoCollection->getId(), $request->getPayload()->getString('_token'))) {
@@ -155,5 +157,41 @@ final class PhotoCollectionAdminController extends AbstractController
         );
 
         return $this->redirectToRoute('admin_photo_collection_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/deleteSelected', name: 'admin_photo_collection_delete_selected', methods: ['GET', 'POST'])]
+    public function deleteSelected(EntityManagerInterface $entityManager, PhotoCollectionRepository $photoCollectionRepository): JsonResponse
+    {
+        $idsToDelete = json_decode(file_get_contents('php://input'), true)['idsToDelete'];
+
+        foreach ($idsToDelete as $key => $id) {
+            $photoCollection = $photoCollectionRepository->find($id);
+            $collectionPath = $this->getParameter('kernel.project_dir').'/public/uploads/photos/' . $photoCollection->getSlugger();
+            //remove all asssociated photos files
+            $photos = $photoCollection->getPhotos();
+            foreach ($photos as $photo) {
+                unlink($collectionPath.'/'.$photo->getFilename());
+                $photoCollection->removePhoto($photo);
+                $entityManager->remove($photo);
+            }
+
+            // remove entity and cover file
+            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/covers';
+            unlink($destination.'/'.$photoCollection->getCover());
+        }
+
+        $entityManager->remove($photoCollection);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'gallery_notification',
+            'Collections successfully deleted'
+        );
+
+        $response = [
+            "success" => true,
+            "data" => true
+        ];
+        return new JsonResponse($response, 200);
     }
 }

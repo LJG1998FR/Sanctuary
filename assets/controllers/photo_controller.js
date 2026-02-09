@@ -19,13 +19,13 @@ export default class extends Controller {
             card.addEventListener('click', () => this.onSelected(card));
         });
         this.positionBtns.forEach(btn => {
-            btn.addEventListener('click', () => this.changePhotoPositions(btn));
+            btn.addEventListener('click', () => this.updatePositions(btn));
         });
         this.updatePhotoInputs.forEach((input) => {
             input.addEventListener('change', () => this.onUpdatePhotoSubmit(input));
         });
 
-        this.deleteSelectedPhotosBtn.addEventListener('click', () => this.onDeleteSelected());
+        this.deleteSelectedPhotosBtn.addEventListener('click', () => this.onDeleteMany());
     }
 
     onSelected(card){
@@ -71,81 +71,6 @@ export default class extends Controller {
         }
     }
 
-    changePhotoPositions(btn){
-        btn.before(...this.selectedCards);
-        this.cards = this.setCards();
-        this.setNewPositions(this.cards, this.element.dataset.photocollectionid);
-    }
-
-    //set new ranks
-    async setNewPositions(cards, id){
-        var ids = [];
-        this.element.querySelectorAll('.card').forEach(card => {
-            ids.push(parseInt(card.querySelector('.rankInput').dataset.photoid));
-        });
-
-        try {
-	        spinner?.classList.replace('d-none', 'd-flex');
-            const response = await fetch("http://127.0.0.1:8000/admin/gallery/update-ranks/"+id, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ ids })
-            })
-            .finally((resp) => {
-	            spinner.classList.replace('d-flex', 'd-none');
-            })
-        
-            if (!response.ok) {
-                throw new Error(`Error : ${response.statusText}`);
-            } else {
-
-                var main = document.getElementById('main-container');
-                this.resetCards(cards);
-
-                main.querySelectorAll('.new-position').forEach(btn => {
-                    btn.addEventListener('click', () => this.changePhotoPositions(btn));
-                })
-
-                var msgDiv = document.createElement('div');
-                msgDiv.innerHTML = `
-                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-                        Photo Ranks Successfully Updated
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                `;
-                document.querySelector('#header').before(msgDiv);
-
-                this.resetProps();
-            }
-
-        } catch (error) {
-            console.error(`${error.message}`);
-        }
-    }
-
-    setCards(){
-        //sort cards
-        var firstPositionBtn = document.createElement('button');
-        firstPositionBtn.classList = 'btn btn-dark new-position hidden';
-        firstPositionBtn.innerHTML = `<i class="bi bi-plus-circle"></i>`;
-
-        //add btns after every card
-        var newcards = [];
-        newcards.push(firstPositionBtn);
-        _.forEach(this.element.querySelectorAll('.card'), (card, index) => {
-            card.classList.remove('selected');
-            card.querySelector('.rankInput').value = index+1;
-            var newPositionBtn = document.createElement('button');
-            newPositionBtn.classList = 'btn btn-dark new-position hidden';
-            newPositionBtn.innerHTML = `<i class="bi bi-plus-circle"></i>`;
-            newcards.push(card, newPositionBtn);
-            return card;
-        });
-        return newcards;
-    }
-
     async onUpdatePhotoSubmit(input){
 
         //create valid formData
@@ -186,14 +111,13 @@ export default class extends Controller {
         }
     }
 
-    async onDeleteSelected(){
+    async onDeleteMany(){
         if(this.selectedCards.length === 0) {
             return;
         }
         //create valid formData
         var idsToDelete = this.selectedCards.map((card) => {return parseInt(card.querySelector('.rankInput').dataset.photoid); })
         try {
-	        spinner?.classList.replace('d-none', 'd-flex');
             const response = await fetch("http://127.0.0.1:8000/admin/photos/deleteSelected", {
                 method: "POST",
                 headers: {
@@ -201,13 +125,7 @@ export default class extends Controller {
                 },
                 body: JSON.stringify({idsToDelete})
             })
-            .finally((resp) => {
-	            spinner.classList.replace('d-flex', 'd-none');
-            })
-        
-            if (!response.ok) {
-                throw new Error(`Error : ${response.statusText}`);
-            } else {
+           .then(() => {
                 var msgDiv = document.createElement('div');
                 msgDiv.innerHTML = `
                     <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
@@ -216,30 +134,54 @@ export default class extends Controller {
                     </div>
                 `;
                 document.querySelector('#header').before(msgDiv);
-            }
-
-            this.selectedCards.forEach((card) => {
-                card.remove();
-            })
-            this.cards = this.setCards();
-            this.resetCards(this.cards);
-            this.resetProps();
+           })
+           .catch(() => {
+                throw new Error(`Error : ${response.statusText}`);
+           })
 
         } catch (error) {
             console.error(`${error.message}`);
         }
     }
 
-    resetCards(cards){
-        var main = document.getElementById('main-container');
-        main.innerHTML = "";
-        main.append(...cards);
-        this.selectedCards = [];
-        this.deleteSelectedPhotosBtn.classList.add("disabled");
-    }
+    async updatePositions(btn){
+        btn.before(...this.selectedCards);
+        var ids = [];
+        this.element.querySelectorAll('.card').forEach(card => {
+            ids.push(parseInt(card.querySelector('.rankInput').dataset.photoid));
+        });
 
-    resetProps(){
-        this.cards = this.element.querySelectorAll('.card');
-        this.positionBtns = this.element.querySelectorAll('.new-position');
+        try {
+
+            const response = await fetch("http://127.0.0.1:8000/admin/gallery/update-ranks/"+this.element.dataset.photocollectionid, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ ids })
+            })
+
+            .then(() => {
+                var msgDiv = document.createElement('div');
+                msgDiv.innerHTML = `
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                        Photo Ranks Successfully Updated
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.querySelector('#header').before(msgDiv);
+
+                
+                this.selectedCards = [];
+                this.deleteSelectedPhotosBtn.classList.add("disabled");
+            })
+
+            .catch(() => {
+                throw new Error(`Error : ${response.statusText}`);
+            })
+
+        } catch (error) {
+            console.error(`${error.message}`);
+        }
     }
 }

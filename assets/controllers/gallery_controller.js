@@ -1,19 +1,86 @@
 import { Controller } from '@hotwired/stimulus';
+import _ from "lodash";
 
 export default class extends Controller {
+    deleteSelectedBtn;
+    idsToDelete = [];
     connect() {
-        this.element.querySelector('#btnradio1').addEventListener('change', () => {
-            this.setLimit('5');
+
+        this.deleteSelectedBtn = document.querySelector('#deleteSelected');
+        this.deleteSelectedBtn.classList.add("disabled");
+        this.deleteSelectedBtn.addEventListener('click', () => {this.onDeleteSelected()});
+
+        console.log(document.querySelectorAll('.delete-checkbox'))
+        document.querySelectorAll('.delete-checkbox').forEach(photoCollection => {
+            photoCollection.addEventListener('click', () => {this.onSelected(photoCollection)});
         });
-        this.element.querySelector('#btnradio2').addEventListener('change', () => {
-            this.setLimit('10');
-        });
-        this.element.querySelector('#btnradio3').addEventListener('change', () => {
-            this.setLimit('20');
-        });
+
+        document.querySelectorAll('.pagination-option').forEach(option => {
+            option.addEventListener('click', () => this.onOptionSelectLimit(parseInt(option.dataset.limit)));
+        })
     }
 
-    setLimit(limit){
-        window.location.href = "/admin/gallery?page=1&limit="+limit;
+    onOptionSelectLimit(limit){
+
+        document.querySelectorAll('.pagination-option').forEach(option => {
+            if(parseInt(option.dataset.limit) === limit){
+                option.classList.add("disabled");
+            } else {
+                option.classList.remove("disabled");
+            }
+        })
+    }
+
+    onSelected(photoCollection){
+        var photoCollectionId = parseInt(photoCollection.dataset.photocollectionid);
+        var photoCollectionIndex = _.indexOf(this.idsToDelete, photoCollectionId);
+
+        if (photoCollectionIndex === -1) {
+            this.idsToDelete.push(photoCollectionId);
+        } else {
+            this.idsToDelete.splice(photoCollectionIndex, 1);
+        }
+
+        if(this.idsToDelete.length === 0){
+            this.deleteSelectedBtn.classList.add("disabled");
+        } else {
+            this.deleteSelectedBtn.classList.remove("disabled");
+        }
+
+        console.log(this.idsToDelete);
+    }
+
+    async onDeleteSelected(){
+        if(this.idsToDelete.length === 0) {
+            return;
+        }
+
+        if(confirm("Are you sure you want to delete these collections?") == true){
+            try {
+                const response = await fetch("http://127.0.0.1:8000/admin/gallery/deleteSelected", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({idsToDelete: this.idsToDelete})
+                })
+            
+                if (!response.ok) {
+                    throw new Error(`Error : ${response.statusText}`);
+                } else {
+                    var msgDiv = document.createElement('div');
+                    msgDiv.innerHTML = `
+                        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                            Collections Successfully Deleted
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('#title').before(msgDiv);
+                }
+
+            } catch (error) {
+                console.error(`${error.message}`);
+            }
+        }
     }
 }

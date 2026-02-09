@@ -9,7 +9,7 @@ BO:
 - Switch photos on click => OK
 - Fix Gallery item CSS => OK
 - Edit Photos btn => OK
-- Multiple delete photos/collections/videos
+- Multiple delete photos/collections/videos => OK
 - Change add photos system (like the edit photo)
 - Add VideoTags Entity
 - Add Video / Collection relation

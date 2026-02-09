@@ -30,8 +30,7 @@ body {
 }
 
 .new-position.hidden {
-    display: none;
-    /*opacity: 0;*/
+    display: none!important;
 }
 
 .update-photo-label{

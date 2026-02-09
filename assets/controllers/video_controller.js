@@ -54,7 +54,6 @@ export default class extends Controller {
 
         if(confirm("Are you sure you want to delete these videos?") == true){
             try {
-                //spinner?.classList.replace('d-none', 'd-flex');
                 const response = await fetch("http://127.0.0.1:8000/admin/videos/deleteSelected", {
                     method: "POST",
                     headers: {
@@ -62,9 +61,6 @@ export default class extends Controller {
                     },
                     body: JSON.stringify({idsToDelete: this.idsToDelete})
                 })
-                /*.finally((resp) => {
-                    spinner.classList.replace('d-flex', 'd-none');
-                })*/
             
                 if (!response.ok) {
                     throw new Error(`Error : ${response.statusText}`);
