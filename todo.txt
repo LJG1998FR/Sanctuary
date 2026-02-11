@@ -11,7 +11,7 @@ BO:
 - Edit Photos btn => OK
 - Multiple delete photos/collections/videos => OK
 - Change add photos system (like the edit photo) => OK
-- Dynamic/SFW wordings+variables
+- Dynamic wordings+variables
  - database name
  - Site name
  - assets prefix
