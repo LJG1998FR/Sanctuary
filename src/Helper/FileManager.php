@@ -8,17 +8,20 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileManager {
 
+    private $assetsPrefix;
+    public function __construct(string $assetsPrefix)
+    {
+        $this->assetsPrefix = $assetsPrefix;
+    }
+
 	public function uploadFile(string $fileDirectory, UploadedFile $file, ?string $oldFilename, SluggerInterface $slugger) : string{
 
         // Delete old file if it exists
         if($oldFilename){
             unlink($fileDirectory.'/'.$oldFilename);
         }
-        
-        //$originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        //$safeFilename = "sensualjane"; $slugger->slug(strtolower($originalFilename));
-        $newFilename = uniqid('sensualjane_').'.'.$file->guessExtension();
 
+        $newFilename = uniqid($this->assetsPrefix).'.'.$file->guessExtension();
         try {
             $file->move(
                 $fileDirectory,
