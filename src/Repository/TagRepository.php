@@ -16,6 +16,20 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
+    /**
+    * @return Tag[] Returns an array of Video objects
+    */
+    public function paginate($page = 1, $limit = 10)
+    {
+        $query = $this->createQueryBuilder('t')
+            ->orderBy('t.name', 'ASC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     //    /**
     //     * @return Tag[] Returns an array of Tag objects
     //     */

@@ -10,33 +10,22 @@
         </div>
     {% endfor %}
 
-    <h1>Tag index</h1>
+    <h1 id="title">All Tags</h1>
+    <a class="btn btn-dark" href="{{ path('admin_tag_new') }}"><i class="bi bi-plus-circle"></i></a>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for tag in tags %}
-            <tr>
-                <td>{{ tag.id }}</td>
-                <td>{{ tag.name }}</td>
-                <td>
-                    <a href="{{ path('admin_tag_show', {'id': tag.id}) }}">show</a>
-                    <a href="{{ path('admin_tag_edit', {'id': tag.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="d-flex align-items-center">
+        <h4>Items per page : </h4>
+        <div class="btn-group ms-3" role="group">
+            {% for option in limitOptions %}
+                <a class="btn btn-dark pagination-option {{ option == limitOptions[0] ? 'disabled' : '' }}" data-limit={{ option }} href="{{ path('admin_tag_index', {'limit' : option }) }}" data-turbo-frame="tags_list">
+                    {{ option }}
+                </a>
+            {% endfor %}
+        </div>
+        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_tag_index') }}" id="deleteSelected" data-turbo-frame="tags_list">Delete Selected tags</a>
+    </div>
 
-    <a href="{{ path('admin_tag_new') }}">Create new</a>
+    <turbo-frame id="tags_list">
+        {% include "tag/_list.html.twig" with { tagsByPage: tagsByPage, nb_pages: nb_pages, limit: limit, page: page } %}
+    </turbo-frame>
 {% endblock %}

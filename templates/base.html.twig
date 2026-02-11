@@ -36,7 +36,7 @@
                         <li class="nav-item">
                             <a class={{ app.request.get('_route') == "admin_video_index" or app.request.get('_route') == "admin_video_index_reverse" ? "'nav-link fw-bold'" : "nav-link" }} href="{{path('admin_video_index')}}">All Videos</a>
                         </li>
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class={{ app.request.get('_route') == "admin_photo_collection_index" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('admin_photo_collection_index') }}">Gallery</a>
                         </li>
                         {#<li class="nav-item">
@@ -50,6 +50,9 @@
                         </li>
                         <li class="nav-item">
                             <a class={{ app.request.get('_route') == "admin_photo_collection_new" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('admin_photo_collection_new') }}">Add A Collection</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class={{ app.request.get('_route') == "admin_tag_new" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('admin_tag_new') }}">Add A Tag</a>
                         </li>
                     </ul>
                 </div>

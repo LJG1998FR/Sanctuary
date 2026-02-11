@@ -7,20 +7,29 @@ use App\Form\TagType;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
-#[Route('/tags')]
+#[Route('admin/tags')]
 final class TagAdminController extends AbstractController
 {
     #[Route(name: 'admin_tag_index', methods: ['GET'])]
-    public function index(TagRepository $tagRepository): Response
+    public function index(TagRepository $tagRepository, int $page = 1, int $limit = 5): Response
     {
+        $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
+        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
+        $tagsByPage = $tagRepository->paginate($page, $limit);
         return $this->render('tag/index.html.twig', [
             'tags' => $tagRepository->findAll(),
+            'tagsByPage' => $tagsByPage,
+            'page' => $page,
+            'limit' => $limit,
+            'limitOptions' => [5, 10, 50],
+            'nb_pages' => ceil(count($tagRepository->findAll()) / $limit)
         ]);
     }
 
@@ -87,13 +96,37 @@ final class TagAdminController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$tag->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($tag);
             $entityManager->flush();
+
+            $this->addFlash(
+                'tag_notification',
+                'Tag Successfully Deleted'
+            );
         }
+
+        return $this->redirectToRoute('admin_tag_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/deleteSelected', name: 'admin_tag_delete_selected', methods: ['GET', 'POST'])]
+    public function deleteSelected(EntityManagerInterface $entityManager, TagRepository $tagRepository): JsonResponse
+    {
+        $idsToDelete = json_decode(file_get_contents('php://input'), true)['idsToDelete'];
+
+        foreach ($idsToDelete as $key => $id) {
+            $tag = $tagRepository->find($id);
+            $entityManager->remove($tag);
+        }
+
+        $entityManager->flush();
 
         $this->addFlash(
             'tag_notification',
-            'Tag Successfully Deleted'
+            'Tags successfully deleted'
         );
 
-        return $this->redirectToRoute('admin_tag_index', [], Response::HTTP_SEE_OTHER);
+        $response = [
+            "success" => true,
+            "data" => true
+        ];
+        return new JsonResponse($response, 200);
     }
 }
