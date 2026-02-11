@@ -30,9 +30,9 @@
                         <li class="nav-item">
                             <a class={{ app.request.get('_route') == "dashboard" ? "'nav-link fw-bold'" : "nav-link" }} href="{{path('dashboard')}}">{{ appname }}</a>
                         </li>
-                        {# <li class="nav-item">
-                            <a class={{ app.request.get('_route') == "app_tag_index" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('app_tag_index') }}">All Tags</a>
-                        </li> #}
+                        <li class="nav-item">
+                            <a class={{ app.request.get('_route') == "admin_tag_index" ? "'nav-link fw-bold'" : "nav-link" }} href="{{ path('admin_tag_index') }}">All Tags</a>
+                        </li>
                         <li class="nav-item">
                             <a class={{ app.request.get('_route') == "admin_video_index" or app.request.get('_route') == "admin_video_index_reverse" ? "'nav-link fw-bold'" : "nav-link" }} href="{{path('admin_video_index')}}">All Videos</a>
                         </li>

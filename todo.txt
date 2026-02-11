@@ -16,7 +16,12 @@ BO:
  - database name
  - Site name
  - assets prefix
-- Add VideoTags Entity
+- Add VideoTag Entity => OK
+- Add VideoTag CRUD => OK
+- Add multiple delete tags
+- Add tags form CSS
+- Add twig template Tags CSS
+- Add turbo ux logic for tags
 - Add Video / Collection relation
 - Login/Logout nav
 - All Photos page

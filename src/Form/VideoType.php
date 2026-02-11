@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Tag;
 use App\Entity\Video;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,6 +42,11 @@ class VideoType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a correct image file',
                     ])
                 ],
+            ])
+            ->add('tags', EntityType::class, [
+                'class' => Tag::class,
+                'choice_label' => 'name',
+                'multiple' => true,
             ])
         ;
     }
