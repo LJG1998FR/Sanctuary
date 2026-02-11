@@ -12,86 +12,17 @@
     {% endfor %}
     <h1 id="title">Gallery</h1>
 
-    {# {% if collectionsByPage is not empty %} #}
-        <div class="d-flex align-items-center">
-            <h4>Items per page : </h4>
-            {# <div class="btn-group ms-3" role="group" data-controller="gallery">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" {{ (limit == 5 ? 'checked' : '') }}>
-                <label class="btn btn-outline-primary" for="btnradio1">5</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" {{ (limit == 10 ? 'checked' : '') }}>
-                <label class="btn btn-outline-primary" for="btnradio2">10</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" {{ (limit == 20 ? 'checked' : '') }}>
-                <label class="btn btn-outline-primary" for="btnradio3">20</label>
-            </div> #}
-            <div class="btn-group ms-3" role="group">
-            {% for option in limitOptions %}
-                <a class="btn btn-dark pagination-option {{ option == limitOptions[0] ? 'disabled' : '' }}" data-limit={{ option }} href="{{ path('admin_photo_collection_index', {'limit' : option }) }}" data-turbo-frame="gallery_list">
-                    {{ option }}
-                </a>
-            {% endfor %}
-            </div>
-            <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_photo_collection_index') }}" id="deleteSelected" data-turbo-frame="gallery_list">Delete Selected Collections</a>
+    <div class="d-flex align-items-center">
+        <h4>Items per page : </h4>
+        <div class="btn-group ms-3" role="group">
+        {% for option in limitOptions %}
+            <a class="btn btn-dark pagination-option {{ option == limitOptions[0] ? 'disabled' : '' }}" data-limit={{ option }} href="{{ path('admin_photo_collection_index', {'limit' : option }) }}" data-turbo-frame="gallery_list">
+                {{ option }}
+            </a>
+        {% endfor %}
         </div>
-
-        {# <table class="container table table-light table-striped table-hover">
-            <thead>
-                <tr>
-                    <th class="col-6" scope="col">Title</th>
-                    <th class="col-3" scope="col">Date Added</th>
-                    <th class="text-center" scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for photo_collection in collectionsByPage %}
-                <tr>
-                    <td class="table-light">{{ photo_collection.title }}</td>
-                    <td class="table-light">{{ photo_collection.createdAt ? photo_collection.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td class="table-light d-flex justify-content-center gap-3">
-                        <button class="btn btn-info">
-                            <a class="link-dark" href="{{ path('admin_photo_collection_show', {'id': photo_collection.id}) }}">
-                                <i class="bi bi-eye-fill"></i>
-                            </a>
-                        </button>
-                        <button class="btn btn-info">
-                            <a class="link-dark" href="{{ path('admin_photo_collection_edit', {'id': photo_collection.id}) }}">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                        </button>
-                        <button class="btn btn-dark">
-                            <a class="link-light" href="{{ path('admin_photo_new', {'photo_collection_id':photo_collection.id}) }}">
-                                <i class="bi bi-plus-square-fill"></i>
-                            </a>
-                        </button>
-                        {{ include('photo_collection/_delete_form.html.twig') }}
-                    </td>
-                </tr>         
-            {% endfor %}
-            </tbody>
-        </table>
-    
-    {% else %}
-        <h2>The gallery is empty. Maybe <a href="{{ path('admin_photo_collection_new') }}">add a collection ?</a></h2>
-    {% endif %}#}
-
-    
-    {# {% if nb_pages > 1 %}
-        <nav aria-label="Gallery navigation">
-            <ul class="pagination justify-content-center">
-                <li class="{{ (page == 1 ? "page-item disabled" : "page-item") }}">
-                    <a class="page-link" href="{{ path('admin_photo_collection_index', {'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}">Previous</a>
-                </li>
-            
-                    {% for index in 1.. nb_pages %}
-                        <li class="page-item"><a class="page-link" href="{{ path('admin_photo_collection_index', {'page': index, 'limit' : limit}) }}">{{ index }}</a></li>
-                    {% endfor %}
-                    <li class="{{ page + 1 <= nb_pages ? "page-item" : "page-item disabled" }}">
-                        <a class="page-link" href="{{ path('admin_photo_collection_index', {'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}">Next</a>
-                    </li>
-            </ul>
-        </nav>
-    {% endif %} #}
+        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_photo_collection_index') }}" id="deleteSelected" data-turbo-frame="gallery_list">Delete Selected Collections</a>
+    </div>
 
     <turbo-frame id="gallery_list">
         {% include "photo_collection/_list.html.twig" with { collectionsByPage, nb_pages, limit, page } %}

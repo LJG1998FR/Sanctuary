@@ -10,7 +10,6 @@ export default class extends Controller {
         this.deleteSelectedBtn.classList.add("disabled");
         this.deleteSelectedBtn.addEventListener('click', () => {this.onDeleteSelected()});
 
-        console.log(document.querySelectorAll('.delete-checkbox'))
         document.querySelectorAll('.delete-checkbox').forEach(photoCollection => {
             photoCollection.addEventListener('click', () => {this.onSelected(photoCollection)});
         });
@@ -46,8 +45,6 @@ export default class extends Controller {
         } else {
             this.deleteSelectedBtn.classList.remove("disabled");
         }
-
-        console.log(this.idsToDelete);
     }
 
     async onDeleteSelected(){

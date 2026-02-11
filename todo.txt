@@ -10,7 +10,11 @@ BO:
 - Fix Gallery item CSS => OK
 - Edit Photos btn => OK
 - Multiple delete photos/collections/videos => OK
-- Change add photos system (like the edit photo)
+- Change add photos system (like the edit photo) => OK
+- Dynamic/SFW wordings+variables
+ - database name
+ - Site name
+ - assets prefix
 - Add VideoTags Entity
 - Add Video / Collection relation
 - Login/Logout nav

@@ -7,12 +7,15 @@ export default class extends Controller {
     positionBtns = [];
     updatePhotoInputs = [];
     deleteSelectedPhotosBtn;
+    addPhotosBtn;
+    static targets = ['addPhotosBtn', 'deleteSelectedPhotosBtn'];
     connect() {
         var cards = this.element.querySelectorAll('.card');
         this.cards = this.element.querySelectorAll('.card');
         this.positionBtns = this.element.querySelectorAll('.new-position');
         this.updatePhotoInputs = this.element.querySelectorAll('.update-photo-input');
         this.deleteSelectedPhotosBtn = document.querySelector('#deleteSelected');
+        this.addPhotosBtn = document.getElementById('add_photo');
 
         //set event listeners
         cards.forEach(card => {
@@ -24,8 +27,17 @@ export default class extends Controller {
         this.updatePhotoInputs.forEach((input) => {
             input.addEventListener('change', () => this.onUpdatePhotoSubmit(input));
         });
+        this.handleAddPhotos = this.onAddPhotos.bind(this);
+        this.handleDeleteMany = this.onDeleteMany.bind(this);
+        this.addPhotosBtn.addEventListener('change', this.handleAddPhotos);
+        this.deleteSelectedPhotosBtn.addEventListener('click', this.handleDeleteMany);
+    }
 
-        this.deleteSelectedPhotosBtn.addEventListener('click', () => this.onDeleteMany());
+    disconnect(){
+        this.addPhotosBtn.removeEventListener('change', this.handleAddPhotos);
+        this.deleteSelectedPhotosBtn.removeEventListener('click', this.handleDeleteMany);
+        this.selectedCards = [];
+        this.deleteSelectedPhotosBtn.classList.add("disabled");
     }
 
     onSelected(card){
@@ -68,6 +80,47 @@ export default class extends Controller {
         } else {
             if(card.nextElementSibling?.classList.contains('hidden') == true && !isNextSelected){card.nextElementSibling?.classList.remove('hidden');}
             if(card.previousElementSibling?.classList.contains('hidden') == true && !isPreviousSelected){card.previousElementSibling?.classList.remove('hidden');}
+        }
+    }
+
+    async onAddPhotos(){
+
+        if(this.addPhotosBtn.files.length === 0) {
+            return;
+        }
+
+        //create valid formData
+        var formData = new FormData();
+        _.forEach(this.addPhotosBtn.files, (file, index) => {
+            formData.append(`photos-item${index}`, file);
+        })
+        
+        try {
+            const response = await fetch("http://127.0.0.1:8000/admin/photos/"+this.addPhotosBtn.dataset.photocollectionid+"/new", {
+                method: "POST",
+                body: formData
+            })
+
+            .then(() => {
+                var msgDiv = document.createElement('div');
+                msgDiv.innerHTML = `
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                        Photo Successfully Added
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.querySelector('#header').before(msgDiv);
+                this.selectedCards = [];
+                var turboFrame = document.getElementById('photos');
+                turboFrame.src = this.addPhotosBtn.dataset.turbosrc;
+            })
+
+            .catch(() => {
+                throw new Error(`Error : ${response.statusText}`);
+            })
+
+        } catch (error) {
+            console.error(`${error.message}`);
         }
     }
 

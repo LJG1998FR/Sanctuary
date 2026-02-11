@@ -26,13 +26,6 @@ document.addEventListener('turbo:load', () => {
 	spinner.classList.replace('d-flex', 'd-none');
 })
 
-// launches when user visits a new URL within a turbo-frame
-document.addEventListener("turbo:frame-missing", (event) => {
-	const { detail: { response, visit } } = event;
-	event.preventDefault();
-	visit(response.url);
-});
-
 // launches when a request is sent
 document.addEventListener('turbo:before-fetch-request', () => {
 	spinner.classList.replace('d-none', 'd-flex');

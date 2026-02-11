@@ -14,7 +14,11 @@
         <h1>Gallery - {{ photo_collection.title }}</h1>
         
         <a class="btn btn-dark" href="{{ path('admin_photo_collection_edit', {'id': photo_collection.id}) }}"><i class="bi bi-pencil-square"></i></a>
-        <a class="btn btn-dark" href="{{ path('admin_photo_new', {'photo_collection_id':photo_collection.id}) }}"><i class="bi bi-plus-square-fill"></i></a>
+        <label for="add_photo" class="btn btn-dark">
+            <i class="bi bi-plus-square-fill"></i>
+        </label>
+        <input data-photocollectionid={{ photo_collection.id }} data-turbosrc="{{ path('admin_photo_collection_show', {id: photo_collection.id}) }}" type="file" id="add_photo" accept="image/*" multiple name="add_photo[filename]" class="form-control add-photo-input" hidden data-turbo-frame="photos">
+        <input type="hidden" id="add_photo__token" name="add_photo[_token]" data-controller="csrf-protection" value="csrf-token">
         <a class="btn btn-dark" href="{{ path('admin_photo_collection_index') }}"><i class="bi bi-list"></i></a>
         <a class="btn btn-dark disabled" href="{{ path('admin_photo_collection_show', {id: photo_collection.id}) }}" id="deleteSelected" data-turbo-frame="photos">Delete Selected Photos</a>
 

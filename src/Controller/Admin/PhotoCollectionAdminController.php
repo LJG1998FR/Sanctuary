@@ -137,16 +137,17 @@ final class PhotoCollectionAdminController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$photoCollection->getId(), $request->getPayload()->getString('_token'))) {
             //remove all asssociated photos files
             $photos = $photoCollection->getPhotos();
+            $collectionPath = $this->getParameter('kernel.project_dir') . '/public/uploads/photos/'. $photoCollection->getSlugger();
             foreach ($photos as $photo) {
-                $destination = $this->getParameter('kernel.project_dir').'/public/uploads/photos';
-                unlink($destination.'/'.$photo->getFilename());
+
+                unlink($collectionPath.'/'.$photo->getFilename());
                 $photoCollection->removePhoto($photo);
                 $entityManager->remove($photo);
             }
 
             // remove entity and cover file
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/covers';
-            unlink($destination.'/'.$photoCollection->getCover());
+            $coverPath = $this->getParameter('kernel.project_dir').'/public/uploads/covers';
+            unlink($coverPath.'/'.$photoCollection->getCover());
             $entityManager->remove($photoCollection);
             $entityManager->flush();
         }

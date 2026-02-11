@@ -15,12 +15,12 @@
                 <td class="table-light">{{ video.createdAt ? video.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td class="table-light d-flex justify-content-center gap-3">
                     <button class="btn btn-info">
-                        <a class="link-dark" href="{{ path('admin_video_show', {'slugger': video.slugger}) }}" turbo-visit-control="reload">
+                        <a class="link-dark" href="{{ path('admin_video_show', {'slugger': video.slugger}) }}" data-turbo-frame="_top">
                             <i class="bi bi-eye-fill"></i>
                         </a>
                     </button>
                     <button class="btn btn-info">
-                        <a class="link-dark" href="{{ path('admin_video_edit', {'id': video.id}) }}">
+                        <a class="link-dark" href="{{ path('admin_video_edit', {'id': video.id}) }}" data-turbo-frame="_top">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                     </button>
@@ -28,7 +28,7 @@
                 </td>
             </tr>
         {% else %}
-            <h2>No videos found. Maybe <a href="{{ path('admin_video_new') }}">add one ?</a></h2>
+            <h2>No videos found. Maybe <a href="{{ path('admin_video_new') }}" data-turbo-frame="_top">add one ?</a></h2>
         {% endfor %}
     </tbody>
 </table>

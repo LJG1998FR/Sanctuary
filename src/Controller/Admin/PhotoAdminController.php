@@ -40,42 +40,41 @@ final class PhotoAdminController extends AbstractController
     #[Route('/{photo_collection_id}/new', name: 'admin_photo_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager, PhotoRepository $photoRepository, int $photo_collection_id): Response
     {
-        $photoEntity = new Photo();
-        $form = $this->createForm(PhotoType::class);
-        $form->handleRequest($request);
+        //$photoEntity = new Photo();
+        //$form = $this->createForm(PhotoType::class);
+        //$form->handleRequest($request);
         $photoCollection = $entityManager->getRepository(PhotoCollection::class)->find($photo_collection_id);
         $photoMaxPosition = $photoRepository->findMaxPosition($entityManager, $photoCollection);
 
-        if ($form->isSubmitted() /*&& $form->isValid()*/) {
-            $photoFiles = $form->get('photos')->getData();
+        $data = $request->files;
 
-            if($photoFiles){
-                foreach ($photoFiles as $file) {
-                    $photo = new Photo();
+        if($data){
+            foreach ($data as $file) {
+                $photo = new Photo();
 
-                    $newFilename = $fileManager->uploadFile($this->getParameter('photos_directory') . '/' . $photoCollection->getSlugger(), $file, null, $slugger);
-                    $photo->setFilename($newFilename);
-                    $photo->setPosition(++$photoMaxPosition);
-                    $photo->setPhotoCollection($photoCollection);
-                    $entityManager->persist($photo);
-                }
+                $newFilename = $fileManager->uploadFile($this->getParameter('photos_directory') . '/' . $photoCollection->getSlugger(), $file, null, $slugger);
+                $photo->setFilename($newFilename);
+                $photo->setPosition(++$photoMaxPosition);
+                $photo->setPhotoCollection($photoCollection);
+                $entityManager->persist($photo);
             }
-            
-            $entityManager->flush();
-
-            $this->addFlash(
-                'gallery_notification',
-                'Photo(s) Successfully Added'
-            );
-
-            return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photoCollection->getId()], Response::HTTP_SEE_OTHER);
         }
+        
+        $entityManager->flush();
 
-        return $this->render('photo/new.html.twig', [
+        $this->addFlash(
+            'gallery_notification',
+            'Photo(s) Successfully Added'
+        );
+
+        return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photoCollection->getId()], Response::HTTP_SEE_OTHER);
+        
+
+        /*return $this->render('photo/new.html.twig', [
             'photo' => $photoEntity,
             'form' => $form,
             'photo_collection' => $photoCollection
-        ]);
+        ]);*/
     }
 
     #[Route('/{id}', name: 'admin_photo_show', methods: ['GET'])]
