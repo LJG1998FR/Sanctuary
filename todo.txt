@@ -19,7 +19,7 @@ BO:
 - Add VideoTag Entity => OK
 - Add VideoTag CRUD => OK
 - Add multiple delete tags => OK
-- Add slugger prop to tag entity
+- Add slugger prop to tag entity => OK
 - Add tags form CSS
 - Add twig template Tags CSS
 - Add turbo ux logic for tags

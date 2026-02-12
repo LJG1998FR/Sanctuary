@@ -54,7 +54,6 @@ final class VideoAdminController extends AbstractController
             $videoFile = $form->get('filename')->getData();
             $thumbnailFile = $form->get('thumbnailname')->getData();
 
-            $video->setSlugger($slugger);
             $newFilename = $fileManager->uploadFile($this->getParameter('videos_directory'), $videoFile, $video->getFilename(), $slugger);
             $video->setFilename($newFilename);
 

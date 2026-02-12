@@ -13,7 +13,7 @@
                 <td class="table-light">{{ tag.name }}</td>
                 <td class="table-light d-flex justify-content-center gap-3">
                     <button class="btn btn-info">
-                        <a class="link-dark" href="{{ path('admin_tag_show', {'id': tag.id}) }}" data-turbo-frame="_top">
+                        <a class="link-dark" href="{{ path('admin_tag_show', {'slugger': tag.slugger}) }}" data-turbo-frame="_top">
                             <i class="bi bi-eye-fill"></i>
                         </a>
                     </button>

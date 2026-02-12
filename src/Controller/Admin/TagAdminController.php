@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('admin/tags')]
@@ -34,11 +35,13 @@ final class TagAdminController extends AbstractController
     }
 
     #[Route('/new', name: 'admin_tag_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $tag = new Tag();
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
+
+        $tag->setSlugger($slugger);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($tag);
@@ -59,7 +62,7 @@ final class TagAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_tag_show', methods: ['GET'])]
+    #[Route('/{slugger:tag}', name: 'admin_tag_show', methods: ['GET'])]
     public function show(Tag $tag): Response
     {
         return $this->render('tag/show.html.twig', [
@@ -68,11 +71,12 @@ final class TagAdminController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin_tag_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Tag $tag, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Tag $tag, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
 
+        $tag->setSlugger($slugger);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 

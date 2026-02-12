@@ -6,6 +6,7 @@ use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Table(name: 'tags')]
 #[ORM\Entity(repositoryClass: TagRepository::class)]
@@ -24,6 +25,9 @@ class Tag
      */
     #[ORM\ManyToMany(targetEntity: Video::class, mappedBy: 'tags')]
     private Collection $videos;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slugger = null;
 
     public function __construct()
     {
@@ -76,6 +80,18 @@ class Tag
         if ($this->videos->removeElement($video)) {
             $video->removeTag($this);
         }
+
+        return $this;
+    }
+
+    public function getSlugger(): ?string
+    {
+        return $this->slugger;
+    }
+
+    public function setSlugger(SluggerInterface $slugger): self
+    {
+        $this->slugger = $slugger->slug(strtolower($this->getName()));
 
         return $this;
     }
