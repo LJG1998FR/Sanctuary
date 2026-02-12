@@ -41,16 +41,23 @@ final class TagAdminController extends AbstractController
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
 
-        $tag->setSlugger($slugger);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($tag);
+
+            $tags = $form->get('name')->getData();
+            $tags = explode('|', $tags);
+            foreach ($tags as $key => $entry) {
+                $newTag = new Tag();
+                $newTag->setName($entry);
+                $newTag->setSlugger($slugger);
+                $entityManager->persist($newTag);
+            }
+
             $entityManager->flush();
 
             
             $this->addFlash(
                 'tag_notification',
-                'Tag Successfully Added'
+                'Tag(s) Successfully Added'
             );
 
             return $this->redirectToRoute('admin_tag_index', [], Response::HTTP_SEE_OTHER);
