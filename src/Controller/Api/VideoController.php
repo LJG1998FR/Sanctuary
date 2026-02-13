@@ -9,13 +9,20 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class VideoController extends AbstractController
 {
-    #[Route('/api/videos', name: 'app_api_video')]
-    public function getVideos(VideoRepository $videoRepository): JsonResponse
+    #[Route('/api/videos', name: 'app_api_videos')]
+    public function getVideos(VideoRepository $videoRepository, int $page = 1, int $limit = 5): JsonResponse
     {
         $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
         $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
-        $videosByPage = $videoRepository->paginate($page, $limit);
+        $videos = $videoRepository->paginate($page, $limit);
 
-        return $this->json($videosByPage);
+        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+        $videosByPage = $serializer->serialize($videos, 'json');
+
+        $response = [
+            "success" => true,
+            "data" => json_decode($videosByPage)
+        ];
+        return new JsonResponse($response, 200);
     }
 }

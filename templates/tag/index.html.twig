@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}Tag index{% endblock %}
+{% block subtitle %}All Tags{% endblock %}
 
 {% block body %}
     {% for message in app.flashes('tag_notification') %}
@@ -10,10 +10,12 @@
         </div>
     {% endfor %}
 
-    <h1 id="title">All Tags</h1>
-    <a class="btn btn-dark" href="{{ path('admin_tag_new') }}"><i class="bi bi-plus-circle"></i></a>
+    <div class="d-flex align-items-center ms-4">
+        <h1 id="title">All Tags</h1>
+        <a class="btn btn-dark ms-3" href="{{ path('admin_tag_new') }}"><i class="bi bi-plus-circle"></i></a>
+    </div>
 
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center ms-4">
         <h4>Items per page : </h4>
         <div class="btn-group ms-3" role="group">
             {% for option in limitOptions %}
@@ -22,7 +24,7 @@
                 </a>
             {% endfor %}
         </div>
-        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_tag_index') }}" id="deleteSelected" data-turbo-frame="tags_list">Delete Selected tags</a>
+        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_tag_index') }}" id="deleteSelected" data-turbo-frame="tags_list">Delete Selected Tags</a>
     </div>
 
     <turbo-frame id="tags_list">

@@ -6,6 +6,7 @@ use App\Entity\Video;
 use App\Form\UpdateVideoType;
 use App\Form\VideoType;
 use App\Helper\FileManager;
+use App\Repository\TagRepository;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,7 +39,7 @@ final class VideoAdminController extends AbstractController
     }
 
     #[Route('/new', name: 'admin_video_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager): Response
+    public function new(Request $request, TagRepository $tagRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager): Response
     {
         $video = new Video();
         $form = $this->createForm(VideoType::class, $video);
@@ -77,6 +78,7 @@ final class VideoAdminController extends AbstractController
         return $this->render('video/new.html.twig', [
             'video' => $video,
             'form' => $form,
+            'tags' => $tagRepository->findAll(),
             'page_name' => 'Add A Video'
         ]);
     }
@@ -91,7 +93,7 @@ final class VideoAdminController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin_video_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Video $video, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager): Response
+    public function edit(Request $request, Video $video, TagRepository $tagRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager): Response
     {
         $form = $this->createForm(UpdateVideoType::class, $video);
         $form->handleRequest($request);
@@ -129,6 +131,7 @@ final class VideoAdminController extends AbstractController
         return $this->render('video/edit.html.twig', [
             'video' => $video,
             'form' => $form,
+            'tags' => $tagRepository->findAll()
         ]);
     }
 

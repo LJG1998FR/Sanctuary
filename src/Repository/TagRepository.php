@@ -17,7 +17,7 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return Tag[] Returns an array of Video objects
+    * @return Tag[] Returns an array of Tag objects
     */
     public function paginate($page = 1, $limit = 10)
     {

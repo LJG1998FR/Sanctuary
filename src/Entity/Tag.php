@@ -84,6 +84,10 @@ class Tag
         return $this;
     }
 
+    public function isTagInVideo(Video $video): bool {
+        return $this->videos->contains($video) ? true : false;
+    }
+
     public function getSlugger(): ?string
     {
         return $this->slugger;

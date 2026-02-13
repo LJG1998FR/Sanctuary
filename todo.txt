@@ -21,11 +21,13 @@ BO:
 - Add multiple delete tags => OK
 - Add slugger prop to tag entity => OK
 - Add mulitple tags => OK
-- Add Tag twig template CSS
-	- Index title
-	- Show tag
-	- create/edit tag
+- Add Tag twig template CSS => OK
+	- Index title => OK
+	- create/edit tag => OK
+	- Add TagVideos view => OK
+- Update video tags form row => OK
 - Add turbo ux logic for tags => OK
+- Sorting+Searching(?) videos/collections/tags
 - Add Video / Collection relation
 - Login/Logout nav
 - All Photos page

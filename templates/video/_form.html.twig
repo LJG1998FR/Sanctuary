@@ -4,7 +4,40 @@
         {{ form_row(form.title, {'label': 'Title : '}) }}
         {{ form_row(form.filename) }}
         {{ form_row(form.thumbnailname) }}
-        {{ form_row(form.tags) }}
+        <div class="d-none">{{ form_row(form.tags) }}</div>
+        <div class="dropdown mb-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownTagsButton" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+                Tags
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownTagsButton">
+                {% for tag in tags %}
+                    <li>
+                        <a class="{{ video.id and tag.isTagInVideo(video) ? 'dropdown-item active' : 'dropdown-item' }}"
+                        href="javascript:;"
+                        id="tag_{{ tag.id }}"
+                        data-target="{{ tag.id }}">
+                            {{ tag.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
         <button class="btn btn-dark">{{ button_label|default('Save') }}</button>
     {{ form_end(form) }}
 </div>
+
+<script>
+    document.querySelectorAll('[data-target]').forEach(item => {
+        item.addEventListener('click', function () {
+
+            var checkbox = document.getElementById("video_tags_"+item.dataset.target);
+            if(!checkbox){checkbox = document.getElementById("update_video_tags_"+item.dataset.target);}
+            console.log(checkbox);
+            checkbox.checked = !checkbox.checked;
+
+            this.classList.toggle('active', checkbox.checked);
+            this.closest('.dropdown-menu').classList.add('show');
+            this.closest('.dropdown').querySelector('[data-bs-toggle]').ariaExpanded = true;
+        });
+    });
+</script>

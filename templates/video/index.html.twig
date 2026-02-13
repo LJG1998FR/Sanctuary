@@ -11,9 +11,12 @@
         </div>
     {% endfor %}
 
-    <h1 id="title">All Videos</h1>
+    <div class="d-flex align-items-center ms-4">
+        <h1 id="title">All Videos</h1>
+        <a class="btn btn-dark ms-3" href="{{ path('admin_video_new') }}"><i class="bi bi-plus-circle"></i></a>
+    </div>
 
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center ms-4">
         <h4>Items per page : </h4>
         <div class="btn-group ms-3" role="group">
             {% for option in limitOptions %}

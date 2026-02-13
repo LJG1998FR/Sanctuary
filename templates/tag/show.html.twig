@@ -1,26 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}Tag{% endblock %}
+{% block subtitle %}Tag : {{ tag.name }} {% endblock %}
 
 {% block body %}
-    <h1>Tag</h1>
+    {% for message in app.flashes('tag_notification') %}
+        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+           {{ message }}
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ tag.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ tag.name }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {% for message in app.flashes('tag_notification_error') %}
+        <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+           {{ message }}
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
 
-    <a href="{{ path('admin_tag_index') }}">back to list</a>
+    <div id="header" class="d-flex align-items-center ms-4">
+        <h1 id="title">Add The Tag : {{tag.name}} To Videos</h1>
+    </div>
 
-    <a href="{{ path('admin_tag_edit', {'id': tag.id}) }}">edit</a>
+    <div class="d-flex align-items-center ms-4 mt-2">
+        <h4>Items per page : </h4>
+        <div class="btn-group ms-3" role="group">
+            {% for option in limitOptions %}
+                <a class="btn btn-dark pagination-option {{ option == limitOptions[0] ? 'disabled' : '' }}" data-limit={{ option }} href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'limit' : option }) }}" data-turbo-frame="tagsbyvideo_list">
+                    {{ option }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    
 
-    {{ include('tag/_delete_form.html.twig') }}
+    <turbo-frame id="tagsbyvideo_list">
+        <table class="container table table-light table-striped table-hover mt-3" data-controller="tagvideos" data-tagid={{ tag.id }}>
+            <thead>
+                <tr>
+                    <th class="col-1" scope="col">#</th>
+                    <th class="col-6" scope="col">Title</th>
+                </tr>
+            </thead>
+            <tbody id="main-container">
+                {% for video in videosByPage %}
+                    <tr>
+                        <td><input data-videoid={{ video.id }} class="form-check-input tag-checkbox" {{ (tag.isTagInVideo(video)) ? 'checked' : '' }} type="checkbox" value="" id="tag_checkbox_{{video.id}}" data-turbo-frame="tagsbyvideo_list"></td>
+                        <td class="table-light">{{ video.title }}</td>
+                    </tr>
+                {% else %}
+                    <h2>No videos found.</h2>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if nb_pages > 1 %}
+            <nav aria-label="video navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {{ (page == 1 ? "disabled" : "") }}">
+                        <a class="page-link" href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="tagsbyvideo_list">Previous</a>
+                    </li>
+                
+                    {% for index in 1.. nb_pages %}
+                        <li class="page-item {{ (page == index ? "disabled" : "") }}"><a class="page-link" href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'page': index, 'limit' : limit}) }}" data-turbo-frame="tagsbyvideo_list">{{ index }}</a></li>
+                    {% endfor %}
+                    <li class="page-item {{ page + 1 <= nb_pages ? "" : "disabled" }}">
+                        <a class="page-link" href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="tagsbyvideo_list">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+    </turbo-frame>
+
 {% endblock %}

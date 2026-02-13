@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Tag;
 use App\Form\TagType;
 use App\Repository\TagRepository;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -70,10 +71,19 @@ final class TagAdminController extends AbstractController
     }
 
     #[Route('/{slugger:tag}', name: 'admin_tag_show', methods: ['GET'])]
-    public function show(Tag $tag): Response
+    public function show(Tag $tag, VideoRepository $videoRepository, int $page = 1, int $limit = 5): Response
     {
+        $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
+        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
+        $videosByPage = $videoRepository->paginate($page, $limit);
+        
         return $this->render('tag/show.html.twig', [
             'tag' => $tag,
+            'videosByPage' => $videosByPage,
+            'page' => $page,
+            'limit' => $limit,
+            'limitOptions' => [5, 10, 50],
+            'nb_pages' => ceil(count($videoRepository->findAll()) / $limit)
         ]);
     }
 
@@ -83,8 +93,8 @@ final class TagAdminController extends AbstractController
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
 
-        $tag->setSlugger($slugger);
         if ($form->isSubmitted() && $form->isValid()) {
+            $tag->setSlugger($slugger);
             $entityManager->flush();
 
             $this->addFlash(
@@ -99,6 +109,37 @@ final class TagAdminController extends AbstractController
             'tag' => $tag,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/update-video-tag/{id}/{video_id}', name: 'admin_tag_update', methods: ['GET', 'POST'])]
+    public function updateVideoTag(Request $request, Tag $tag, int $video_id, EntityManagerInterface $entityManager, VideoRepository $videoRepository): JsonResponse
+    {
+
+        $video = $videoRepository->find($video_id);
+        if(!$video){
+            $response = [
+                "success" => false,
+                "data" => [
+                    "errorCode" => -1,
+                    "errorMsg" => "No video with the id : " . $video_id . "."
+                ]
+            ];
+            return new JsonResponse($response, 500);
+        }
+
+        $tagInVideo = $tag->isTagInVideo($video);
+        if($tagInVideo === true){
+            $tag->removeVideo($video);
+        } else {
+            $tag->addVideo($video);
+        }
+        $entityManager->flush();
+
+        $response = [
+            "success" => true,
+            "data" => (!$tagInVideo ? "Tag Added : " : "Tag Removed : ") . $tag->getName() . " To Video : " . $video->getTitle()
+        ];
+        return new JsonResponse($response, 200);
     }
 
     #[Route('/{id}/delete', name: 'admin_tag_delete', methods: ['POST'])]

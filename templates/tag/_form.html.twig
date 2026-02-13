@@ -1,4 +1,8 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div id="form_container" class="w-50 mx-auto mt-5 d-flex flex-column justify-content-center">
+    <h2>{{ tag.id ? 'Edit Tag' : 'Add Tags' }}</h2>
+    {{ form_start(form) }}
+        {{ form_row(form.name, {'label': tag.id ? 'Label' : 'Labels (separate tags with a "|") : ' }) }}
+        <a class="btn btn-danger" href="{{ path('admin_tag_index') }}">Cancel</a>
+        <button class="btn btn-dark">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+</div>
