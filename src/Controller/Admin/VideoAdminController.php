@@ -23,18 +23,26 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class VideoAdminController extends AbstractController
 {
     #[Route(name: 'admin_video_index', methods: ['GET'])]
-    public function index(VideoRepository $videoRepository, int $page = 1, int $limit = 5): Response
+    public function index(VideoRepository $videoRepository, int $page = 1, int $limit = 1, string $field = "title", string $order = "ASC"): Response
     {
-        $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
-        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
-        $videosByPage = $videoRepository->paginate($page, $limit);
+        $page = $_GET['page'] ?? 1;
+        $limit = $_GET['limit'] ?? 5;
+        $field = $_GET['field'] ?? 'title';
+        $order = $_GET['order'] ?? 'ASC';
+        $search = $_REQUEST['search'] ?? '';
+
+        $videosByPage = $videoRepository->paginate($page, $limit, $field, $order, $search);
+
         return $this->render('video/index.html.twig', [
             'videos' => $videoRepository->findAll(),
             'videosByPage' => $videosByPage,
             'page' => $page,
             'limit' => $limit,
+            'field' => $field,
+            'order' => $order,
+            'search' => $search,
             'limitOptions' => [5, 10, 50],
-            'nb_pages' => ceil(count($videoRepository->findAll()) / $limit)
+            'nb_pages' => ceil(count($videoRepository->getItemsByFieldSearch($search)) / $limit)
         ]);
     }
 

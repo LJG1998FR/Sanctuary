@@ -3,8 +3,16 @@
     <thead>
         <tr>
             <th class="col-1" scope="col">#</th>
-            <th class="col-6" scope="col">Title</th>
-            <th class="col-3" scope="col">Date Added</th>
+            <th class="col-6" scope="col">Title 
+                <a href="{{ path('admin_photo_collection_index', {'field': 'title', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'search': search }) }}" data-turbo-frame="gallery_list">
+                    <i class="link-dark bi bi-arrow-down-up"></i>
+                </a>
+            </th>
+            <th class="col-3" scope="col">Date Added 
+                <a href="{{ path('admin_photo_collection_index', {'field': 'createdAt', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'search': search }) }}" data-turbo-frame="gallery_list">
+                    <i class="link-dark bi bi-arrow-down-up"></i>
+                </a>
+            </th>
             <th class="text-center" scope="col">Actions</th>
         </tr>
     </thead>
@@ -46,14 +54,14 @@
     <nav aria-label="Gallery navigation">
         <ul class="pagination justify-content-center">
             <li class="{{ (page == 1 ? "page-item disabled" : "page-item") }}">
-                <a class="page-link" href="{{ path('admin_photo_collection_index', {'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="gallery_list">Previous</a>
+                <a class="page-link" href="{{ path('admin_photo_collection_index', {'page': page - 1, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="gallery_list">Previous</a>
             </li>
         
             {% for index in 1.. nb_pages %}
-                <li class="page-item"><a class="page-link" href="{{ path('admin_photo_collection_index', {'page': index, 'limit' : limit}) }}" data-turbo-frame="gallery_list">{{ index }}</a></li>
+                <li class="page-item"><a class="page-link" href="{{ path('admin_photo_collection_index', {'page': index, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" data-turbo-frame="gallery_list">{{ index }}</a></li>
             {% endfor %}
             <li class="{{ page + 1 <= nb_pages ? "page-item" : "page-item disabled" }}">
-                <a class="page-link" href="{{ path('admin_photo_collection_index', {'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="gallery_list">Next</a>
+                <a class="page-link" href="{{ path('admin_photo_collection_index', {'page': page + 1, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="gallery_list">Next</a>
             </li>
         </ul>
     </nav>

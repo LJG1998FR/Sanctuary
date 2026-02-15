@@ -32,7 +32,6 @@
 
             var checkbox = document.getElementById("video_tags_"+item.dataset.target);
             if(!checkbox){checkbox = document.getElementById("update_video_tags_"+item.dataset.target);}
-            console.log(checkbox);
             checkbox.checked = !checkbox.checked;
 
             this.classList.toggle('active', checkbox.checked);

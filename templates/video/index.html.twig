@@ -14,6 +14,7 @@
     <div class="d-flex align-items-center ms-4">
         <h1 id="title">All Videos</h1>
         <a class="btn btn-dark ms-3" href="{{ path('admin_video_new') }}"><i class="bi bi-plus-circle"></i></a>
+        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_video_index') }}" id="deleteSelected" data-turbo-frame="list">Delete Selected Videos</a>
     </div>
 
     <div class="d-flex align-items-center ms-4">
@@ -25,10 +26,16 @@
                 </a>
             {% endfor %}
         </div>
-        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_video_index') }}" id="deleteSelected" data-turbo-frame="list">Delete Selected Videos</a>
+        
+        <form class="form-inline my-2 ms-3 my-lg-0 d-flex" id="searchform" action="#" data-turbosrc="{{ path('admin_video_index', {'limit' : limit, 'order': order, 'search': search }) }}" data-turbo-frame="list">
+            <input type="search" class="form-control" placeholder="Search..." aria-label="Search" id="searchbar" autocomplete = off>
+            <button class="btn btn-outline-success">Submit</button>
+        </form>
+        <a class="btn btn-dark ms-4" href="{{ path('admin_video_index') }}" id="resetSearchBtn" data-turbo-frame="list"><i class="bi bi-x-lg"></i></a>
+        
     </div>
 
     <turbo-frame id="list">
-        {% include "video/_list.html.twig" with { videosByPage: videosByPage, nb_pages: nb_pages, limit: limit, page: page } %}
+        {% include "video/_list.html.twig" with { videosByPage: videosByPage, nb_pages: nb_pages, limit: limit, page: page, search: search } %}
     </turbo-frame>
 {% endblock %}

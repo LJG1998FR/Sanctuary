@@ -2,8 +2,16 @@
     <thead>
         <tr>
             <th class="col-1" scope="col">#</th>
-            <th class="col-6" scope="col">Title</th>
-            <th class="col-3" scope="col">Date Added</th>
+            <th class="col-6" scope="col">Title 
+                <a href="{{ path('admin_video_index', {'field': 'title', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'search': search }) }}" data-turbo-frame="list">
+                    <i class="link-dark bi bi-arrow-down-up"></i>
+                </a>
+            </th>
+            <th class="col-3" scope="col">Date Added 
+                <a href="{{ path('admin_video_index', {'field': 'createdAt', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'search': search }) }}" data-turbo-frame="list">
+                    <i class="link-dark bi bi-arrow-down-up"></i>
+                </a>
+            </th>
             <th class="text-center" scope="col">Actions</th>
         </tr>
     </thead>
@@ -37,14 +45,14 @@
     <nav aria-label="Video navigation">
         <ul class="pagination justify-content-center">
             <li class="page-item {{ (page == 1 ? "disabled" : "") }}">
-                <a class="page-link" href="{{ path('admin_video_index', {'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="list">Previous</a>
+                <a class="page-link" href="{{ path('admin_video_index', {'page': page - 1, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="list">Previous</a>
             </li>
         
             {% for index in 1.. nb_pages %}
-                <li class="page-item {{ (page == index ? "disabled" : "") }}"><a class="page-link" href="{{ path('admin_video_index', {'page': index, 'limit' : limit}) }}" data-turbo-frame="list">{{ index }}</a></li>
+                <li class="page-item {{ (page == index ? "disabled" : "") }}"><a class="page-link" href="{{ path('admin_video_index', {'page': index, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" data-turbo-frame="list">{{ index }}</a></li>
             {% endfor %}
             <li class="page-item {{ page + 1 <= nb_pages ? "" : "disabled" }}">
-                <a class="page-link" href="{{ path('admin_video_index', {'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="list">Next</a>
+                <a class="page-link" href="{{ path('admin_video_index', {'page': page + 1, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="list">Next</a>
             </li>
         </ul>
     </nav>

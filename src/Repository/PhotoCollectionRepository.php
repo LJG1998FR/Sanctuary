@@ -17,14 +17,29 @@ class PhotoCollectionRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return PhotoCollection[] Returns an array of Video objects
+    * @return PhotoCollection[] Returns an array of PhotoCollection objects
     */
-    public function paginate($page = 1, $limit = 10)
+    public function paginate($page = 1, $limit = 10, $field = "title", $order = "ASC", $search = "")
     {
         $query = $this->createQueryBuilder('pc')
-            ->orderBy('pc.title', 'ASC')
+            ->orderBy('pc.'.$field, $order)
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
+            ->where('pc.title LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+    * @return PhotoCollection[] Returns an array of PhotoCollection objects
+    */
+    public function getItemsByFieldSearch($search = "")
+    {
+        $query = $this->createQueryBuilder('pc')
+            ->where('pc.title LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
             ->getQuery();
 
         return $query->getResult();

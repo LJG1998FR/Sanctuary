@@ -3,12 +3,21 @@ import _ from "lodash";
 
 export default class extends Controller {
     deleteSelectedBtn;
+    searchForm;
     idsToDelete = [];
+    handleOnSearch;
+    handleOnSearchCancel;
     connect() {
 
         this.deleteSelectedBtn = document.querySelector('#deleteSelected');
         this.deleteSelectedBtn.classList.add("disabled");
         this.deleteSelectedBtn.addEventListener('click', () => {this.onDeleteSelected()});
+
+        this.searchForm = document.querySelector('#searchform');
+        this.handleOnSearch = this.onSearch.bind(this);
+        this.handleOnSearchCancel = this.onSearchCancel.bind(this);
+        this.searchForm.addEventListener('submit', this.handleOnSearch);
+        this.searchForm.addEventListener('search', this.handleOnSearchCancel);
 
         document.querySelectorAll('.delete-checkbox').forEach(photoCollection => {
             photoCollection.addEventListener('click', () => {this.onSelected(photoCollection)});
@@ -78,6 +87,36 @@ export default class extends Controller {
             } catch (error) {
                 console.error(`${error.message}`);
             }
+        }
+    }
+ 
+    async onSearch(event){
+        event.preventDefault();
+        var inputValue = this.searchForm.querySelector('#searchbar').value;
+
+        if(inputValue.length > 0){
+           try {
+                spinner?.classList.replace('d-none', 'd-flex');
+                var turboFrame = document.getElementById('gallery_list');
+                turboFrame.src = this.searchForm.dataset.turbosrc+inputValue;
+
+                this.searchForm.removeEventListener('submit', this.handleOnSearch);
+                this.searchForm.removeEventListener('search', this.handleOnSearchCancel);
+
+            } catch (error) {
+                console.error(`${error.message}`);
+            }
+        }
+    }
+
+    async onSearchCancel(event){
+
+        var turboFrame = document.getElementById('gallery_list');
+        if(event.target.value == "" && turboFrame.src && turboFrame.src.endsWith("search=") == false){
+            turboFrame.src = this.searchForm.dataset.turbosrc;
+
+            this.searchForm.removeEventListener('submit', this.handleOnSearch);
+            this.searchForm.removeEventListener('search', this.handleOnSearchCancel);
         }
     }
 }

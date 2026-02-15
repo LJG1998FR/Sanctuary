@@ -20,18 +20,26 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class TagAdminController extends AbstractController
 {
     #[Route(name: 'admin_tag_index', methods: ['GET'])]
-    public function index(TagRepository $tagRepository, int $page = 1, int $limit = 5): Response
+    public function index(TagRepository $tagRepository, int $page = 1, int $limit = 5, string $field = "name", string $order = "ASC"): Response
     {
-        $page = (isset($_GET['page'])) ? intval($_GET['page']) : 1;
-        $limit = (isset($_GET['limit'])) ? intval($_GET['limit']) : 5;
-        $tagsByPage = $tagRepository->paginate($page, $limit);
+        $page = $_GET['page'] ?? 1;
+        $limit = $_GET['limit'] ?? 5;
+        $field = $_GET['field'] ?? 'name';
+        $order = $_GET['order'] ?? 'ASC';
+        $search = $_REQUEST['search'] ?? '';
+
+        $tagsByPage = $tagRepository->paginate($page, $limit, $field, $order, $search);
+
         return $this->render('tag/index.html.twig', [
             'tags' => $tagRepository->findAll(),
             'tagsByPage' => $tagsByPage,
             'page' => $page,
             'limit' => $limit,
+            'field' => $field,
+            'order' => $order,
+            'search' => $search,
             'limitOptions' => [5, 10, 50],
-            'nb_pages' => ceil(count($tagRepository->findAll()) / $limit)
+            'nb_pages' => ceil(count($tagRepository->getItemsByFieldSearch( $search)) / $limit)
         ]);
     }
 

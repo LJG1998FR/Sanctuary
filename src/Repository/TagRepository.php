@@ -19,12 +19,27 @@ class TagRepository extends ServiceEntityRepository
     /**
     * @return Tag[] Returns an array of Tag objects
     */
-    public function paginate($page = 1, $limit = 10)
+    public function paginate($page = 1, $limit = 10, $field = "name", $order = "ASC", $search = "")
     {
         $query = $this->createQueryBuilder('t')
-            ->orderBy('t.name', 'ASC')
+            ->orderBy('t.'.$field, $order)
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
+            ->where('t.name LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+    * @return Tag[] Returns an array of Tag objects
+    */
+    public function getItemsByFieldSearch($search = "")
+    {
+        $query = $this->createQueryBuilder('t')
+            ->where('t.name LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
             ->getQuery();
 
         return $query->getResult();

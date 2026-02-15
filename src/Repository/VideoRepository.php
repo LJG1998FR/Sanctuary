@@ -19,12 +19,27 @@ class VideoRepository extends ServiceEntityRepository
     /**
     * @return Video[] Returns an array of Video objects
     */
-    public function paginate($page = 1, $limit = 10)
+    public function paginate($page = 1, $limit = 10, $field = "title", $order = "ASC", $search = "")
     {
         $query = $this->createQueryBuilder('v')
-            ->orderBy('v.title', 'ASC')
+            ->orderBy('v.'.$field, $order)
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
+            ->where('v.title LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+    * @return Video[] Returns an array of Video objects
+    */
+    public function getItemsByFieldSearch($search = "")
+    {
+        $query = $this->createQueryBuilder('v')
+            ->where('v.title LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
             ->getQuery();
 
         return $query->getResult();

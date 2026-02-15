@@ -13,6 +13,7 @@
     <div class="d-flex align-items-center ms-4">
         <h1 id="title">Gallery</h1>
         <a class="btn btn-dark ms-3" href="{{ path('admin_photo_collection_new') }}"><i class="bi bi-plus-circle"></i></a>
+        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_photo_collection_index') }}" id="deleteSelected" data-turbo-frame="gallery_list">Delete Selected Collections</a>
     </div>
 
     <div class="d-flex align-items-center ms-4">
@@ -24,10 +25,15 @@
             </a>
         {% endfor %}
         </div>
-        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_photo_collection_index') }}" id="deleteSelected" data-turbo-frame="gallery_list">Delete Selected Collections</a>
+
+        <form class="form-inline my-2 ms-3 my-lg-0 d-flex" id="searchform" action="#" data-turbosrc="{{ path('admin_photo_collection_index', {'limit' : limit, 'order': order, 'search': search }) }}" data-turbo-frame="gallery_list">
+            <input type="search" class="form-control" placeholder="Search..." aria-label="Search" id="searchbar" autocomplete = off>
+            <button class="btn btn-outline-success">Submit</button>
+        </form>
+        <a class="btn btn-dark ms-4" href="{{ path('admin_photo_collection_index') }}" id="resetSearchBtn" data-turbo-frame="list"><i class="bi bi-x-lg"></i></a>
     </div>
 
     <turbo-frame id="gallery_list">
-        {% include "photo_collection/_list.html.twig" with { collectionsByPage, nb_pages, limit, page } %}
+        {% include "photo_collection/_list.html.twig" with { collectionsByPage, nb_pages, limit, page, search } %}
     </turbo-frame>
 {% endblock %} 
