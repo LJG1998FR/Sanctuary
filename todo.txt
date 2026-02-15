@@ -28,9 +28,7 @@ BO:
 - Update video tags form row => OK
 - Add turbo ux logic for tags => OK
 - Add Sorting+Searching for videos/collections/tags => OK
-- Add Video / Collection relation
-- Login/Logout nav
-- All Photos page
+- Login/Logout nav => OK
 
 
 
