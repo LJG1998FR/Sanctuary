@@ -53,15 +53,15 @@
                                 <a class={{ app.request.get('_route') == "admin_photo_collection_new" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_photo_collection_new') }}">Add A Collection</a>
                             </li>
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_tag_new" ? "'nav-link fw-bold disabled disabled'" : "nav-link" }} href="{{ path('admin_tag_new') }}">Add Tags</a>
+                                <a class={{ app.request.get('_route') == "admin_tag_new" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_tag_new') }}">Add Tags</a>
                             </li>
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_logout" ? "'nav-link fw-bold disabled disabled'" : "nav-link" }} href="{{ path('admin_logout') }}">Logout</a>
+                                <a class={{ app.request.get('_route') == "admin_logout" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_logout') }}">Logout</a>
                             </li>
                             {% else %}
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_login" ? "'nav-link fw-bold disabled disabled'" : "nav-link" }} href="{{ path('admin_login') }}">Login</a>
+                                <a class={{ app.request.get('_route') == "admin_login" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_login') }}">Login</a>
                             </li>
                             {% endif %}
                         </ul>

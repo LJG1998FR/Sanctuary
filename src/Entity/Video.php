@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Table(name: 'videos')]
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
@@ -16,27 +17,33 @@ class Video
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['video:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['video:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['video:read'])]
     private ?string $filename = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['video:read'])]
     private ?string $thumbnailname = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['video:read'])]
     private ?string $slugger = null;
 
     /**
      * @var Collection<int, Tag>
      */
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'videos')]
+    #[Groups(['video:read'])]
     private Collection $tags;
 
     public function __construct()
