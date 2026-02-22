@@ -2,28 +2,26 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Video;
-use App\Repository\VideoRepository;
+use App\Entity\PhotoCollection;
+use App\Repository\PhotoCollectionRepository;
+use App\Repository\PhotoRepository;
 use JMS\Serializer\SerializerBuilder;
-use JMS\Serializer\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-final class VideoController extends AbstractController
-{
+final class GalleryController extends AbstractController
+{    
     private const ALLOWED_FIELDS = ['title', 'createdAt'];
     private const ALLOWED_ORDERS = ['ASC', 'DESC'];
     private const MAX_LIMIT = 100;
     private const DEFAULT_LIMIT = 5;
     public function __construct(
-        private VideoRepository $videoRepository
-    ) {
-    }
-    #[IsGranted('ROLE_USER')]
-    #[Route('/api/videos', name: 'api_video')]
+        private PhotoCollectionRepository $photoCollectionRepository,
+        private PhotoRepository $photoRepository
+    ) {}
+    #[Route('/api/gallery', name: 'api_gallery')]
     public function getItems(Request $request): JsonResponse
     {
         $serializer = SerializerBuilder::create()->build();
@@ -35,20 +33,32 @@ final class VideoController extends AbstractController
             $order = $this->validate('order', $request->query->getString('order', 'ASC'));
             $search = $this->validate('search', $request->query->getString('search', ''));
 
-            $dqlResult = $this->videoRepository->paginate($page, $limit, $field, $order, $search);
-            $videosByPage = $serializer->serialize($dqlResult, 'json');
+            $dqlResult = $this->photoCollectionRepository->paginate($page, $limit, $field, $order, $search);
+            $res = [];
+            foreach ($dqlResult as $key => $entry) {
+
+                $res[] = [
+                    "id" => $entry->getId(),
+                    "title" => $entry->getTitle(),
+                    "cover" => $entry->getCover(),
+                    "created_at" => $entry->getCreatedAt(),
+                    "slugger" => $entry->getSlugger(),
+                    "photos" => $this->photoRepository->sortByPosition($entry)
+                ];
+            }
+            $collections = $serializer->serialize($res, 'json');
 
             $response = [
                 "success" => true,
                 "data" => [
-                    "items" => json_decode($videosByPage, true),
+                    "items" => json_decode($collections, true),
                     "page" => $page,
                     "limit" => $limit,
                     "field" => $field,
                     "order" => $order,
                     "search" => $search,
                     "limitOptions" => [5, 10, 50],
-                    "nb_pages" => ceil(count($this->videoRepository->getItemsByFieldSearch($search)) / $limit)
+                    "nb_pages" => ceil(count($this->photoCollectionRepository->getItemsByFieldSearch($search)) / $limit)
                 ]
             ];
             return new JsonResponse($response, 200);
@@ -64,28 +74,32 @@ final class VideoController extends AbstractController
             ], 400);
 
         }
-
-
-
     }
 
-    #[IsGranted('ROLE_USER')]
-    #[Route('/api/videos/{id}', name: 'api_video_show')]
-    public function getItem(Video $video): JsonResponse
+    #[Route('/api/gallery/{id}', name: 'api_gallery_show')]
+    public function getItem(PhotoCollection $photoCollection): JsonResponse
     {
-
         $serializer = SerializerBuilder::create()->build();
-        $video = $serializer->serialize($video, 'json');
+        $result = [ 
+            "id" => $photoCollection->getId(),
+            "title" => $photoCollection->getTitle(),
+            "cover" => $photoCollection->getCover(),
+            "created_at" => $photoCollection->getCreatedAt(),
+            "slugger" => $photoCollection->getSlugger(),
+            "photos" => $this->photoRepository->sortByPosition($photoCollection)
+        ];
+        $photoCollection = $serializer->serialize($result, 'json');
 
         $response = [
             "success" => true,
             "data" => [
-                "item" => json_decode($video, true)
+                "item" => json_decode($photoCollection, true)
             ]
         ];
         return new JsonResponse($response, 200);
     }
 
+    
     public function validate($label, $value) : mixed {
         switch ($label) {
             case 'page':

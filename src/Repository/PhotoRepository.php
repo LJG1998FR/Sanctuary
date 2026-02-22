@@ -31,6 +31,17 @@ class PhotoRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
+    public function sortByPosition(PhotoCollection $photoCollection)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p.id', 'p.position', 'p.filename')
+            ->orderBy('p.position', 'ASC')
+            ->where('p.photoCollection = :photoCollection')
+            ->setParameter('photoCollection', $photoCollection)
+            ->getQuery();
+
+        return $query->getResult();
+    }
     //    /**
     //     * @return Photo[] Returns an array of Photo objects
     //     */
