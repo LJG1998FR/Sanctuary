@@ -6,7 +6,11 @@ export default function ProtectedRoute() {
     const location = useLocation();
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div id="spinner" className="d-flex justify-content-center align-items-center">
+            <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>;
     }
 
     return isAuthenticated ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;

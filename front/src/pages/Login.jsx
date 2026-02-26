@@ -28,12 +28,12 @@ export default function Login() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Connexion</h1>
+        <form className="w-50 mx-auto mt-5 d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
+            <h1>Log In</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <input type="username"    value={username}    onChange={e => setUsername(e.target.value)}    placeholder="username"     required />
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" required />
-            <button type="submit" disabled={loading}>
+            <input className="form-control" type="username"    value={username}    onChange={e => setUsername(e.target.value)}    placeholder="username"     required />
+            <input className="form-control" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" required />
+            <button className="btn btn-dark" type="submit" disabled={loading}>
                 {loading ? 'Logging in...' : 'Log in'}
             </button>
         </form>

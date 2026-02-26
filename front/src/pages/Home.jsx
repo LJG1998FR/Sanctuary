@@ -1,7 +1,10 @@
-function Greeting({ name }) {
-    return <h1>Hello, {name}</h1>;
+import { useAuth } from '../context/AuthContext';
+function Greeting({username}) {
+
+    return <h1>Hello, {username}</h1>;
 }
 
 export default function Home() {
-    return <Greeting name="Catherine" />
+    const {user} = useAuth();
+    return <Greeting username={user.data.item.username}/>
 }
