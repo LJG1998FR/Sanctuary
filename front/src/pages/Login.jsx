@@ -28,12 +28,23 @@ export default function Login() {
     };
 
     return (
-        <form className="w-50 mx-auto mt-5 d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
+        <form className="w-50 mx-auto mt-5 d-flex flex-column justify-content-center" style={{height: '560px'}} onSubmit={handleSubmit}>
             <h1>Log In</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <input className="form-control" type="username"    value={username}    onChange={e => setUsername(e.target.value)}    placeholder="username"     required />
-            <input className="form-control" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" required />
-            <button className="btn btn-dark" type="submit" disabled={loading}>
+
+            <div>
+                <label htmlFor="username">Username</label>
+                <input className="form-control mb-4" type="username"  id='username'   value={username}    onChange={e => setUsername(e.target.value)}    placeholder="username"     required />
+
+                <label htmlFor="password">Password</label>
+                <input className="form-control" type="password"  id='password' value={password} onChange={e => setPassword(e.target.value)} placeholder="password" required />
+            </div>
+            
+            <div>
+
+            </div>
+            
+            <button className="btn btn-dark mt-3" type="submit" disabled={loading}>
                 {loading ? 'Logging in...' : 'Log in'}
             </button>
         </form>

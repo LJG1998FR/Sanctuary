@@ -1,12 +1,12 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
-import ProtectedRoute      from '../components/ProtectedRoute';
-import Login           from '../pages/Login';
-import Home            from '../pages/Home';
-import VideosList          from '../pages/VideosList';
-import VideoPlayer     from '../pages/VideoPlayer';
-import Gallery     from '../pages/Gallery';
-import GalleryItem from '../pages/GalleryItem';
+import ProtectedRoute      from '@/components/ProtectedRoute';
+import Login           from '@/pages/Login';
+import Home            from '@/pages/Home';
+import VideosList          from '@/pages/VideosList';
+import VideoPlayer     from '@/pages/VideoPlayer';
+import Gallery     from '@/pages/Gallery';
+import GalleryItem from '@/pages/GalleryItem';
 
 const router = createBrowserRouter([
     // Public routes

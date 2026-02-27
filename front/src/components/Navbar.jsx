@@ -1,5 +1,7 @@
 
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
+import { tokenStorage } from '@/api/client';
+import { authApi } from '../api/auth';
 
 export default function Navbar(){
   const {isAuthenticated} = useAuth();
@@ -11,28 +13,37 @@ export default function Navbar(){
           <div className="collapse navbar-collapse justify-content-between mx-3" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link" href="{{path('dashboard')}}">{appName}</a>
+                <a className="nav-link" href="/">{appName}</a>
+              </li>
+              {/* <li className="nav-item">
+                  <a className="nav-link" href="/tags">All Tags</a>
+              </li> */}
+              <li className="nav-item">
+                  <a className="nav-link" href="/videos">All Videos</a>
               </li>
               <li className="nav-item">
-                  <a className="nav-link" href="{{ path('admin_tag_index') }}">All Tags</a>
+                  <a className="nav-link" href="/gallery">Gallery</a>
               </li>
               <li className="nav-item">
-                  <a className="nav-link" href="{{path('admin_video_index')}}">All Videos</a>
+                  <a className="nav-link" id="randomphoto" href="/gallery/random">Random Collection</a>
               </li>
               <li className="nav-item">
-                  <a className="nav-link" href="{{ path('admin_photo_collection_index') }}">Gallery</a>
-              </li>
-              <li className="nav-item">
-                  <a className="nav-link" id="randomphoto" href="{{ path('admin_photo_random') }}">Random Photo</a>
-              </li>
-              <li className="nav-item">
-                  <a className="nav-link" id="randomvideo" href="{{ path('admin_video_random') }}">Random Video</a>
+                  <a className="nav-link" id="randomvideo" href="/videos/random">Random Video</a>
               </li>
               {isAuthenticated && <li className="nav-item">
-                  <a className="nav-link" href="{{ path('admin_logout') }}">Logout</a>
+                  <a className="nav-link" href="#" onClick={handleLogout}>Logout</a>
               </li>
               }
             </ul>
           </div>
         </nav>
 }
+
+function getRandomVideo(){}
+
+function getRandomGalleryItem(){}
+
+const handleLogout = async () => {
+  authApi.logout();
+  window.location.href = '/login';
+};

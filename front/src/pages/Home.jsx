@@ -1,7 +1,7 @@
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 function Greeting({username}) {
 
-    return <h1>Hello, {username}</h1>;
+    return <h1 className='ms-4'>Welcome, {username} !</h1>;
 }
 
 export default function Home() {
