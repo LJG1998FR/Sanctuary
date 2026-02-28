@@ -70,7 +70,7 @@ final class VideoController extends AbstractController
     }
 
     #[IsGranted('ROLE_USER')]
-    #[Route('/api/videos/{id}', name: 'api_video_show')]
+    #[Route('/api/videos/{slugger:video}', name: 'api_video_show')]
     public function getItem(Video $video): JsonResponse
     {
 

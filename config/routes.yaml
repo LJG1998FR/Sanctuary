@@ -12,7 +12,9 @@ api_login:
 
 api_auth_logout:
     path: /api/logout
-    methods: ['POST']
+
+refresh:
+    path: /api/token/refresh
 
 api_token_invalidate:
     path: /api/token/invalidate

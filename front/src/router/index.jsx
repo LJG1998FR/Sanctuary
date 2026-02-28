@@ -1,39 +1,26 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
-
-import ProtectedRoute      from '@/components/ProtectedRoute';
 import Login           from '@/pages/Login';
 import Home            from '@/pages/Home';
+import { Navigate, Route, Routes } from 'react-router';
 import VideosList          from '@/pages/VideosList';
 import VideoPlayer     from '@/pages/VideoPlayer';
 import Gallery     from '@/pages/Gallery';
 import GalleryItem from '@/pages/GalleryItem';
+import ProtectedRoute      from '@/components/ProtectedRoute';
 
-const router = createBrowserRouter([
-    // Public routes
-    {
-        path: '/login',
-        element: <Login />,
-    },
-
-    // Protected routes
-    {
-        element: <ProtectedRoute />,   // keeps the group
-        children: [
-            { index: true, path: '/',                            element: <Home /> },
-            { path: '/videos',                                   element: <VideosList /> },
-            { path: '/videos/:slugger',                               element: <VideoPlayer /> },
-            { path: '/gallery',                              element: <Gallery /> },
-            { path: '/gallery/:slugger',                          element: <GalleryItem /> },
-        ],
-    },
-
-    // Resp 404
-    {
-        path: '*',
-        element: <div>Not found. </div>
-    },
-]);
-
-export default function AppRouter() {
-    return <RouterProvider router={router} />;
+const AppRouter = () => {
+    return (
+        <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route element={<ProtectedRoute />}>
+                <Route path="/"                  element={<Home />} />
+                <Route path="/videos"            element={ <VideosList />} />
+                <Route path="/videos/:slugger"   element= {<VideoPlayer />} />
+                <Route path="/gallery"           element={ <Gallery /> }/>
+                <Route path="/gallery/:slugger"  element= {<GalleryItem />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+    )
 }
+
+export default AppRouter;

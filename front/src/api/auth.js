@@ -12,5 +12,5 @@ export const authApi = {
 		tokenStorage.clear();
 	},
 
-  	getUserProfile: () => apiClient.get('/api/profile'),
+  	getUserProfile: () => apiClient.get('/api/profile', { refresh_token: tokenStorage.getRefresh() }),
 };
