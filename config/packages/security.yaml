@@ -24,7 +24,7 @@ security:
             security: false 
         refresh:    
             pattern: ^/api/token/refresh
-            security: false
+            refresh_jwt: ~
         register:    
             pattern: ^/api/register
             security: false

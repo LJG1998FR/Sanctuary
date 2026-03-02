@@ -1,8 +1,8 @@
 import apiClient, { tokenStorage } from './client';
 
 export const apiService = {
-    getVideos: async () => {
-		const data = await apiClient.post('/api/videos', { refresh_token: tokenStorage.getRefresh() })
+    getVideos: async (options) => {
+		const data = await apiClient.post('/api/videos', { ...options , refresh_token: tokenStorage.getRefresh() })
         .then((res) => {return res.data;});
         return data;
 	},

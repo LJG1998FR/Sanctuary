@@ -1,24 +1,39 @@
 import { useState, useEffect } from "react";
 import { apiService } from "@/api/services";
 import Loading from "@/components/Loading";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
+import Pagination from "../components/Pagination";
+import Filter from "../components/Filter";
 
 export default function VideosList() {
 
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [nbPages, setNbPages] = useState(null);
+    const [limitOptions, setLimitOptions] = useState(null);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [options, setOptions] = useState([]);
 
     const uploadsUrl = import.meta.env.VITE_API_URL + "/uploads/";
     const defaultThumbnailUrl = uploadsUrl + "defaults/default_thumbnail.jpg";
 
     useEffect(() => {
+        var options = [];
+        searchParams.forEach((value, key) => {
+            options[key] = value;
+        })
+        setOptions(options);
         apiService
-            .getVideos()
+            .getVideos(options)
             .then((res) => {
             if (res.success === true) {
-                var apiVideos = Object.values(res.data.items)
+                var data = res.data;
+                var apiVideos = Object.values(data.items);
                 setVideos(apiVideos);
+                setNbPages(data.nb_pages);
+                setLimitOptions(Object.values(data.limitOptions));
+                
             } else {
                 setError("Cannot fetch data.");
             }
@@ -29,7 +44,7 @@ export default function VideosList() {
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
+    }, [searchParams]);
 
     if (loading) return <Loading/>;
     if (error)   return <p style={{ color: "red" }}>{error}</p>;
@@ -39,6 +54,11 @@ export default function VideosList() {
     return (
         <>
         <h1 className="ms-4">All Videos</h1>
+        <Filter limit={searchParams.get('limit') ?? '5'}
+            field={searchParams.get('field') ?? 'title'}
+            order={searchParams.get('order') ?? 'ASC'}
+            search={searchParams.get('search') ?? ''}
+            limitOptions={limitOptions} />
         <div id="card-container" className="d-flex flex-wrap mx-auto gap-2">
             {videos.map((video) => {
                 const thumbnailSrc = video.thumbnailname
@@ -72,6 +92,14 @@ export default function VideosList() {
                 );
             })}
         </div>
+
+        ({nbPages > 1 && <Pagination page={parseInt(searchParams.get('page')) ?? 1}
+            nb_pages={nbPages}
+            limit={parseInt(searchParams.get('limit')) ?? 5}
+            field={searchParams.get('field') ?? 'title'}
+            order={searchParams.get('order') ?? 'ASC'}
+            search={searchParams.get('search') ?? ''} />})
+
         </>
     );
 }

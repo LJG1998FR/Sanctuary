@@ -30,16 +30,19 @@ BO:
 - Add Sorting+Searching for videos/collections/tags => OK
 - Login/Logout nav => OK
 
-
-
-
-
-
-
+- Dynamic wordings
+- Register users/admins
+- Users/Admins View
+- Tags API calls (getAll, getOne, GetVideosByTag)
+- Random video/collection API functions
 
 
 
 FRONT
+- Gallery (Index + Item)
+- Tags CRUD
+- Register page
+- User profile page
 - Add games (Memory + Puzzle)
-- Random video/collection/photo
-- Search bar
+- Random video/collection
+- Filters => OK
