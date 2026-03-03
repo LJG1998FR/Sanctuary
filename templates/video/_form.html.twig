@@ -1,13 +1,13 @@
 <div id="form_container" class="w-50 mx-auto mt-5 d-flex flex-column justify-content-center">
-    <h2>{{ video.id ? 'Edit Video' : 'Create Video' }}</h2>
+    <h2>{{ video.id ? "admin.videos.form.title_edit"|trans : "admin.videos.form.title_create"|trans }}</h2>
     {{ form_start(form) }}
-        {{ form_row(form.title, {'label': 'Title : '}) }}
+        {{ form_row(form.title, {'label': "admin.videos.form.label_title"|trans }) }}
         {{ form_row(form.filename) }}
-        {{ form_row(form.thumbnailname) }}
+        {{ form_row(form.thumbnailname, {'label' : "admin.videos.form.label_thumbnail"|trans }) }}
         <div class="d-none">{{ form_row(form.tags) }}</div>
         <div class="dropdown mb-3">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownTagsButton" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
-                Tags
+                {{ "admin.videos.form.label_tags"|trans }}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownTagsButton">
                 {% for tag in tags %}

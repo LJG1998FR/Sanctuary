@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}Tag : {{ tag.name }} {% endblock %}
+{% block subtitle %}{{ "admin.tags.video.title"|trans({'{tagname}': tag.name}) }} {% endblock %}
 
 {% block body %}
     {% for message in app.flashes('tag_notification') %}
@@ -18,11 +18,11 @@
     {% endfor %}
 
     <div id="header" class="d-flex align-items-center ms-4">
-        <h1 id="title">Add The Tag : {{tag.name}} To Videos</h1>
+        <h1 id="title">{{ "admin.tags.video.title"|trans({'{tagname}': tag.name}) }}</h1>
     </div>
 
     <div class="d-flex align-items-center ms-4 mt-2">
-        <h4>Items per page : </h4>
+        <h4>{{"common.pagination.items_per_page"|trans }}</h4>
         <div class="btn-group ms-3" role="group">
             {% for option in limitOptions %}
                 <a class="btn btn-dark pagination-option {{ option == limitOptions[0] ? 'disabled' : '' }}" data-limit={{ option }} href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'limit' : option }) }}" data-turbo-frame="tagsbyvideo_list">
@@ -38,7 +38,7 @@
             <thead>
                 <tr>
                     <th class="col-1" scope="col">#</th>
-                    <th class="col-6" scope="col">Title</th>
+                    <th class="col-6" scope="col">{{ "admin.tags.table.header_title"|trans }}</th>
                 </tr>
             </thead>
             <tbody id="main-container">
@@ -48,7 +48,7 @@
                         <td class="table-light">{{ video.title }}</td>
                     </tr>
                 {% else %}
-                    <h2>No videos found.</h2>
+                    <h2>{{ "admin.videos.empty_table"|trans }}</h2>
                 {% endfor %}
             </tbody>
         </table>
@@ -57,14 +57,14 @@
             <nav aria-label="video navigation">
                 <ul class="pagination justify-content-center">
                     <li class="page-item {{ (page == 1 ? "disabled" : "") }}">
-                        <a class="page-link" href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="tagsbyvideo_list">Previous</a>
+                        <a class="page-link" href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'page': page - 1, 'limit' : limit}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="tagsbyvideo_list">{{ "common.pagination.previous"|trans }}</a>
                     </li>
                 
                     {% for index in 1.. nb_pages %}
                         <li class="page-item {{ (page == index ? "disabled" : "") }}"><a class="page-link" href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'page': index, 'limit' : limit}) }}" data-turbo-frame="tagsbyvideo_list">{{ index }}</a></li>
                     {% endfor %}
                     <li class="page-item {{ page + 1 <= nb_pages ? "" : "disabled" }}">
-                        <a class="page-link" href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="tagsbyvideo_list">Next</a>
+                        <a class="page-link" href="{{ path('admin_tag_show', {'slugger': tag.slugger, 'page': page + 1, 'limit' : limit}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="tagsbyvideo_list">{{ "common.pagination.next"|trans }}</a>
                     </li>
                 </ul>
             </nav>

@@ -1,0 +1,256 @@
+{
+    "common": {
+        "buttons": {
+            "submit": "Submit",
+            "cancel": "Cancel",
+            "save": "Save",
+            "delete": "Delete",
+            "edit": "Edit",
+            "back": "Back",
+            "confirm": "Confirm",
+            "close": "Close",
+            "search": "Search",
+            "filter": "Filter",
+            "reset": "Reset"
+        },
+        "messages": {
+            "success": "Operation successful",
+            "error": "An error occurred",
+            "loading": "Loading...",
+            "no_results": "No results found",
+            "confirm_delete": "Are you sure you want to delete this item?"
+        },
+        "navigation": {
+            "gallery": "Gallery",
+            "tags": "Tags",
+            "videos": "Videos",
+            "profile": "Profile",
+            "gallery_random": "Random Photo Collection",
+            "video_random": "Random Video",
+            "upload_new_video": "Upload New Video",
+            "add_collection": "Add A Collection",
+            "add_tags": "Add Tags",
+            "logout": "Logout",
+            "login": "Login"
+        },
+        "forms": {
+            "required_field": "This field is required",
+            "invalid_email": "Invalid email format",
+            "password_too_short": "Password must be at least 8 characters",
+            "passwords_mismatch": "Passwords do not match"
+        },
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "items_per_page": "Items per page : "
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Please log in to your account",
+            "label_username": "Username",
+            "label_password": "Password",
+            "placeholder_username": "Enter your username",
+            "placeholder_password": "Enter your password",
+            "button_submit": "Log in",
+            "link_register": "Don't have an account? Sign up",
+            "link_forgot_password": "Forgot password?",
+            "error_invalid_credentials": "Invalid username or password",
+            "error_account_locked": "Your account has been locked"
+        },
+        "register": {
+            "title": "Create your account",
+            "subtitle": "Join the Sanctuary community",
+            "label_username": "Username",
+            "label_email": "Email address",
+            "label_password": "Password",
+            "label_password_confirm": "Confirm password",
+            "placeholder_username": "Choose a username",
+            "placeholder_email": "your.email@example.com",
+            "placeholder_password": "Minimum 8 characters",
+            "button_submit": "Create account",
+            "link_login": "Already have an account? Log in",
+            "success_message": "Account created successfully! You can now log in.",
+            "error_username_taken": "This username is already taken",
+            "error_email_taken": "This email is already registered"
+        },
+        "profile": {
+            "title": "My Profile",
+            "section_info": "Personal Information",
+            "label_username": "Username",
+            "label_email": "Email",
+            "label_joined_date": "Member since",
+            "section_security": "Security",
+            "button_change_password": "Change password",
+            "button_delete_account": "Delete my account",
+            "success_update": "Profile updated successfully"
+        },
+        "logout": {
+            "success_message": "You have been logged out successfully"
+        }
+    },
+    "home": {
+        "description": "TBD",
+        "local_description": "TBD"
+    },
+    "videos": {
+        "list": {
+            "title": "Video Library",
+            "subtitle": "Browse our collection",
+            "empty_state": "No videos available yet",
+            "search_placeholder": "Search videos by title...",
+            "filter_label": "Filter by",
+            "sort_label": "Sort by",
+            "sort_options": {
+                "title_asc": "Title (A-Z)",
+                "title_desc": "Title (Z-A)",
+                "date_newest": "Newest first",
+                "date_oldest": "Oldest first"
+            },
+            "load_error": "Failed to load videos. Please try again."
+        },
+        "detail": {
+            "title": "Watching : {title}",
+            "section_info": "Information",
+            "empty_tags": "No tags",
+            "label_title": "Title",
+            "label_description": "Description",
+            "label_duration": "Duration",
+            "label_created_at": "Published on",
+            "label_views": "Views",
+            "button_play": "Play video",
+            "button_share": "Share",
+            "button_add_favorite": "Add to favorites",
+            "error_not_found": "This video does not exist",
+            "error_load": "Failed to load video details"
+        }
+    },
+    "admin": {
+        "dashboard": {
+            "title": "Admin Dashboard",
+            "welcome": "Welcome to the admin dashboard, {username} !",
+            "stats": {
+                "total_videos": "Total Videos",
+                "total_users": "Total Users",
+                "new_today": "New Today"
+            }
+        },
+        "videos": {
+            "title": "All Videos",
+            "button_delete_selected": "Delete Selected Videos",
+            "search_placeholder": "Search...",
+            "empty_table": "No videos registered.",
+            "add_first": "Maybe add one ?",
+            "table": {
+                "header_title": "Title",
+                "header_created_at": "Date Added",
+                "header_actions": "Actions"
+            },
+            "form": {
+                "title_create": "Create a new video",
+                "title_edit": "Edit Video",
+                "label_title": "Video title :",
+                "label_description": "Description",
+                "label_file": "Video file",
+                "label_thumbnail": "Add A Thumbnail (Optional) :",
+                "label_tags": "Tags",
+                "button_save": "Save video",
+                "button_cancel": "Cancel"
+            },
+            "messages": {
+                "success_created": "Video created successfully",
+                "success_updated": "Video updated successfully",
+                "success_deleted": "Video deleted successfully",
+                "error_not_found": "Video not found",
+                "confirm_delete": "Are you sure you want to delete the video \"{title}\"?"
+            }
+        },
+        "tags": {
+            "title": "All Tags",
+            "button_delete_selected": "Delete Selected Tags",
+            "search_placeholder": "Search...",
+            "empty_table": "No tags registered.",
+            "add_first": "Maybe add one ?",
+            "table": {
+                "header_title": "Title",
+                "header_created_at": "Date Added",
+                "header_actions": "Actions"
+            },
+            "form": {
+                "title_create": "Create new tags",
+                "title_edit": "Edit Tag",
+                "label_title": "Label :",
+                "label_create_title": "Labels (separate tags with a '|') : ",
+                "button_save": "Save",
+                "button_cancel": "Cancel"
+            },
+            "video": {
+                "title": "Add The Tag : {tagname} To Videos"
+            },
+            "messages": {
+                "success_created": "Tag created successfully",
+                "success_updated": "Tag updated successfully",
+                "success_deleted": "Tag deleted successfully",
+                "error_not_found": "Tag not found",
+                "confirm_delete": "Are you sure you want to delete the tag \"{name}\"?"
+            }
+        },
+        "gallery": {
+            "title": "Gallery",
+            "button_delete_selected": "Delete Selected Collections",
+            "search_placeholder": "Search...",
+            "empty_table": "The gallery is empty.",
+            "add_first": "Maybe add a collection ?",
+            "table": {
+                "header_title": "Title",
+                "header_created_at": "Date Added",
+                "header_actions": "Actions"
+            },
+            "form": {
+                "title_create": "Create new collection",
+                "title_edit": "Edit Collection",
+                "label_title": "Title :",
+                "label_cover": "Cover :",
+                "label_update_cover": "Update or Add A Cover :",
+                "button_save": "Save",
+                "button_cancel": "Cancel"
+            },
+            "detail": {
+                "empty_collection": "This collection is empty. Maybe add some photos ?"
+            },
+            "messages": {
+                "success_created": "Collection created successfully",
+                "success_updated": "Collection updated successfully",
+                "success_deleted": "Collection deleted successfully",
+                "error_not_found": "Collection not found",
+                "confirm_delete": "Are you sure you want to delete the tag \"{title}\"?"
+            }
+        },
+        "users": {
+            "title": "User Management",
+            "button_add": "Add new user",
+            "table": {
+                "header_id": "ID",
+                "header_username": "Username",
+                "header_email": "Email",
+                "header_roles": "Roles",
+                "header_created_at": "Registered",
+                "header_actions": "Actions"
+            },
+            "form": {
+                "title_create": "Create a new user",
+                "title_edit": "Edit user",
+                "label_username": "Username",
+                "label_email": "Email",
+                "label_password": "Password",
+                "label_roles": "Roles",
+                "button_save": "Save user"
+            },
+            "messages": {
+                "success_created": "User created successfully",
+                "success_updated": "User updated successfully",
+                "success_deleted": "User deleted successfully"
+            }
+        }
+    }
+}

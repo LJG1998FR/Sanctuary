@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}Edit Collection{% endblock %}
+{% block subtitle %}{{ "admin.gallery.form.title_edit"|trans }}{% endblock %}
 
 {% block body %}
 
-    {{ include('photo_collection/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('photo_collection/_form.html.twig', {'button_label': "admin.gallery.form.button_save"|trans}) }}
 
 {% endblock %}

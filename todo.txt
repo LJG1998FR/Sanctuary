@@ -31,6 +31,8 @@ BO:
 - Login/Logout nav => OK
 
 - Dynamic wordings
+ - BO => OK
+ - Front => OK
 - Register users/admins
 - Users/Admins View
 - Tags API calls (getAll, getOne, GetVideosByTag)
@@ -39,6 +41,7 @@ BO:
 
 
 FRONT
+- Preload assets (+videos?)
 - Gallery (Index + Item)
 - Tags CRUD
 - Register page
@@ -46,3 +49,5 @@ FRONT
 - Add games (Memory + Puzzle)
 - Random video/collection
 - Filters => OK
+- Home page
+- Favorites ?

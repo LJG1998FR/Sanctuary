@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}Edit Video{% endblock %}
+{% block subtitle %}{{ "admin.videos.form.title_edit"|trans }}{% endblock %}
 
 {% block body %}
     {{ include('video/_form.html.twig', {'button_label': 'Update'}) }}

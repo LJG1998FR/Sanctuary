@@ -1,8 +1,8 @@
 <div id="form_container" class="w-50 mx-auto mt-5 d-flex flex-column justify-content-center">
-    <h2>{{ tag.id ? 'Edit Tag' : 'Add Tags' }}</h2>
+    <h2>{{ tag.id ? "admin.tags.form.title_edit"|trans : "admin.tags.form.title_create"|trans }}</h2>
     {{ form_start(form) }}
-        {{ form_row(form.name, {'label': tag.id ? 'Label' : 'Labels (separate tags with a "|") : ' }) }}
-        <a class="btn btn-danger" href="{{ path('admin_tag_index') }}">Cancel</a>
+        {{ form_row(form.name, {'label': tag.id ? "admin.tags.form.label_title"|trans : "admin.tags.form.label_create_title"|trans }) }}
+        <a class="btn btn-danger" href="{{ path('admin_tag_index') }}">{{ "admin.tags.form.button_cancel"|trans }}</a>
         <button class="btn btn-dark">{{ button_label|default('Save') }}</button>
     {{ form_end(form) }}
 </div>

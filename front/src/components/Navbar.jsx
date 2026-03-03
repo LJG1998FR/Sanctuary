@@ -2,12 +2,14 @@
 import { useAuth } from '@/context/AuthContext';
 import { authApi } from '@/api/auth';
 import { Link, useLocation } from "react-router";
+import { useTranslation } from '../hooks/useTranslations';
 
 export default function Navbar(){
 	const {isAuthenticated} = useAuth();
 	const location = useLocation();
   	const isActive = (path) => location.pathname === path;
 	const appName = import.meta.env.VITE_APP_NAME;
+	const { t } = useTranslation();
 
 	return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
 			<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,22 +21,22 @@ export default function Navbar(){
 						<Link className={isActive('/') ? 'nav-link active' : 'nav-link'} to="/">{appName}</Link>
 					</li>
 					{/* <li className="nav-item">
-						<a className="nav-link" href="/tags">All Tags</a>
+						<a className="nav-link" href="/tags">{t('common.navigation.tags')}</a>
 					</li> */}
 					<li className="nav-item">
-						<Link className={isActive('videos') ? 'nav-link active' : 'nav-link'} to="/videos">All Videos</Link>
+						<Link className={isActive('videos') ? 'nav-link active' : 'nav-link'} to="/videos">{t('common.navigation.videos')}</Link>
 					</li>
 					<li className="nav-item">
-						<Link className={isActive('gallery') ? 'nav-link active' : 'nav-link'} to="/gallery">Gallery</Link>
+						<Link className={isActive('gallery') ? 'nav-link active' : 'nav-link'} to="/gallery">{t('common.navigation.gallery')}</Link>
 					</li>
 					<li className="nav-item">
-						<Link className="nav-link" id="randomphoto" to="/gallery/random">Random Collection</Link>
+						<Link className="nav-link" id="randomphoto" to="/gallery/random">{t('common.navigation.gallery_random')}</Link>
 					</li>
 					<li className="nav-item">
-						<Link className="nav-link" id="randomvideo" to="/videos/random">Random Video</Link>
+						<Link className="nav-link" id="randomvideo" to="/videos/random">{t('common.navigation.video_random')}</Link>
 					</li>
 					{isAuthenticated && <li className="nav-item">
-						<Link className="nav-link" to="#" onClick={handleLogout}>Logout</Link>
+						<Link className="nav-link" to="#" onClick={handleLogout}>{t('common.navigation.logout')}</Link>
 					</li>
 					}
 				</ul>

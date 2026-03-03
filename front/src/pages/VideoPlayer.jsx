@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useParams } from 'react-router';
 import { apiService } from "@/api/services";
 import Loading from "@/components/Loading";
+import { useTranslation } from "../hooks/useTranslations";
 
 export default function VideoPlayer() {
 
     const [video, setVideo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { t } = useTranslation();
 
     const uploadsUrl = import.meta.env.VITE_API_URL + "/uploads/";
     const { slugger } = useParams(); 
@@ -35,7 +37,7 @@ export default function VideoPlayer() {
 
     return (
         <>
-        <h1 className="ms-4">Watching: {video.title} (<span className="duration_info"></span>)</h1>
+        <h1 className="ms-4">{t('videos.detail.title', {title: video.title})} (<span className="duration_info">{t('videos.detail.label_duration')}</span>)</h1>
         <div id="card-container" className="d-flex flex-wrap mx-auto gap-2">
             <video id="course-video" width="100%" controls>
                 <source src={uploadsUrl + 'videos/' + video.filename} type="video/mp4" />
@@ -56,7 +58,7 @@ function setVideoControls(){
             var minutes = parseInt(video.duration / 60, 10);
             var seconds = parseInt(video.duration % 60);
 
-            durationInfo.innerHTML = `Duration: ${minutes}:` + (seconds < 10 ? `0${seconds}` : `${seconds}`);
+            durationInfo.innerHTML += ` : ${minutes}:` + (seconds < 10 ? `0${seconds}` : `${seconds}`);
             clearInterval(i);
         }
     }, 200);

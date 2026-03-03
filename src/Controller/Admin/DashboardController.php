@@ -5,21 +5,21 @@ namespace App\Controller\Admin;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Translation\TranslatableMessage;
 
-//#[Route('admin')]
+#[IsGranted('ROLE_ADMIN')]
 final class DashboardController extends AbstractController
 {
     #[Route(name: 'admin_gotodashboard')]
     public function gotoDashboard(): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->redirectToRoute('dashboard');
     }
     
     #[Route(name: 'dashboard', path: '/admin')]
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('home/index.html.twig', [
             
         ]);

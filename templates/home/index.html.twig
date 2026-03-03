@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ appname }} - Dashboard{% endblock %}
+{% block subtitle %} {{ "admin.dashboard.title"|trans }} {% endblock %}
 
 {% block body %}
-    <h1>Admin Dashboard</h1>
+    <h1>{{ "admin.dashboard.title"|trans }}</h1>
+
+    {{ "admin.dashboard.welcome"|trans({'{username}': app.user.username}) }}
 {% endblock %}

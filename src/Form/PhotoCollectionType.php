@@ -16,7 +16,6 @@ class PhotoCollectionType extends AbstractType
         $builder
             ->add('title')
             ->add('cover', FileType::class, [
-                'label' => 'Add A Cover : ',
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [

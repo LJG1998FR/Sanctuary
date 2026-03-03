@@ -4,6 +4,7 @@ import Loading from "@/components/Loading";
 import { Link, useSearchParams } from "react-router";
 import Pagination from "../components/Pagination";
 import Filter from "../components/Filter";
+import { useTranslation } from "../hooks/useTranslations";
 
 export default function VideosList() {
 
@@ -14,6 +15,7 @@ export default function VideosList() {
     const [limitOptions, setLimitOptions] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const [options, setOptions] = useState([]);
+    const { t } = useTranslation();
 
     const uploadsUrl = import.meta.env.VITE_API_URL + "/uploads/";
     const defaultThumbnailUrl = uploadsUrl + "defaults/default_thumbnail.jpg";
@@ -48,12 +50,12 @@ export default function VideosList() {
 
     if (loading) return <Loading/>;
     if (error)   return <p style={{ color: "red" }}>{error}</p>;
-    if (videos.length === 0) return <p>No available data.</p>;
+    if (videos.length === 0) return <p>{t('videos.list.empty_state')}</p>;
 
 
     return (
         <>
-        <h1 className="ms-4">All Videos</h1>
+        <h1 className="ms-4">{t('videos.list.title')}</h1>
         <Filter limit={searchParams.get('limit') ?? '5'}
             field={searchParams.get('field') ?? 'title'}
             order={searchParams.get('order') ?? 'ASC'}
@@ -84,7 +86,7 @@ export default function VideosList() {
                                         </li>
                                     ))
                                 ) : (
-                                    <li className="video_tag">No tags</li>
+                                    <li className="video_tag">{t('videos.detail.empty_tags')}</li>
                                 )}
                             </ul>
                         </div>

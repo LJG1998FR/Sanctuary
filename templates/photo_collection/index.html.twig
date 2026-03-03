@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}Gallery{% endblock %}
+{% block subtitle %}{{ "admin.gallery.title"|trans }}{% endblock %}
 
 {% block body %}
 
@@ -11,13 +11,13 @@
         </div>
     {% endfor %}
     <div class="d-flex align-items-center ms-4">
-        <h1 id="title">Gallery</h1>
+        <h1 id="title">{{ "admin.gallery.title"|trans }}</h1>
         <a class="btn btn-dark ms-3" href="{{ path('admin_photo_collection_new') }}"><i class="bi bi-plus-circle"></i></a>
-        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_photo_collection_index') }}" id="deleteSelected" data-turbo-frame="gallery_list">Delete Selected Collections</a>
+        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_photo_collection_index') }}" id="deleteSelected" data-turbo-frame="gallery_list">{{ "admin.gallery.button_delete_selected"|trans }}</a>
     </div>
 
     <div class="d-flex align-items-center ms-4">
-        <h4>Items per page : </h4>
+        <h4>{{ "common.pagination.items_per_page"|trans }}</h4>
         <div class="btn-group ms-3" role="group">
         {% for option in limitOptions %}
             <a class="btn btn-dark pagination-option {{ option == limitOptions[0] ? 'disabled' : '' }}" data-limit={{ option }} href="{{ path('admin_photo_collection_index', {'limit' : option }) }}" data-turbo-frame="gallery_list">
@@ -28,7 +28,7 @@
 
         <form class="form-inline my-2 ms-3 my-lg-0 d-flex" id="searchform" action="#" data-turbosrc="{{ path('admin_photo_collection_index', {'limit' : limit, 'order': order, 'search': search }) }}" data-turbo-frame="gallery_list">
             <input type="search" class="form-control" placeholder="Search..." aria-label="Search" id="searchbar" autocomplete = off>
-            <button class="btn btn-outline-success">Submit</button>
+            <button class="btn btn-outline-success">{{ "common.buttons.submit"|trans }}</button>
         </form>
         <a class="btn btn-dark ms-4" href="{{ path('admin_photo_collection_index') }}" id="resetSearchBtn" data-turbo-frame="list"><i class="bi bi-x-lg"></i></a>
     </div>

@@ -1,12 +1,14 @@
 import { Form, Link, useSearchParams } from "react-router";
+import { useTranslation } from "../hooks/useTranslations";
 
 export default function Filter({ limit, field, order, search, limitOptions} ){
 
+    const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
     const isDisabled = (option) => option === parseInt(limit);
     const buildSearch = (limit, search) => "?page=1&limit="+limit+"&field="+field+"&order="+order+"&search="+search;
     return(<div className="d-flex align-items-center ms-4 mb-4">
-        <h4>Items per page : </h4>
+        <h4>{t('common.pagination.items_per_page')}</h4>
         <div className="btn-group ms-3" role="group">
          
             {limitOptions.map((option) => {
@@ -18,7 +20,7 @@ export default function Filter({ limit, field, order, search, limitOptions} ){
         </div>
 
         <div className="ms-3">
-            <input type="search" className="form-control" placeholder="Search..." aria-label="Search" id="searchbar" autoComplete="off" onChange={e => updateSearch(e)}/>
+            <input type="search" className="form-control" placeholder={t('videos.list.search_placeholder')} aria-label="Search" id="searchbar" autoComplete="off" onChange={e => updateSearch(e)}/>
         </div>
         
     </div>);

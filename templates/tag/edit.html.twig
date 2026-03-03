@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}Edit Tag{% endblock %}
+{% block subtitle %}{{ "admin.tags.form.title_edit"|trans }}{% endblock %}
 
 {% block body %}
     {{ include('tag/_form.html.twig', {'button_label': 'Update'}) }}

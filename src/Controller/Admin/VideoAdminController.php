@@ -86,8 +86,7 @@ final class VideoAdminController extends AbstractController
         return $this->render('video/new.html.twig', [
             'video' => $video,
             'form' => $form,
-            'tags' => $tagRepository->findAll(),
-            'page_name' => 'Add A Video'
+            'tags' => $tagRepository->findAll()
         ]);
     }
 

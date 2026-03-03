@@ -26,12 +26,11 @@ class VideoType extends AbstractType
                         'mimeTypes' => [
                             'video/*',
                         ],
-                        'mimeTypesMessage' => 'Please upload a video file',
+                        'mimeTypesMessage' => 'Please upload a video file.',
                     ])
                 ],
             ])
             ->add('thumbnailname', FileType::class, [
-                'label' => 'Add A Thumbnail (Optional)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [

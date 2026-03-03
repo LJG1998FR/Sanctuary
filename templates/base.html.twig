@@ -17,7 +17,7 @@
     <body>
         <div data-turbo-permanent id="spinner" class="d-flex justify-content-center align-items-center">
             <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">{{ "common.messages.loading"|trans }}</span>
             </div>
         </div>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -32,36 +32,30 @@
                                 <a class={{ app.request.get('_route') == "dashboard" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{path('dashboard')}}">{{ appname }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_tag_index" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_tag_index') }}">All Tags</a>
+                                <a class={{ app.request.get('_route') == "admin_tag_index" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_tag_index') }}">{{ "common.navigation.tags"|trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_video_index" or app.request.get('_route') == "admin_video_index_reverse" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{path('admin_video_index')}}">All Videos</a>
+                                <a class={{ app.request.get('_route') == "admin_video_index" or app.request.get('_route') == "admin_video_index_reverse" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{path('admin_video_index')}}">{{ "common.navigation.videos"|trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_photo_collection_index" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_photo_collection_index') }}">Gallery</a>
-                            </li>
-                            {#<li class="nav-item">
-                                <a class="nav-link" id="randomphoto" href="{{ path('admin_photo_random') }}">Random Photo</a>
+                                <a class={{ app.request.get('_route') == "admin_photo_collection_index" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_photo_collection_index') }}">{{ "common.navigation.gallery"|trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="randomvideo" href="{{ path('admin_video_random') }}">Random Video</a>
-                            </li> #}
-                            <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_video_new" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_video_new') }}">Upload New Video</a>
+                                <a class={{ app.request.get('_route') == "admin_video_new" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_video_new') }}">{{ "common.navigation.upload_new_video"|trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_photo_collection_new" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_photo_collection_new') }}">Add A Collection</a>
+                                <a class={{ app.request.get('_route') == "admin_photo_collection_new" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_photo_collection_new') }}">{{ "common.navigation.add_collection"|trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_tag_new" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_tag_new') }}">Add Tags</a>
+                                <a class={{ app.request.get('_route') == "admin_tag_new" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_tag_new') }}">{{ "common.navigation.add_tags"|trans }}</a>
                             </li>
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_logout" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_logout') }}">Logout</a>
+                                <a class={{ app.request.get('_route') == "admin_logout" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_logout') }}">{{ "common.navigation.logout"|trans }}</a>
                             </li>
                             {% else %}
                             <li class="nav-item">
-                                <a class={{ app.request.get('_route') == "admin_login" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_login') }}">Login</a>
+                                <a class={{ app.request.get('_route') == "admin_login" ? "'nav-link fw-bold disabled'" : "nav-link" }} href="{{ path('admin_login') }}">{{ "common.navigation.login"|trans }}</a>
                             </li>
                             {% endif %}
                         </ul>
