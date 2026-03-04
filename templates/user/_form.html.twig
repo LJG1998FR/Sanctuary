@@ -1,0 +1,10 @@
+<div id="form_container" class="w-50 mx-auto mt-5 d-flex flex-column justify-content-center">
+    <h2>{{ user.id ? "admin.users.form.title_edit"|trans : "admin.users.form.title_create"|trans }}</h2>
+    {{ form_start(form) }}
+        {{ form_row(form.username, {'label': "admin.users.form.label_username"|trans }) }}
+        {{ form_row(form.password, {'label': "admin.users.form.label_password"|trans }) }}
+        {{ form_row(form.roles, {'label': "admin.users.form.label_roles"|trans }) }}
+        <a class="btn btn-danger" href="{{ path('admin_tag_index') }}">{{ "admin.tags.form.button_cancel"|trans }}</a>
+        <button class="btn btn-dark">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+</div>

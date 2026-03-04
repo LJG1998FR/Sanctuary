@@ -33,8 +33,9 @@ BO:
 - Dynamic wordings
  - BO => OK
  - Front => OK
-- Register users/admins
-- Users/Admins View
+- Register users/admins => OK
+- Finish register tpl
+- Admins CRUD
 - Tags API calls (getAll, getOne, GetVideosByTag)
 - Random video/collection API functions
 
