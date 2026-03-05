@@ -1,39 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block subtitle %}{{ "admin.user.title"|trans }}{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>
-                    <a href="{{ path('admin_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('admin_user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
+    {% for message in app.flashes('user_notification') %}
+        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+           {{ message }}
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    <div id="header" class="d-flex align-items-center ms-4">
+        <h1 id="title">{{ "admin.users.title"|trans }}</h1>
+        <a class="btn btn-dark ms-3" href="{{ path('admin_user_new') }}"><i class="bi bi-plus-circle"></i></a>
+        <a class="btn btn-dark ms-4 disabled" href="{{ path('admin_user_index') }}" id="deleteSelected" data-turbo-frame="user_list">{{ "admin.users.button_delete_selected"|trans }}</a>
+    </div>
+
+    <div class="d-flex align-items-center ms-4">
+        <h4>{{ "common.pagination.items_per_page"|trans }}</h4>
+        <div class="btn-group ms-3" role="group">
+        {% for option in limitOptions %}
+            <a class="btn btn-dark pagination-option {{ option == limitOptions[0] ? 'disabled' : '' }}" data-limit={{ option }} href="{{ path('admin_user_index', {'limit' : option }) }}" data-turbo-frame="user_list">
+                {{ option }}
+            </a>
         {% endfor %}
-        </tbody>
-    </table>
+        </div>
 
-    <a href="{{ path('admin_user_new') }}">Create new</a>
-{% endblock %}
+        <form class="form-inline my-2 ms-3 my-lg-0 d-flex" id="searchform" action="#" data-turbosrc="{{ path('admin_user_index', {'limit' : limit, 'order': order, 'search': search }) }}" data-turbo-frame="user_list">
+            <input type="search" class="form-control" placeholder="Search..." aria-label="Search" id="searchbar" autocomplete = off>
+            <button class="btn btn-outline-success">{{ "common.buttons.submit"|trans }}</button>
+        </form>
+        <a class="btn btn-dark ms-4" href="{{ path('admin_user_index') }}" id="resetSearchBtn" data-turbo-frame="list"><i class="bi bi-x-lg"></i></a>
+    </div>
+
+    <turbo-frame id="user_list">
+        {% include "user/_list.html.twig" with { usersByPage, nb_pages, limit, page, search } %}
+    </turbo-frame>
+{% endblock %} 

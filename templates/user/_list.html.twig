@@ -1,0 +1,58 @@
+{% if usersByPage is not empty %}
+<table class="container table table-light table-striped table-hover" data-controller="user">
+    <thead>
+        <tr>
+            <th class="col-1" scope="col">#</th>
+            <th class="col-6" scope="col">{{ "admin.users.table.header_username"|trans }} 
+                <a href="{{ path('admin_user_index', {'field': 'username', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'limit': limit, 'search': search }) }}" data-turbo-frame="user_list">
+                    <i class="link-dark bi bi-arrow-down-up"></i>
+                </a>
+            </th>
+            <th class="col-3" scope="col">{{ "admin.users.table.header_roles"|trans }} 
+                <a href="{{ path('admin_user_index', {'field': 'user_type', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'limit': limit, 'search': search }) }}" data-turbo-frame="user_list">
+                    <i class="link-dark bi bi-arrow-down-up"></i>
+                </a>
+            </th>
+            <th class="text-center" scope="col">{{ "admin.users.table.header_actions"|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in usersByPage %}
+        <tr>
+            <td><input data-userid={{ user.id }} class="form-check-input delete-checkbox" type="checkbox" value="" id="delete_checkbox_{{user.id}}" data-turbo-frame="user_list"></td>
+            <td class="table-light">{{ user.username }}</td>
+            <td class="table-light">{{ user.roles ? user.mainRole }}</td>
+            <td class="table-light d-flex justify-content-center gap-3">
+                <button class="btn btn-info">
+                    <a class="link-dark" href="{{ path('admin_user_edit', {'id': user.id}) }}" data-turbo-frame="_top">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </button>
+                {{ include('user/_delete_form.html.twig') }}
+            </td>
+        </tr>         
+    {% endfor %}
+    </tbody>
+</table> 
+    
+{% else %}
+    <h2>{{ "admin.users.empty_table"|trans }} <a href="{{ path('admin_user_new') }}">{{ "admin.users.add_first"|trans }}</a></h2>
+{% endif %}
+
+
+{% if nb_pages > 1 %}
+    <nav aria-label="user navigation">
+        <ul class="pagination justify-content-center">
+            <li class="{{ (page == 1 ? "page-item disabled" : "page-item") }}">
+                <a class="page-link" href="{{ path('admin_user_index', {'page': page - 1, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" tabindex="-1" aria-disabled="{{ (page == 1 ? "true" : "false") }}" data-turbo-frame="user_list">{{ "common.pagination.previous"|trans }}</a>
+            </li>
+        
+            {% for index in 1.. nb_pages %}
+                <li class="page-item"><a class="page-link" href="{{ path('admin_user_index', {'page': index, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" data-turbo-frame="user_list">{{ index }}</a></li>
+            {% endfor %}
+            <li class="{{ page + 1 <= nb_pages ? "page-item" : "page-item disabled" }}">
+                <a class="page-link" href="{{ path('admin_user_index', {'page': page + 1, 'limit' : limit, 'field': field, 'order' : order, 'search': search}) }}" aria-disabled="{{ ( page + 1 <= nb_pages ? "false" : "true") }}" data-turbo-frame="user_list">{{ "common.pagination.next"|trans }}</a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}

@@ -34,6 +34,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+
+    /**
+     * @var int The user type
+     * 0 = Super Admin
+     * 1 = Admin
+     * 2 = User
+     */
+    #[ORM\Column]
+    private int $user_type = 2;
+
+
+    private string $mainRole = "User";
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,6 +94,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    
+    public function getUserType(): int
+    {
+        return $this->user_type;
+    }
+
+    public function setUserType(int $userType): static
+    {
+        $this->user_type = $userType;
+        return $this;
+    }
+
+    public function getMainRole(): string
+    {
+        switch ($this->user_type) {
+            case 0:
+                $this->mainRole = "Super Admin";
+                break;
+            case 1:
+                $this->mainRole = "Admin";
+                break;
+            case 2:
+                $this->mainRole = "User";
+                break;
+            default:
+                $this->mainRole = "User";
+                break;
+        }
+        return $this->mainRole;
     }
 
     /**

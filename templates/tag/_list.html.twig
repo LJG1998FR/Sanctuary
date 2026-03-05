@@ -3,7 +3,7 @@
         <tr>
             <th class="col-1" scope="col">#</th>
             <th class="col-6" scope="col">{{ "admin.tags.table.header_title"|trans }} 
-                <a href="{{ path('admin_tag_index', {'field': 'name', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'search': search }) }}" data-turbo-frame="tags_list">
+                <a href="{{ path('admin_tag_index', {'field': 'name', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'limit': limit, 'search': search }) }}" data-turbo-frame="tags_list">
                     <i class="link-dark bi bi-arrow-down-up"></i>
                 </a>
             </th>

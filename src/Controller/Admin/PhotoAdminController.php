@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Photo;
 use App\Entity\PhotoCollection;
-use App\Form\PhotoType;
 use App\Form\UpdatePhotoType;
 use App\Helper\FileManager;
 use App\Repository\PhotoRepository;
@@ -38,9 +37,6 @@ final class PhotoAdminController extends AbstractController
     #[Route('/{photo_collection_id}/new', name: 'admin_photo_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, FileManager $fileManager, PhotoRepository $photoRepository, int $photo_collection_id): Response
     {
-        //$photoEntity = new Photo();
-        //$form = $this->createForm(PhotoType::class);
-        //$form->handleRequest($request);
         $photoCollection = $entityManager->getRepository(PhotoCollection::class)->find($photo_collection_id);
         $photoMaxPosition = $photoRepository->findMaxPosition($entityManager, $photoCollection);
 
@@ -66,21 +62,6 @@ final class PhotoAdminController extends AbstractController
         );
 
         return $this->redirectToRoute('admin_photo_collection_show', ['id' => $photoCollection->getId()], Response::HTTP_SEE_OTHER);
-        
-
-        /*return $this->render('photo/new.html.twig', [
-            'photo' => $photoEntity,
-            'form' => $form,
-            'photo_collection' => $photoCollection
-        ]);*/
-    }
-
-    #[Route('/{id}', name: 'admin_photo_show', methods: ['GET'])]
-    public function show(Photo $photo): Response
-    {
-        return $this->render('photo/show.html.twig', [
-            'photo' => $photo,
-        ]);
     }
 
     #[Route('/{id}/edit', name: 'admin_photo_edit', methods: ['GET', 'POST'])]

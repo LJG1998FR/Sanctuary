@@ -43,6 +43,7 @@ common:
     gallery: "Gallery"
     tags: "Tags"
     videos: "Videos"
+    users: "Users"
     profile: "Profile"
     gallery_random: "Random Photo Collection"
     video_random: "Random Video"
@@ -255,11 +256,13 @@ admin:
   users:
     title: "User Management"
     button_add: "Add new user"
+    button_delete_selected: "Delete Selected Users"
+    search_placeholder: "Search..."
     table:
       header_id: "ID"
       header_username: "Username"
       header_email: "Email"
-      header_roles: "Roles"
+      header_roles: "Main Role"
       header_created_at: "Registered"
       header_actions: "Actions"
     form:

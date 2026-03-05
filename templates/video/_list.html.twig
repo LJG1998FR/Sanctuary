@@ -3,12 +3,12 @@
         <tr>
             <th class="col-1" scope="col">#</th>
             <th class="col-6" scope="col">{{ "admin.videos.table.header_title"|trans }} 
-                <a href="{{ path('admin_video_index', {'field': 'title', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'search': search }) }}" data-turbo-frame="list">
+                <a href="{{ path('admin_video_index', {'field': 'title', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'limit': limit, 'search': search }) }}" data-turbo-frame="list">
                     <i class="link-dark bi bi-arrow-down-up"></i>
                 </a>
             </th>
             <th class="col-3" scope="col">{{ "admin.videos.table.header_created_at"|trans }}  
-                <a href="{{ path('admin_video_index', {'field': 'createdAt', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'search': search }) }}" data-turbo-frame="list">
+                <a href="{{ path('admin_video_index', {'field': 'createdAt', 'order' : (order == "ASC" ? "DESC" : "ASC"), 'limit': limit, 'search': search }) }}" data-turbo-frame="list">
                     <i class="link-dark bi bi-arrow-down-up"></i>
                 </a>
             </th>

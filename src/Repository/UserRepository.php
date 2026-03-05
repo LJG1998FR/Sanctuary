@@ -20,6 +20,36 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+    * @return User[] Returns an array of User objects
+    */
+    public function paginate($page = 1, $limit = 10, $field = "username", $order = "ASC", $search = "")
+    {
+        $query = $this->createQueryBuilder('u')
+            ->orderBy('u.'.$field, $order)
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->where('u.username LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    
+    /**
+    * @return User[] Returns an array of User objects
+    */
+    public function getItemsByFieldSearch($search = "")
+    {
+        $query = $this->createQueryBuilder('u')
+            ->where('u.username LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
