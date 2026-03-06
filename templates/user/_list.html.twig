@@ -19,7 +19,7 @@
     <tbody>
     {% for user in usersByPage %}
         <tr>
-            <td><input data-userid={{ user.id }} class="form-check-input delete-checkbox" type="checkbox" value="" id="delete_checkbox_{{user.id}}" data-turbo-frame="user_list"></td>
+            <td><input data-userid={{ user.id }} class="form-check-input delete-checkbox" type="checkbox" value="" id="delete_checkbox_{{user.id}}" {{ (app.user.id == user.id) ? "disabled" : "" }} data-turbo-frame="user_list"></td>
             <td class="table-light">{{ user.username }}</td>
             <td class="table-light">{{ user.roles ? user.mainRole }}</td>
             <td class="table-light d-flex justify-content-center gap-3">

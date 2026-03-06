@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %} {{ "auth.profile.title"|trans }} {% endblock %}
+
+{% block body %}
+
+{% for message in app.flashes('user_notification') %}
+    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('user_error_msg') %}
+    <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<div id="form_container" class="w-50 mx-auto mt-5 d-flex flex-column justify-content-center" data-turbo=false>
+    <h2>{{ "auth.profile.section_info"|trans }}</h2>
+    {{ form_start(form) }}
+        {{ form_row(form.username, {'label': "auth.profile.label_username"|trans }) }}
+        {{ form_row(form.password, {'label': "auth.profile.label_password"|trans }) }}
+        {{ form_row(form.confirmPassword, {'label': "auth.profile.label_confirm_password"|trans }) }}
+        <button class="btn btn-dark">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

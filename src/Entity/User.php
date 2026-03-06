@@ -36,6 +36,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
+     * @var string The confirmed password (only for check)
+     */
+    private ?string $confirmPassword = null;
+
+
+    /**
      * @var int The user type
      * 0 = Super Admin
      * 1 = Admin
@@ -125,6 +131,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 break;
         }
         return $this->mainRole;
+    }
+
+
+    public function getConfirmPassword(){
+        return $this->confirmPassword;
     }
 
     /**

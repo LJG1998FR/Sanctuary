@@ -1,4 +1,4 @@
-SJS TODO
+Sanctuary TODO
 
 BO:
 - Display updated-ranks msg => OK
@@ -34,8 +34,10 @@ BO:
  - BO => OK
  - Front => OK
 - Register users/admins => OK
-- Finish register tpl
-- Admins CRUD
+- Admins CRUD => OK
+- Add more controls on changing own profile data => OK
+- Remove register new admin model => OK
+- User Profile page => OK
 - Tags API calls (getAll, getOne, GetVideosByTag)
 - Random video/collection API functions
 

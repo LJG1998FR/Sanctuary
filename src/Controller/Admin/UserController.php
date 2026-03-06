@@ -144,6 +144,9 @@ final class UserController extends AbstractController
 
         foreach ($idsToDelete as $key => $id) {
             $user = $userRepository->find($id);
+            if($this->getUser() === $user){
+                continue;
+            }
             $entityManager->remove($user);
             $entityManager->flush();
         }
