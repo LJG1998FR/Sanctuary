@@ -11,6 +11,7 @@ parameters:
     photos_directory: '%kernel.project_dir%/public/uploads/photos'
     thumbnails_directory: '%kernel.project_dir%/public/uploads/thumbnails'
     covers_directory: '%kernel.project_dir%/public/uploads/covers'
+    defaults_directory: '%kernel.project_dir%/public/uploads/defaults'
     app_name: '%env(resolve:APP_NAME)%'
 services:
     # default configuration for services in *this* file

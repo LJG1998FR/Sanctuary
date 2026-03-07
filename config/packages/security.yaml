@@ -28,6 +28,9 @@ security:
         register:    
             pattern: ^/api/register
             security: false
+        preload:    
+            pattern: ^/api/preloadAssets
+            security: false
         login:
             pattern: ^/api/login
             stateless: true
@@ -69,6 +72,7 @@ security:
         - { path: ^/admin/login, roles: 'PUBLIC_ACCESS' }
         - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
         - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/api/preloadAssets,    roles: PUBLIC_ACCESS }
         - { path: ^/api/login,    roles: PUBLIC_ACCESS }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }

@@ -6,10 +6,12 @@ import VideoPlayer     from '@/pages/VideoPlayer';
 import Gallery     from '@/pages/Gallery';
 import GalleryItem from '@/pages/GalleryItem';
 import ProtectedRoute      from '@/components/ProtectedRoute';
+import Landing from '../pages/Landing';
 
 const AppRouter = () => {
     return (
         <Routes>
+            <Route path="/landing" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route element={<ProtectedRoute />}>
                 <Route path="/"                  element={<Home />} />

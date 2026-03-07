@@ -24,4 +24,10 @@ export const apiService = {
 		.then((res) => {return res.data;});
 		return data;
 	},
+
+	getPreloadAssets: async () => {
+		const data = await apiClient.post('/api/preloadAssets')
+        .then((res) => {return res.data;});
+        return data;
+	}
 }

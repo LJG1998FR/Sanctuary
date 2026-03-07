@@ -45,7 +45,7 @@ BO:
 
 
 FRONT
-- Preload assets (+videos?)
+- Preload assets => OK
 - Gallery (Index + Item)
 - Tags CRUD
 - Register page
@@ -53,6 +53,6 @@ FRONT
 - Add games (Memory + Puzzle)
 - Random video/collection
 - Filters => OK
-- Home page
-- Landing page ?
+- Home page => OK
+- Landing page => OK
 - Favorites ?
