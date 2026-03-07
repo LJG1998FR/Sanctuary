@@ -2,28 +2,27 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Video;
-use App\Repository\VideoRepository;
+use App\Entity\Tag;
+use App\Repository\TagRepository;
 use JMS\Serializer\SerializerBuilder;
-use JMS\Serializer\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-final class VideoController extends AbstractController
+#[IsGranted('ROLE_USER')]
+final class TagController extends AbstractController
 {
-    private const ALLOWED_FIELDS = ['title', 'createdAt'];
     private const ALLOWED_ORDERS = ['ASC', 'DESC'];
     private const MAX_LIMIT = 100;
     private const DEFAULT_LIMIT = 5;
     public function __construct(
-        private VideoRepository $videoRepository
+        private TagRepository $tagRepository
     ) {
     }
-    #[IsGranted('ROLE_USER')]
-    #[Route('/api/videos', name: 'api_video')]
+    
+    #[Route('/api/tags', name: 'api_tag')]
     public function getItems(Request $request): JsonResponse
     {
         $serializer = SerializerBuilder::create()->build();
@@ -33,11 +32,10 @@ final class VideoController extends AbstractController
             $params = json_decode($request->getContent(), true);
             $page = $this->validate('page', $params['page'] ?? 1);
             $limit = $this->validate('limit', $params['limit'] ?? self::DEFAULT_LIMIT);
-            $field = $this->validate('field', $params['field'] ?? 'title');
             $order = $this->validate('order', $params['order'] ?? 'ASC');
             $search = $this->validate('search', $params['search'] ?? '');
 
-            $dqlResult = $this->videoRepository->paginate($page, $limit, $field, $order, $search);
+            $dqlResult = $this->tagRepository->paginate($page, $limit, 'name', $order, $search);
             $videosByPage = $serializer->serialize($dqlResult, 'json');
 
             $response = [
@@ -46,11 +44,10 @@ final class VideoController extends AbstractController
                     "items" => json_decode($videosByPage, true),
                     "page" => $page,
                     "limit" => $limit,
-                    "field" => $field,
                     "order" => $order,
                     "search" => $search,
                     "limitOptions" => [5, 10, 50],
-                    "nb_pages" => ceil(count($this->videoRepository->getItemsByFieldSearch($search)) / $limit)
+                    "nb_pages" => ceil(count($this->tagRepository->getItemsByFieldSearch($search)) / $limit)
                 ]
             ];
             return new JsonResponse($response, 200);
@@ -66,41 +63,37 @@ final class VideoController extends AbstractController
             ], 400);
 
         }
-
-
-
     }
 
-    #[IsGranted('ROLE_USER')]
-    #[Route('/api/videos/{slugger:video}', name: 'api_video_show')]
-    public function getItem(Video $video): JsonResponse
+    #[Route('/api/tags/{slugger:tag}', name: 'api_tag_show')]
+    public function getItem(Tag $tag): JsonResponse
     {
 
         $serializer = SerializerBuilder::create()->build();
-        $video = $serializer->serialize($video, 'json');
+        $tag = $serializer->serialize($tag, 'json');
 
         $response = [
             "success" => true,
             "data" => [
-                "item" => json_decode($video, true)
+                "item" => json_decode($tag, true)
             ]
         ];
         return new JsonResponse($response, 200);
     }
 
     #[IsGranted('ROLE_USER')]
-    #[Route('/api/randomvideo', name: 'api_video_random')]
+    #[Route('/api/randomtag', name: 'api_tag_random')]
     public function getRandomItem(): JsonResponse
     {
 
         $serializer = SerializerBuilder::create()->build();
-        $random = $this->videoRepository->findRandom();
-        $video = $serializer->serialize($random, 'json');
+        $random = $this->tagRepository->findRandom();
+        $tag = $serializer->serialize($random, 'json');
 
         $response = [
             "success" => true,
             "data" => [
-                "item" => json_decode($video, true)
+                "item" => json_decode($tag, true)
             ]
         ];
         return new JsonResponse($response, 200);
@@ -120,13 +113,6 @@ final class VideoController extends AbstractController
                 if ($value > self::MAX_LIMIT) {
                     throw new \InvalidArgumentException(
                         sprintf('The limit cannot be more than %d', self::MAX_LIMIT)
-                    );
-                }
-                break;
-            case 'field':
-                if (!in_array($value, self::ALLOWED_FIELDS, true)) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Unauthorized field. Valid fields : %s', implode(', ', self::ALLOWED_FIELDS))
                     );
                 }
                 break;

@@ -20,9 +20,9 @@ export default function Navbar(){
 					<li className="nav-item">
 						<Link className={isActive('/') ? 'nav-link active' : 'nav-link'} to="/">{appName}</Link>
 					</li>
-					{/* <li className="nav-item">
-						<a className="nav-link" href="/tags">{t('common.navigation.tags')}</a>
-					</li> */}
+					<li className="nav-item">
+						<Link className={isActive('/tags') ? 'nav-link active' : 'nav-link'} to="/tags">{t('common.navigation.tags')}</Link>
+					</li>
 					<li className="nav-item">
 						<Link className={isActive('videos') ? 'nav-link active' : 'nav-link'} to="/videos">{t('common.navigation.videos')}</Link>
 					</li>

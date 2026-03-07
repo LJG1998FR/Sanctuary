@@ -45,6 +45,16 @@ class PhotoCollectionRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findRandom(): ?PhotoCollection
+    {
+        return $this->createQueryBuilder('pc')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     //    /**
     //     * @return PhotoCollection[] Returns an array of PhotoCollection objects
     //     */

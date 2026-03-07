@@ -42,6 +42,16 @@ class PhotoRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function findRandom(): ?Photo
+    {
+        return $this->createQueryBuilder('v')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
     //    /**
     //     * @return Photo[] Returns an array of Photo objects
     //     */

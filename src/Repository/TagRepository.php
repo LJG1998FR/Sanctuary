@@ -45,6 +45,16 @@ class TagRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findRandom(): ?Tag
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     //    /**
     //     * @return Tag[] Returns an array of Tag objects
     //     */

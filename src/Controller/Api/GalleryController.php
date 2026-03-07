@@ -99,6 +99,23 @@ final class GalleryController extends AbstractController
         return new JsonResponse($response, 200);
     }
 
+    #[Route('/api/randomcollection', name: 'api_gallery_random')]
+    public function getRandomItem(): JsonResponse
+    {
+
+        $serializer = SerializerBuilder::create()->build();
+        $random = $this->photoCollectionRepository->findRandom();
+        $collection = $serializer->serialize($random, 'json');
+
+        $response = [
+            "success" => true,
+            "data" => [
+                "item" => json_decode($collection, true)
+            ]
+        ];
+        return new JsonResponse($response, 200);
+    }
+
     
     public function validate($label, $value) : mixed {
         switch ($label) {

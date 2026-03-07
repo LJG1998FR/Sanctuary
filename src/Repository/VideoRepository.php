@@ -45,6 +45,16 @@ class VideoRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findRandom(): ?Video
+    {
+        return $this->createQueryBuilder('v')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     //    /**
     //     * @return Video[] Returns an array of Video objects
     //     */

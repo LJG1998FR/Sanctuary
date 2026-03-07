@@ -38,8 +38,9 @@ BO:
 - Add more controls on changing own profile data => OK
 - Remove register new admin model => OK
 - User Profile page => OK
-- Tags API calls (getAll, getOne, GetVideosByTag)
-- Random video/collection API functions
+- Redirect routing to /admin => OK
+- Tags API calls (getAll, GetVideosByTag) => OK
+- Random video/collection/tag API functions => OK
 
 
 
@@ -53,4 +54,5 @@ FRONT
 - Random video/collection
 - Filters => OK
 - Home page
+- Landing page ?
 - Favorites ?
