@@ -46,12 +46,13 @@ BO:
 
 FRONT
 - Preload assets => OK
-- Gallery (Index + Item)
+- Gallery (Index + Item) => OK
 - Tags CRUD
 - Register page
+- Disable form login on submit
 - User profile page
 - Add games (Memory + Puzzle)
-- Random video/collection
+- Random video/collection/tag
 - Filters => OK
 - Home page => OK
 - Landing page => OK

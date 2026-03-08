@@ -27,11 +27,12 @@ final class GalleryController extends AbstractController
         $serializer = SerializerBuilder::create()->build();
         try {
             // Params validation
-            $page = $this->validate('page', $request->query->getInt('page', 1));
-            $limit = $this->validate('limit', $request->query->getInt('limit', self::DEFAULT_LIMIT));
-            $field = $this->validate('field', $request->query->getString('field', 'title'));
-            $order = $this->validate('order', $request->query->getString('order', 'ASC'));
-            $search = $this->validate('search', $request->query->getString('search', ''));
+            $params = json_decode($request->getContent(), true);
+            $page = $this->validate('page', $params['page'] ?? 1);
+            $limit = $this->validate('limit', $params['limit'] ?? self::DEFAULT_LIMIT);
+            $field = $this->validate('field', $params['field'] ?? 'title');
+            $order = $this->validate('order', $params['order'] ?? 'ASC');
+            $search = $this->validate('search', $params['search'] ?? '');
 
             $dqlResult = $this->photoCollectionRepository->paginate($page, $limit, $field, $order, $search);
             $res = [];
@@ -76,7 +77,7 @@ final class GalleryController extends AbstractController
         }
     }
 
-    #[Route('/api/gallery/{id}', name: 'api_gallery_show')]
+    #[Route('/api/gallery/{slugger:photoCollection}', name: 'api_gallery_show')]
     public function getItem(PhotoCollection $photoCollection): JsonResponse
     {
         $serializer = SerializerBuilder::create()->build();

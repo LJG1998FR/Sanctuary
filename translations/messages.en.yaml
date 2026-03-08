@@ -122,6 +122,41 @@ home:
   local_description: "TBD"
 
 # ============================================================================
+# Gallery (FrontOffice React)
+# ============================================================================
+gallery:
+  # --- Videos List ---
+  list:
+    title: "Gallery"
+    subtitle: "Browse our collection"
+    empty_state: "No gallery available yet"
+    search_placeholder: "Search ..."
+    filter_label: "Filter by"
+    sort_label: "Sort by"
+    sort_options:
+      title_asc: "Title (A-Z)"
+      title_desc: "Title (Z-A)"
+      date_newest: "Newest first"
+      date_oldest: "Oldest first"
+    load_error: "Failed to load gallery. Please try again."
+    
+  # --- Video Details ---
+  detail:
+    section_info: "Information"
+    subtitle: "Photos"
+    empty_tags: "No tags"
+    label_title: "Title"
+    label_description: "Description"
+    label_duration: "Duration"
+    label_created_at: "Published on"
+    label_views: "Views"
+    button_play: "Play video"
+    button_share: "Share"
+    button_add_favorite: "Add to favorites"
+    error_not_found: "This video does not exist"
+    error_load: "Failed to load video details"
+
+    # ============================================================================
 # VIDEOS (FrontOffice React)
 # ============================================================================
 videos:

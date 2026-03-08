@@ -35,3 +35,20 @@
 .thumbnail-link {
 	max-width: 300px; max-height: 300px;
 }
+
+/** GALLERY **/
+
+.photo {
+	border: none;
+}
+#modal-body {
+	position: absolute;
+    top: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#photoModal {
+	max-width: 48%;
+
+}

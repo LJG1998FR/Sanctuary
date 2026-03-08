@@ -24,6 +24,7 @@
             "gallery": "Gallery",
             "tags": "Tags",
             "videos": "Videos",
+            "users": "Users",
             "profile": "Profile",
             "gallery_random": "Random Photo Collection",
             "video_random": "Random Video",
@@ -78,7 +79,8 @@
             "title": "My Profile",
             "section_info": "Personal Information",
             "label_username": "Username",
-            "label_email": "Email",
+            "label_password": "Password",
+            "label_confirm_password": "Confirm Password",
             "label_joined_date": "Member since",
             "section_security": "Security",
             "button_change_password": "Change password",
@@ -91,7 +93,39 @@
     },
     "home": {
         "description": "TBD",
-        "local_description": "TBD"
+        "local_description": "Not many people can call themselves Sensual Jane and actually live up to the title, but Jane truly knows how to activate our senses. Born in Romania on July 15th, 1983, Jane is a brunette with hazel eyes. She was born in Bucharest, which is located in Romania. Her height is 5 feet 6 inches, and she is 128 lb. She's a size DD, and her measurements are 36DD-25-36. When Sensual Jane was young, she originally wanted to be a dancer and spent many hours practicing. She entered into the adult film industry around 2009 and has worked for studios like Brazzers, Bangbros, and Reality Kings."
+    },
+    "gallery": {
+        "list": {
+            "title": "Gallery",
+            "subtitle": "Browse our collection",
+            "empty_state": "No gallery available yet",
+            "search_placeholder": "Search ...",
+            "filter_label": "Filter by",
+            "sort_label": "Sort by",
+            "sort_options": {
+                "title_asc": "Title (A-Z)",
+                "title_desc": "Title (Z-A)",
+                "date_newest": "Newest first",
+                "date_oldest": "Oldest first"
+            },
+            "load_error": "Failed to load gallery. Please try again."
+        },
+        "detail": {
+            "section_info": "Information",
+            "subtitle": "Photos",
+            "empty_tags": "No tags",
+            "label_title": "Title",
+            "label_description": "Description",
+            "label_duration": "Duration",
+            "label_created_at": "Published on",
+            "label_views": "Views",
+            "button_play": "Play video",
+            "button_share": "Share",
+            "button_add_favorite": "Add to favorites",
+            "error_not_found": "This video does not exist",
+            "error_load": "Failed to load video details"
+        }
     },
     "videos": {
         "list": {
@@ -229,11 +263,13 @@
         "users": {
             "title": "User Management",
             "button_add": "Add new user",
+            "button_delete_selected": "Delete Selected Users",
+            "search_placeholder": "Search...",
             "table": {
                 "header_id": "ID",
                 "header_username": "Username",
                 "header_email": "Email",
-                "header_roles": "Roles",
+                "header_roles": "Main Role",
                 "header_created_at": "Registered",
                 "header_actions": "Actions"
             },

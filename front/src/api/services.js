@@ -7,8 +7,8 @@ export const apiService = {
         return data;
 	},
 
-	getGallery: async () => {
-		const data = await apiClient.post('/api/gallery', { refresh_token: tokenStorage.getRefresh() })
+	getGallery: async (options) => {
+		const data = await apiClient.post('/api/gallery', { ...options ,refresh_token: tokenStorage.getRefresh() })
 		.then((res) => {return res.data;});
 		return data;
 	},

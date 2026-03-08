@@ -60,7 +60,8 @@ export default function VideosList() {
             field={searchParams.get('field') ?? 'title'}
             order={searchParams.get('order') ?? 'ASC'}
             search={searchParams.get('search') ?? ''}
-            limitOptions={limitOptions} />
+            limitOptions={limitOptions}
+            baseComponentPath='/videos' />
         <div id="card-container" className="d-flex flex-wrap mx-auto gap-2">
             {videos.map((video) => {
                 const thumbnailSrc = video.thumbnailname
@@ -100,7 +101,8 @@ export default function VideosList() {
             limit={parseInt(searchParams.get('limit')) ?? 5}
             field={searchParams.get('field') ?? 'title'}
             order={searchParams.get('order') ?? 'ASC'}
-            search={searchParams.get('search') ?? ''} />})
+            search={searchParams.get('search') ?? ''}
+            baseComponentPath='/videos' />})
 
         </>
     );

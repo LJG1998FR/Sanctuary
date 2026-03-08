@@ -1,7 +1,7 @@
-import { Form, Link, useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useTranslation } from "../hooks/useTranslations";
 
-export default function Filter({ limit, field, order, search, limitOptions} ){
+export default function Filter({ limit, field, order, search, limitOptions, baseComponentPath} ){
 
     const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -12,7 +12,7 @@ export default function Filter({ limit, field, order, search, limitOptions} ){
         <div className="btn-group ms-3" role="group">
          
             {limitOptions.map((option) => {
-                return(<Link key={"option-"+option} className={`btn btn-dark pagination-option ${isDisabled(option) ? 'disabled' : ''}`} to={{pathname: '/videos', search: buildSearch(option, search)}}>
+                return(<Link key={"option-"+option} className={`btn btn-dark pagination-option ${isDisabled(option) ? 'disabled' : ''}`} to={{pathname: baseComponentPath, search: buildSearch(option, search)}}>
                     {option}
                 </Link>);
             })}
@@ -20,7 +20,7 @@ export default function Filter({ limit, field, order, search, limitOptions} ){
         </div>
 
         <div className="ms-3">
-            <input type="search" className="form-control" placeholder={t('videos.list.search_placeholder')} aria-label="Search" id="searchbar" autoComplete="off" onChange={e => updateSearch(e)}/>
+            <input type="search" className="form-control" placeholder={t('gallery.list.search_placeholder')} aria-label="Search" id="searchbar" autoComplete="off" onChange={e => updateSearch(e)}/>
         </div>
         
     </div>);
