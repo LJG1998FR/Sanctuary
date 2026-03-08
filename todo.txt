@@ -53,6 +53,7 @@ FRONT
 - User profile page
 - Add games (Memory + Puzzle)
 - Random video/collection/tag
+- Global search bar + results
 - Filters => OK
 - Home page => OK
 - Landing page => OK
