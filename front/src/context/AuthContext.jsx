@@ -37,13 +37,17 @@ export function AuthProvider({ children }) {
         setUser(data);
     }, []);
 
+    const register = useCallback(async (username, password, confirmPassword) => {
+        await authApi.register(username, password, confirmPassword);
+    }, []);
+
     const logout = useCallback(() => {
         authApi.logout();
         setUser(null);
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, register, isAuthenticated: !!user }}>
             {children}
         </AuthContext.Provider>
     );

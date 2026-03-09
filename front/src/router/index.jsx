@@ -7,12 +7,14 @@ import Gallery     from '@/pages/Gallery';
 import GalleryItem from '@/pages/GalleryItem';
 import ProtectedRoute      from '@/components/ProtectedRoute';
 import Landing from '../pages/Landing';
+import Register from '../pages/Register';
 
 const AppRouter = () => {
     return (
         <Routes>
             <Route path="/landing" element={<Landing />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route element={<ProtectedRoute />}>
                 <Route path="/"                  element={<Home />} />
                 <Route path="/videos"            element={ <VideosList />} />

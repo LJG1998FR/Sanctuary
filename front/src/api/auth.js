@@ -13,4 +13,9 @@ export const authApi = {
 	},
 
   	getUserProfile: () => apiClient.get('/api/profile', { refresh_token: tokenStorage.getRefresh() }),
+
+	register: async (username, password, confirmPassword) => {
+		const { data } = await apiClient.post('/api/register', { username, password, confirmPassword });
+		return data;
+	},
 };

@@ -41,6 +41,7 @@ BO:
 - Redirect routing to /admin => OK
 - Tags API calls (getAll, GetVideosByTag) => OK
 - Random video/collection/tag API functions => OK
+- Update Password API call
 
 
 
@@ -48,8 +49,8 @@ FRONT
 - Preload assets => OK
 - Gallery (Index + Item) => OK
 - Tags CRUD
-- Register page
-- Disable form login on submit
+- Register page => OK
+- Disable forms on submit => OK
 - User profile page
 - Add games (Memory + Puzzle)
 - Random video/collection/tag

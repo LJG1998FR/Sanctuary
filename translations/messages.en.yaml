@@ -98,7 +98,7 @@ auth:
     link_login: "Already have an account? Log in"
     success_message: "Account created successfully! You can now log in."
     error_username_taken: "This username is already taken"
-    error_email_taken: "This email is already registered"
+    error_server: "Registration failed. There is a server-side error."
     
   # --- user/admin profil page ---
   profile:

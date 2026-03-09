@@ -29,6 +29,28 @@ class AuthController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        if(!isset($data['username'])){
+            return $this->json(
+                ['error' => 'Username missing.'],
+                100
+            );
+        } else if(!isset($data['password'])){
+            return $this->json(
+                ['error' => 'Password missing.'],
+                100
+            );
+        } else if(!isset($data['confirmPassword'])){
+            return $this->json(
+                ['error' => 'Please confirm your password.'],
+                100
+            );
+        } else if($data['password'] !== $data['confirmPassword']){
+            return $this->json(
+                ['error' => 'Both passwords are different.'],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         if ($this->userRepository->findOneBy(['username' => $data['username']])) {
             return $this->json(
                 ['error' => 'Username is already taken.'],
