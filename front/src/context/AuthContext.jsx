@@ -46,8 +46,19 @@ export function AuthProvider({ children }) {
         setUser(null);
     }, []);
 
+    const updateUser = useCallback(async (username, password, confirmPassword) => {
+        const data = await authApi.updateUser(username, password, confirmPassword);
+        setUser(data);
+    }, []);
+
+    const deleteUser = useCallback(async (username) => {
+        await authApi.deleteUser(username);
+        authApi.logout();
+        setUser(null);
+    }, []);
+
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout, register, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, register, updateUser, deleteUser, isAuthenticated: !!user }}>
             {children}
         </AuthContext.Provider>
     );

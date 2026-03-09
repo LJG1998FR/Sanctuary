@@ -48,14 +48,14 @@ BO:
 FRONT
 - Preload assets => OK
 - Gallery (Index + Item) => OK
-- Tags CRUD
 - Register page => OK
 - Disable forms on submit => OK
-- User profile page
-- Add games (Memory + Puzzle)
-- Random video/collection/tag
-- Global search bar + results
+- User profile page => OK
 - Filters => OK
 - Home page => OK
 - Landing page => OK
+- Tags CRUD
+- Add games (Memory + Puzzle)
+- Random video/collection/tag
+- Global search bar + results
 - Favorites ?

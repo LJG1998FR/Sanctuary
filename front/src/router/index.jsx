@@ -8,6 +8,7 @@ import GalleryItem from '@/pages/GalleryItem';
 import ProtectedRoute      from '@/components/ProtectedRoute';
 import Landing from '../pages/Landing';
 import Register from '../pages/Register';
+import MyProfile from '../pages/MyProfile';
 
 const AppRouter = () => {
     return (
@@ -21,6 +22,7 @@ const AppRouter = () => {
                 <Route path="/videos/:slugger"   element= {<VideoPlayer />} />
                 <Route path="/gallery"           element={ <Gallery /> }/>
                 <Route path="/gallery/:slugger"  element= {<GalleryItem />} />
+                <Route path="/my-profile" element={<MyProfile />} />
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

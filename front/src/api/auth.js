@@ -18,4 +18,13 @@ export const authApi = {
 		const { data } = await apiClient.post('/api/register', { username, password, confirmPassword });
 		return data;
 	},
+
+	updateUser: async (username, password, confirmPassword) => {
+		const { data } = await apiClient.post('/api/updateUser', { username, password, confirmPassword, refresh_token: tokenStorage.getRefresh() });
+		return data;
+	},
+
+	deleteUser: async (username) => {
+		await apiClient.post('/api/deleteUser', { username, refresh_token: tokenStorage.getRefresh() });
+	},
 };
