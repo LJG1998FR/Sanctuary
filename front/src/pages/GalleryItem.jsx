@@ -15,10 +15,10 @@ export default function GalleryItem() {
     const [selectedPhoto, setSelectedPhoto] = useState(null);
     const handleOpen = (photo) => setSelectedPhoto(photo);
     const handleClose = () => setSelectedPhoto(null);
-    const collectionUrl = import.meta.env.VITE_API_URL + "/uploads/photos/"+slugger;
+    const apiUrl = import.meta.env.VITE_API_URL;
     useEffect(() => {
-        apiService
-            .getGalleryItem(slugger)
+        var fetchedData = (slugger === "random") ? apiService.getRandomGalleryItem() : apiService.getGalleryItem(slugger);
+        fetchedData
             .then((res) => {
             if (res.success === true) {
                 setCollection(res.data.item);
@@ -49,7 +49,7 @@ export default function GalleryItem() {
                             <button className="photo" type="button" onClick={() => handleOpen(photo)}>
                                 <img id={"photo-"+(index+1)}
                                 className="card-img-top"
-                                src={collectionUrl+'/'+photo.filename}
+                                src={apiUrl+'/uploads/photos/'+collection.slugger+'/'+photo.filename}
                                 alt={photo.filename}
                                 width={254}
                                 max-height={381}

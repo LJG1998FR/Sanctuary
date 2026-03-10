@@ -37,6 +37,24 @@ export const apiService = {
 		return data;
 	},
 
+	getRandomGalleryItem: async () => {
+		const data = await apiClient.post('/api/randomcollection', { refresh_token: tokenStorage.getRefresh() })
+		.then((res) => {return res.data;});
+		return data;
+	},
+
+	getRandomTag: async () => {
+		const data = await apiClient.post('/api/randomtag', { refresh_token: tokenStorage.getRefresh() })
+		.then((res) => {return res.data;});
+		return data;
+	},
+
+	getRandomVideo: async () => {
+		const data = await apiClient.post('/api/randomvideo', { refresh_token: tokenStorage.getRefresh() })
+		.then((res) => {return res.data;});
+		return data;
+	},
+
 	getPreloadAssets: async () => {
 		const data = await apiClient.post('/api/preloadAssets')
         .then((res) => {return res.data;});

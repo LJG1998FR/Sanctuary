@@ -12,10 +12,9 @@ export default function Tag() {
     const [error, setError] = useState(null);
     const { t } = useTranslation();
     const { slugger } = useParams();
-    const tagUrl = import.meta.env.VITE_API_URL + "/uploads/photos/"+slugger;
     useEffect(() => {
-        apiService
-            .getTag(slugger)
+        var fetchedData = (slugger === "random") ? apiService.getRandomTag() : apiService.getTag(slugger);
+        fetchedData
             .then((res) => {
             if (res.success === true) {
                 setTag(res.data.item);

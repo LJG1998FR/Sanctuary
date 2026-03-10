@@ -14,8 +14,8 @@ export default function VideoPlayer() {
     const uploadsUrl = import.meta.env.VITE_API_URL + "/uploads/";
     const { slugger } = useParams(); 
     useEffect(() => {
-        apiService
-            .getVideo(slugger)
+        var fetchedData = (slugger === "random") ? apiService.getRandomVideo() : apiService.getVideo(slugger)
+        fetchedData
             .then((res) => {
             if (res.success === true) {
                 setVideo(res.data.item);
