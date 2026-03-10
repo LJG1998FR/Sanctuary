@@ -159,7 +159,7 @@ gallery:
     error_not_found: "This video does not exist"
     error_load: "Failed to load video details"
 
-    # ============================================================================
+# ============================================================================
 # VIDEOS (FrontOffice React)
 # ============================================================================
 videos:
@@ -193,6 +193,34 @@ videos:
     button_add_favorite: "Add to favorites"
     error_not_found: "This video does not exist"
     error_load: "Failed to load video details"
+
+# ============================================================================
+# TAGS (FrontOffice React)
+# ============================================================================
+tags:
+  # --- Tags List ---
+  list:
+    title: "Tags Library"
+    empty_state: "No tags available yet"
+    search_placeholder: "Search tags by title..."
+    filter_label: "Filter by"
+    sort_label: "Sort by"
+    sort_options:
+      title_asc: "Title (A-Z)"
+      title_desc: "Title (Z-A)"
+    load_error: "Failed to load tags. Please try again."
+    
+  # --- Tag Details ---
+  detail:
+    title: "Videos with the tag : {title}"
+    empty_table: "No videos with the tag : {title}"
+    label_title: "Title"
+    label_description: "Description"
+    label_duration: "Duration"
+    label_created_at: "Published on"
+    button_add_favorite: "Add to favorites"
+    error_not_found: "This tag does not exist"
+    error_load: "Failed to load tag details"
 
 # ============================================================================
 # ADMIN - BackOffice (Templates Twig)

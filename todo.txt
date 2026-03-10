@@ -41,7 +41,7 @@ BO:
 - Redirect routing to /admin => OK
 - Tags API calls (getAll, GetVideosByTag) => OK
 - Random video/collection/tag API functions => OK
-- Update Password API call
+- Update User / Delete User API calls => OK
 
 
 
@@ -54,8 +54,9 @@ FRONT
 - Filters => OK
 - Home page => OK
 - Landing page => OK
-- Tags CRUD
+- Tags CRUD => OK
 - Add games (Memory + Puzzle)
 - Random video/collection/tag
 - Global search bar + results
 - Favorites ?
+- Add Video views

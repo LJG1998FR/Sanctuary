@@ -36,7 +36,7 @@ export default function Navbar(){
 						<Link className="nav-link" id="randomvideo" to="/videos/random">{t('common.navigation.video_random')}</Link>
 					</li>
 					{isAuthenticated && <li className="nav-item">
-						<Link className="nav-link" to="/my-profile">{t('common.navigation.profile')}</Link>
+						<Link className={isActive('my-profile') ? 'nav-link active' : 'nav-link'} to="/my-profile">{t('common.navigation.profile')}</Link>
 					</li>}
 					{isAuthenticated && <li className="nav-item">
 						<Link className="nav-link" to="#" onClick={handleLogout}>{t('common.navigation.logout')}</Link>

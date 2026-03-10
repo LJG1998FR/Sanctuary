@@ -15,12 +15,13 @@ export default function MyProfile() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error,    setError]    = useState(null);
     const [success,    setSuccess]    = useState(null);
-    const [loading,  setLoading]  = useState(false);
+    const [loading,  setLoading]  = useState(true);
     const { t } = useTranslation();
 
 
     useEffect(() => {
         setUsername(user.data.item.username);
+        setLoading(false);
     }, [username]);
 
     const handleSubmit = async (e) => {

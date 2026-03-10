@@ -7,20 +7,32 @@ export const apiService = {
         return data;
 	},
 
-	getGallery: async (options) => {
-		const data = await apiClient.post('/api/gallery', { ...options ,refresh_token: tokenStorage.getRefresh() })
-		.then((res) => {return res.data;});
-		return data;
-	},
-
 	getVideo: async (slugger) => {
 		const data = await apiClient.post('/api/videos/'+slugger, { refresh_token: tokenStorage.getRefresh() })
 		.then((res) => {return res.data;});
 		return data;
 	},
 
+	getGallery: async (options) => {
+		const data = await apiClient.post('/api/gallery', { ...options ,refresh_token: tokenStorage.getRefresh() })
+		.then((res) => {return res.data;});
+		return data;
+	},
+
 	getGalleryItem: async (slugger) => {
 		const data = await apiClient.post('/api/gallery/'+slugger, { refresh_token: tokenStorage.getRefresh() })
+		.then((res) => {return res.data;});
+		return data;
+	},
+
+	getTags: async (options) => {
+		const data = await apiClient.post('/api/tags', { ...options , refresh_token: tokenStorage.getRefresh() })
+        .then((res) => {return res.data;});
+        return data;
+	},
+
+	getTag: async (slugger) => {
+		const data = await apiClient.post('/api/tags/'+slugger, { refresh_token: tokenStorage.getRefresh() })
 		.then((res) => {return res.data;});
 		return data;
 	},
