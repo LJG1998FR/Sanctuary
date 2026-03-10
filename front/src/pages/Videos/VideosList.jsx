@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { apiService } from "@/api/services";
 import Loading from "@/components/Loading";
 import { Link, useSearchParams } from "react-router";
-import Pagination from "../components/Pagination";
-import Filter from "../components/Filter";
-import { useTranslation } from "../hooks/useTranslations";
+import Pagination from "../../components/Pagination";
+import Filter from "../../components/Filter";
+import { useTranslation } from "../../hooks/useTranslations";
 
 export default function VideosList() {
 
@@ -83,7 +83,7 @@ export default function VideosList() {
                                 {video.tags && video.tags.length > 0 ? (
                                     video.tags.map((tag) => (
                                         <li key={tag.id} className="video_tag">
-                                            <a href={`/tags/${tag.slugger}`}>{tag.name}</a>
+                                            <Link to={`/tags/${tag.slugger}`}>{tag.name}</Link>
                                         </li>
                                     ))
                                 ) : (

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import { useAuth } from '../context/AuthContext';
-import { useTranslation } from '../hooks/useTranslations';
+import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from '@/hooks/useTranslations';
 import Loading from "@/components/Loading";
 
 export default function Login() {

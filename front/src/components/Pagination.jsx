@@ -1,5 +1,5 @@
 import { Link } from "react-router"
-import { useTranslation } from "../hooks/useTranslations";
+import { useTranslation } from "@/hooks/useTranslations";
 
 export default function Pagination({ page, limit, nb_pages, field, order, search, baseComponentPath }){
 

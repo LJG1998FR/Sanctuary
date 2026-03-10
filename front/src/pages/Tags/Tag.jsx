@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from 'react-router';
 import { apiService } from "@/api/services";
 import Loading from "@/components/Loading";
-import { useTranslation } from "../hooks/useTranslations";
-import { Modal } from "react-bootstrap";
+import { useTranslation } from "@/hooks/useTranslations";
 
 export default function Tag() {
 

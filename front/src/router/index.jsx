@@ -1,16 +1,16 @@
-import Login           from '@/pages/Login';
 import Home            from '@/pages/Home';
+import Landing            from '@/pages/Landing';
 import { Navigate, Route, Routes } from 'react-router';
-import VideosList          from '@/pages/VideosList';
-import VideoPlayer     from '@/pages/VideoPlayer';
-import Gallery     from '@/pages/Gallery';
-import GalleryItem from '@/pages/GalleryItem';
 import ProtectedRoute      from '@/components/ProtectedRoute';
-import Landing from '../pages/Landing';
-import Register from '../pages/Register';
-import MyProfile from '../pages/MyProfile';
-import TagsList from '../pages/TagsList';
-import Tag from '../pages/Tag';
+import MyProfile from '../pages/Auth/MyProfile';
+import Tag from '../pages/Tags/Tag';
+import TagsList from '../pages/Tags/TagsList';
+import Gallery from '../pages/Gallery/Gallery';
+import GalleryItem from '../pages/Gallery/GalleryItem';
+import VideoPlayer from '../pages/Videos/VideoPlayer';
+import VideosList from '../pages/Videos/VideosList';
+import Register from '../pages/Auth/Register';
+import Login from '../pages/Auth/Login';
 
 const AppRouter = () => {
     return (

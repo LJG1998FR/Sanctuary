@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from 'react-router';
 import { apiService } from "@/api/services";
 import Loading from "@/components/Loading";
-import { useTranslation } from "../hooks/useTranslations";
+import { useTranslation } from "../../hooks/useTranslations";
 
 export default function VideoPlayer() {
 
