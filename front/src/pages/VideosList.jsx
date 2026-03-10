@@ -96,9 +96,9 @@ export default function VideosList() {
             })}
         </div>
 
-        ({nbPages > 1 && <Pagination page={parseInt(searchParams.get('page')) ?? 1}
+        ({nbPages > 1 && <Pagination page={searchParams.has('page') ? parseInt(searchParams.get('page')) : 1}
             nb_pages={nbPages}
-            limit={parseInt(searchParams.get('limit')) ?? 5}
+            limit={searchParams.has('limit') ? parseInt(searchParams.get('limit')) : 5}
             field={searchParams.get('field') ?? 'title'}
             order={searchParams.get('order') ?? 'ASC'}
             search={searchParams.get('search') ?? ''}

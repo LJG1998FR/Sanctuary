@@ -5,6 +5,7 @@ export default function Filter({ limit, field, order, search, limitOptions, base
 
     const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
+    console.log(limit)
     const isDisabled = (option) => option === parseInt(limit);
     const buildSearch = (limit, search) => "?page=1&limit="+limit+"&field="+field+"&order="+order+"&search="+search;
     return(<div className="d-flex align-items-center ms-4 mb-4">
