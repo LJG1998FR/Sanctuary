@@ -58,6 +58,9 @@ export default function Navbar(){
 					<li className="nav-item">
 						<Link className={isActive('/tags/random') ? 'nav-link active' : 'nav-link'} id="randomtag" to="/tags/random">{t('common.navigation.tag_random')}</Link>
 					</li>
+					<li className="nav-item">
+						<Link className={isActive('/games') ? 'nav-link active' : 'nav-link'} to="/games">{t('common.navigation.games')}</Link>
+					</li>
 					{isAuthenticated && <li className="nav-item">
 						<Link className={isActive('/my-profile') ? 'nav-link active' : 'nav-link'} to="/my-profile">{t('common.navigation.profile')}</Link>
 					</li>}

@@ -55,6 +55,18 @@ export const apiService = {
 		return data;
 	},
 
+	getRandomPhoto: async () => {
+		const data = await apiClient.post('/api/randomphoto', { refresh_token: tokenStorage.getRefresh() })
+		.then((res) => {return res.data;});
+		return data;
+	},
+
+	getMemoryPhotos: async (nbpairs) => {
+		const data = await apiClient.post('/api/randomphotos', { refresh_token: tokenStorage.getRefresh(), limit: nbpairs})
+		.then((res) => {return res.data;});
+		return data;
+	},
+
 	getPreloadAssets: async () => {
 		const data = await apiClient.post('/api/preloadAssets')
         .then((res) => {return res.data;});

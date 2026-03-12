@@ -1,0 +1,459 @@
+/**
+ * games.css — Mini-games styles
+ *
+ * 🎓 CSS ORGANISATION
+ * CSS variables (Custom Properties) are used to centralise
+ * the colour palette. A single place to update to change the theme.
+ *
+ * BEM convention (Block__Element--Modifier) for class names:
+ *   .memory-card            → Block
+ *   .memory-card__front     → Element
+ *   .memory-card--flipped   → Modifier
+ * This convention avoids name conflicts and documents the structure.
+ */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Global variables
+────────────────────────────────────────────────────────────────────────── */
+:root {
+  --color-bg:        #0f0f13;
+  --color-surface:   #1a1a24;
+  --color-surface-2: #23232f;
+  --color-border:    rgba(255, 255, 255, 0.08);
+  --color-text:      #e8e8f0;
+  --color-muted:     #8888aa;
+  --color-accent:    #6366f1;
+  --color-accent-2:  #ec4899;
+  --color-success:   #22c55e;
+  --color-error:     #ef4444;
+
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  20px;
+  --shadow-md:  0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg:  0 8px 48px rgba(0, 0, 0, 0.6);
+
+  --font-display: 'Sora', 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  --transition: 0.2s ease;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Games Page — Selection
+────────────────────────────────────────────────────────────────────────── */
+.games-landing {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+
+.games-landing__header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.games-landing__title {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 0.5rem;
+}
+
+.games-landing__subtitle {
+  color: var(--color-muted);
+  font-size: 1.1rem;
+}
+
+.games-landing__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 700px;
+  width: 100%;
+}
+
+/* Game selection card */
+.game-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  color: var(--color-text);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--game-color) 15%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--game-color);
+  border-color: var(--game-color);
+}
+
+.game-card:hover::before { opacity: 1; }
+
+.game-card:focus-visible {
+  outline: 2px solid var(--game-color);
+  outline-offset: 3px;
+}
+
+.game-card__emoji    { font-size: 3rem; }
+.game-card__title    { font-size: 1.5rem; font-weight: 700; margin: 0; }
+.game-card__description { color: var(--color-muted); font-size: 0.95rem; margin: 0; }
+.game-card__cta      { font-weight: 600; color: var(--game-color); font-size: 0.95rem; margin-top: 0.5rem; }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Common game page (PuzzlePage + MemoryPage)
+────────────────────────────────────────────────────────────────────────── */
+.game-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+
+.game-page__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.game-page__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Buttons
+────────────────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.btn--primary  { background: var(--color-accent); color: #fff; }
+.btn--primary:hover { filter: brightness(1.15); }
+
+.btn--secondary { background: var(--color-surface-2); color: var(--color-text); border: 1px solid var(--color-border); }
+.btn--secondary:hover { border-color: var(--color-accent); }
+
+.btn--ghost { background: transparent; color: var(--color-muted); }
+.btn--ghost:hover { color: var(--color-text); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Difficulty selector
+────────────────────────────────────────────────────────────────────────── */
+.difficulty-selector {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.difficulty-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.difficulty-btn small { font-size: 0.7rem; font-weight: 400; opacity: 0.7; }
+.difficulty-btn:hover { border-color: var(--color-accent); color: var(--color-text); }
+
+.difficulty-btn--active {
+  background: color-mix(in srgb, var(--color-accent) 15%, var(--color-surface));
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Game statistics
+────────────────────────────────────────────────────────────────────────── */
+.game-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: border-color var(--transition);
+}
+
+.stat-card--active { border-color: var(--color-accent); }
+
+.stat-icon  { font-size: 1.2rem; }
+.stat-label { font-size: 0.75rem; color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.stat-value { font-size: 1.4rem; font-weight: 700; font-family: var(--font-mono); }
+.stat-value--time { color: var(--color-accent); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Game area
+────────────────────────────────────────────────────────────────────────── */
+.game-board {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Puzzle Canvas */
+.puzzle-canvas-wrapper { display: flex; justify-content: center; }
+.puzzle-canvas {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Memory Grid
+────────────────────────────────────────────────────────────────────────── */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 4), 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 700px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Memory Card — 3D flip animation
+────────────────────────────────────────────────────────────────────────── */
+.memory-card {
+  aspect-ratio: 3 / 4;
+  perspective: 1000px; /* Required for the CSS 3D effect */
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  border-radius: var(--radius-md);
+}
+
+.memory-card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Inner container — THIS is what rotates, not the whole card */
+.memory-card__back,
+.memory-card__front {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+  /**
+   * 🎓 backface-visibility: hidden
+   * Hides the face when it is "behind" (after a 180° rotation).
+   * Without this, both faces would be visible at the same time.
+   */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.memory-card {
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+/* BACK face (visible by default) */
+.memory-card__back {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.memory-card__back-icon {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.4);
+  user-select: none;
+}
+
+/* FRONT face (hidden by default, rotateY(180deg)) */
+.memory-card__front {
+  transform: rotateY(180deg);
+}
+
+.memory-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* State: flipped */
+.memory-card--flipped {
+  transform: rotateY(180deg);
+}
+
+/* State: matched pair */
+/*.memory-card--matched {
+  transform: rotateY(180deg);
+  filter: drop-shadow(0 0 8px var(--color-success));
+  cursor: default;
+}*/
+
+.memory-card--matched .memory-card__front::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: var(--color-success);
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Loading / error states
+────────────────────────────────────────────────────────────────────────── */
+.game-loading,
+.memory-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-muted);
+  padding: 3rem;
+}
+
+.game-loading__spinner,
+.memory-loading__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.game-error,
+.memory-error {
+  background: color-mix(in srgb, var(--color-error) 10%, var(--color-surface));
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  color: var(--color-text);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Win overlay
+────────────────────────────────────────────────────────────────────────── */
+.game-win-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.game-win-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.game-win-emoji  { font-size: 4rem; display: block; margin-bottom: 1rem; }
+.game-win-card h2 { font-size: 1.75rem; font-weight: 800; margin: 0 0 0.75rem; }
+.game-win-card p  { color: var(--color-muted); margin: 0 0 1.5rem; }
+.game-win-score  { font-size: 1.1rem; color: var(--color-accent) !important; }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Responsive
+────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .memory-grid    { gap: 0.5rem; }
+  .game-page__nav { justify-content: center; }
+  .game-page__title { display: none; } /* Save space on mobile */
+  .difficulty-btn small { display: none; }
+}

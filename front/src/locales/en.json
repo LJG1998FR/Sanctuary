@@ -29,6 +29,7 @@
             "gallery_random": "Random Photo Collection",
             "video_random": "Random Video",
             "tag_random": "Random Tag",
+            "games": "Games",
             "upload_new_video": "Upload New Video",
             "add_collection": "Add A Collection",
             "add_tags": "Add Tags",
@@ -186,6 +187,88 @@
             "button_add_favorite": "Add to favorites",
             "error_not_found": "This tag does not exist",
             "error_load": "Failed to load tag details"
+        }
+    },
+    "games": {
+        "title": "Mini Games",
+        "subtitle": "Choose a game to begin",
+        "buttons": {
+            "play": "Play",
+            "new_game": "New Game",
+            "retry": "Retry",
+            "retry_new_photo": "Retry with a new photo"
+        },
+        "links": {
+            "back": "Back to Games List"
+        },
+        "labels": {
+            "time": "Time",
+            "moves": "Moves",
+            "attempts": "Attempts"
+        },
+        "loading": {
+            "label": "Loading..."
+        },
+        "puzzle": {
+            "title": "Puzzle",
+            "description": "Recreate one of the photos by drag-and-dropping the pieces.",
+            "difficulty_levels": {
+                "label": "Choose a difficulty level",
+                "easy": {
+                    "label": "Easy",
+                    "description": "4 pieces (2×2)"
+                },
+                "normal": {
+                    "label": "Normal",
+                    "description": "9 pieces (3×3)"
+                },
+                "hard": {
+                    "label": "Hard",
+                    "description": "16 pieces (4×4)"
+                },
+                "expert": {
+                    "label": "Expert",
+                    "description": "25 pieces (5×5)"
+                }
+            },
+            "victory": {
+                "title": "Congratulations !",
+                "stats": {
+                    "time": "Puzzle solved in ",
+                    "moves": "With {moves} moves ."
+                }
+            }
+        },
+        "memory": {
+            "title": "Memory",
+            "description": "Find all identical pairs of photos.",
+            "difficulty_levels": {
+                "label": "Choose a difficulty level",
+                "easy": {
+                    "label": "Easy",
+                    "description": "4 pairs - 8 cards"
+                },
+                "normal": {
+                    "label": "Normal",
+                    "description": "6 pairs - 12 cards"
+                },
+                "hard": {
+                    "label": "Hard",
+                    "description": "8 pairs - 16 cards"
+                },
+                "expert": {
+                    "label": "Expert",
+                    "description": "10 pairs - 20 cards"
+                }
+            },
+            "victory": {
+                "title": "Congratulations !",
+                "stats": {
+                    "time": "Finished in ",
+                    "attempts": "With {attempts} attempts .",
+                    "score": "Score : "
+                }
+            }
         }
     },
     "admin": {

@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { AuthProvider } from './context/AuthContext';
 import './index.css';
+import './games.css';
 import App from './App.jsx';
 import { TranslationProvider } from './hooks/useTranslations.jsx';
 

@@ -56,7 +56,8 @@ FRONT
 - Landing page => OK
 - Tags CRUD => OK
 - Random video/collection/tag => OK
-- Add games (Memory + Puzzle)
+- Add games (Memory + Puzzle) => OK
+- Rankings for mini-games
 - Global search bar + results
 - Favorites ?
 - Add Video views => Stats ?

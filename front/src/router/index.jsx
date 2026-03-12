@@ -11,6 +11,9 @@ import VideoPlayer from '../pages/Videos/VideoPlayer';
 import VideosList from '../pages/Videos/VideosList';
 import Register from '../pages/Auth/Register';
 import Login from '../pages/Auth/Login';
+import GamesPage from '@/pages/Games/GamesPage';
+import MemoryPage from '@/pages/Games/MemoryPage';
+import PuzzlePage from '@/pages/Games/PuzzlePage';
 
 const AppRouter = () => {
     return (
@@ -27,6 +30,9 @@ const AppRouter = () => {
                 <Route path="/tags"            element={ <TagsList />} />
                 <Route path="/tags/:slugger"            element={ <Tag />} />
                 <Route path="/my-profile" element={<MyProfile />} />
+                <Route path="/games"            element={ <GamesPage />} />
+                <Route path="/games/puzzle"            element={ <PuzzlePage />} />
+                <Route path="/games/memory"            element={ <MemoryPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
