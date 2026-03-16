@@ -49,6 +49,7 @@ common:
     video_random: "Random Video"
     tag_random: "Random Tag"
     games: "Games"
+    search: "Search"
     upload_new_video: "Upload New Video"
     add_collection: "Add A Collection"
     add_tags: "Add Tags"
@@ -263,6 +264,7 @@ games:
       stats:
         time: "Puzzle solved in "
         moves: "With {moves} moves ."
+        score: "Score : "
   memory:
     title: "Memory"
     description: "Find all identical pairs of photos."
@@ -287,6 +289,12 @@ games:
         attempts: "With {attempts} attempts ."
         score: "Score : "
 
+search:
+  value: "Results found with : '{value}'"
+  results:
+    videos: Videos ({nb_videos})
+    gallery: Gallery ({nb_collections})
+    tags: Tags ({nb_tags})
 # ============================================================================
 # ADMIN - BackOffice (Templates Twig)
 # ============================================================================
@@ -376,6 +384,7 @@ admin:
       button_cancel: "Cancel"
     detail:
       empty_collection: "This collection is empty. Maybe add some photos ?"
+      button_delete_selected: "Delete Selected Photos"
 
     messages:
       success_created: "Collection created successfully"

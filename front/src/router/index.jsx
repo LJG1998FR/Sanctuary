@@ -14,6 +14,7 @@ import Login from '../pages/Auth/Login';
 import GamesPage from '@/pages/Games/GamesPage';
 import MemoryPage from '@/pages/Games/MemoryPage';
 import PuzzlePage from '@/pages/Games/PuzzlePage';
+import SearchPage from '../pages/Search/SearchPage';
 
 const AppRouter = () => {
     return (
@@ -33,6 +34,7 @@ const AppRouter = () => {
                 <Route path="/games"            element={ <GamesPage />} />
                 <Route path="/games/puzzle"            element={ <PuzzlePage />} />
                 <Route path="/games/memory"            element={ <MemoryPage />} />
+                <Route path="/search/:searchValue"            element={ <SearchPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

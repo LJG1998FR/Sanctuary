@@ -20,7 +20,7 @@
         <input data-photocollectionid={{ photo_collection.id }} data-turbosrc="{{ path('admin_photo_collection_show', {id: photo_collection.id}) }}" type="file" id="add_photo" accept="image/*" multiple name="add_photo[filename]" class="form-control add-photo-input" hidden data-turbo-frame="photos">
         <input type="hidden" id="add_photo__token" name="add_photo[_token]" data-controller="csrf-protection" value="csrf-token">
         <a class="btn btn-dark" href="{{ path('admin_photo_collection_index') }}"><i class="bi bi-list"></i></a>
-        <a class="btn btn-dark disabled" href="{{ path('admin_photo_collection_show', {id: photo_collection.id}) }}" id="deleteSelected" data-turbo-frame="photos">{{ "admin.gallery.button_delete_selected"|trans }}</a>
+        <a class="btn btn-dark disabled" href="{{ path('admin_photo_collection_show', {id: photo_collection.id}) }}" id="deleteSelected" data-turbo-frame="photos">{{ "admin.gallery.detail.button_delete_selected"|trans }}</a>
 
         {{ include('photo_collection/_delete_form.html.twig') }}
     </section>

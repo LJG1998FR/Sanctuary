@@ -67,6 +67,12 @@ export const apiService = {
 		return data;
 	},
 
+	getSearchResults: async (search) => {
+		const data = await apiClient.post('/api/search', { refresh_token: tokenStorage.getRefresh(), search: search })
+		.then((res) => {return res.data;});
+		return data;
+	},
+
 	getPreloadAssets: async () => {
 		const data = await apiClient.post('/api/preloadAssets')
         .then((res) => {return res.data;});

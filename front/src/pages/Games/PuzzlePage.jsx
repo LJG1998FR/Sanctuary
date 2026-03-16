@@ -37,7 +37,6 @@ export default function PuzzlePage() {
         setLoading(true);
         setError(null);
         const photo = await apiService.getRandomPhoto();
-        console.log(photo);
         if (!cancelled) setImageUrl(photo.data.item.photo_collection.slugger+'/'+photo.data.item.filename);
       } catch (err) {
         if (!cancelled) setError(err.message);
@@ -85,6 +84,14 @@ export default function PuzzlePage() {
      * Same image is kept but suffled differently
      */
   }, [timer]);
+
+
+  /**
+   * Score
+   */
+  const score = hasWon
+    ? Math.max(0, Math.round(1000 - moves * 10 - timer.seconds * 2))
+    : null;
 
   // ─── Rendering ──────────────────────────────────────────────────────────────
   return (
@@ -153,6 +160,9 @@ export default function PuzzlePage() {
             <p>
               {t('games.puzzle.victory.stats.time')} <strong>{timer.formatted}</strong> {t('games.puzzle.victory.stats.moves', {moves})}
             </p>
+            {score !== null && (
+              <p className="game-win-score">{t('games.puzzle.victory.stats.score')} <strong>{score}</strong></p>
+            )}
             <button className="btn btn--primary" onClick={handleRestart}>
               {t('games.buttons.retry_new_photo')}
             </button>

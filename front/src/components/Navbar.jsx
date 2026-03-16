@@ -1,35 +1,36 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { authApi } from '@/api/auth';
-import { Link, replace, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useTranslation } from '../hooks/useTranslations';
 import { apiService } from '../api/services';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Navbar(){
 	const {isAuthenticated} = useAuth();
 	const location = useLocation();
   	const isActive = (path) => location.pathname === path;
 	const appName = import.meta.env.VITE_APP_NAME;
+	const [searchValue, setSearchValue] = useState("");
+	const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 	const { t } = useTranslation();
-	const [randomVideoSlugger, setRandomVideoSlugger] = useState('');
+	const navigate = useNavigate();
 
-	useEffect(() => {
-		try {
-			apiService.getRandomVideo()
-			.then((res) => {
-				var data = res.data;
-				if(data.success === true){
-					setRandomVideoSlugger(data.item.slugger);
-					console.log(randomVideoSlugger)
-				}
-			})
+	const handleSearchSubmit = async (e) => {
+		e.preventDefault();
+		setError(null);
+		setLoading(true);
 
-		} catch (error) {
-			
+		const trimmed = searchValue.trim();
+
+		if (!trimmed) {
+			setError('No search term.');
+			return;
 		}
-
-	}, [randomVideoSlugger])
+		setSearchValue('');
+		navigate(`/search/${encodeURIComponent(trimmed)}`);
+	};
 
 	return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
 			<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,6 +69,10 @@ export default function Navbar(){
 						<Link className="nav-link" to="#" onClick={handleLogout}>{t('common.navigation.logout')}</Link>
 					</li>
 					}
+					<form className="form-inline my-2 ms-3 my-lg-0 d-flex" id="searchform" onSubmit={handleSearchSubmit}>
+						<input type="search" className="form-control" placeholder="Search..." aria-label="Search" id="searchbar" autoComplete="off" value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
+						<button className="btn btn-outline-success">{t('common.navigation.search')}</button>
+					</form>
 				</ul>
 			</div>
 	</nav>)

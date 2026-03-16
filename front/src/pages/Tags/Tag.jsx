@@ -42,7 +42,7 @@ export default function Tag() {
         : <h1 className="ms-4">{t('tags.detail.empty_table', {'title': tag.name})}</h1> }
 
         <div id="card-container" className="d-flex flex-wrap gap-3 mx-auto mt-4">
-            {tag.videos.length && tag.videos.map((video,index) => {
+            {tag.videos.length > 0 && tag.videos.map((video,index) => {
                 const thumbnailSrc = video.thumbnailname
                 ? `${uploadsUrl}thumbnails/${video.thumbnailname}`
                 : defaultThumbnailUrl;

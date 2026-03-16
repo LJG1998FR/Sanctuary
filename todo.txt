@@ -58,6 +58,7 @@ FRONT
 - Random video/collection/tag => OK
 - Add games (Memory + Puzzle) => OK
 - Rankings for mini-games
-- Global search bar + results
+	- Table Playerscores (id, string username, int game_type, int difficulty_level, int entry_date, int score) 
+- Global search bar + results => OK
 - Favorites ?
 - Add Video views => Stats ?
